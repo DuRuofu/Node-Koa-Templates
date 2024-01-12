@@ -4,14 +4,14 @@
 
 ## 依赖
 
-
+```
 web框架: express + ts
 热更新：nodemon + ts-node
 orm：prisma
 日志：log4js
 token生成：jsonwebtoken
 进程守护：pm2
-
+``
 
 ## 结构
 
@@ -24,7 +24,7 @@ token生成：jsonwebtoken
 - logs              // 日志文件夹
 - middlewares       // 中间件，请求预处理逻辑，例如权限验证
 - prisma            // 数据库访问ORM层
-- routes            // 路由定义
+- routers            // 路由定义
 - public            // 静态资源文件夹
 - services          // 数据服务层，处理数据库业务
 - tests             // 测试文件夹

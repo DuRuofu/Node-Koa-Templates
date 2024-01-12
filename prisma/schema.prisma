@@ -6,6 +6,21 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+
+model Example {
+  
+  AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
+  Name        String   @map("name")
+  Password    String   @map("password")
+  Email       String   @default("test@test.com") @map("email")
+  Phone       String   @default("12312341234") @map("phone")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  pdatedTime  DateTime @updatedAt @map("updated_time")
+
+  @@map("example")
 }

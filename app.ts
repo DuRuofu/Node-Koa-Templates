@@ -1,5 +1,5 @@
 import express from 'express'
-import routes from './routes' // 路由
+import routes from './routers' // 路由
 
 const app = express()
 
