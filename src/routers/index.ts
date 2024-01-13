@@ -4,10 +4,10 @@ import { Express, Request, Response, Router } from 'express'
 
 // 路由配置接口
 interface RouterConf {
-    path: string,
-    router: Router,
-    meta?: unknown
-  }
+  path: string
+  router: Router
+  meta?: unknown
+}
 
 // 路由配置
 const routerConf: Array<RouterConf> = []
@@ -20,4 +20,3 @@ function routes(app: Express) {
 }
 
 export default routes
-

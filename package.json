@@ -5,7 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "lint": "eslint . --ext .js,.ts"
+    "lint": "eslint . --ext .js,.ts",
+    "format": "prettier --config .prettierrc . --write"
   },
   "keywords": [],
   "author": "DuRuofu",

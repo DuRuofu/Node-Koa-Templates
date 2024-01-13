@@ -1,7 +1,6 @@
 import { ENV } from './constant'
 
 export const apps = [
-
   {
     name: 'production', //需与package.json里--only 后缀名相同
 
@@ -22,15 +21,13 @@ export const apps = [
     max_restarts: 10,
 
     ignore_watch: [
-
       // 不用监听的文件
 
       'node_modules',
 
       '.idea',
 
-      'log'
-
+      'log',
     ],
 
     max_memory_restart: '1G',
@@ -38,15 +35,11 @@ export const apps = [
     restart_delay: '3000',
 
     env: {
-
-      NODE_ENV: ENV.production //process.env.NODE_ENV值
-
-    }
-
+      NODE_ENV: ENV.production, //process.env.NODE_ENV值
+    },
   },
 
   {
-
     name: 'test', //需与package.json里--only 后缀名相同
 
     script: './bin/www',
@@ -62,25 +55,19 @@ export const apps = [
     watch: true,
 
     ignore_watch: [
-
       // 不用监听的文件
 
       'node_modules',
 
       '.idea',
 
-      'log'
-
+      'log',
     ],
 
     max_memory_restart: '300M',
 
     env: {
-
-      NODE_ENV: ENV.development //process.env.NODE_ENV值
-
-    }
-
-  }
-
+      NODE_ENV: ENV.development, //process.env.NODE_ENV值
+    },
+  },
 ]

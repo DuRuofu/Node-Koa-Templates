@@ -21,7 +21,7 @@ token生成：jsonwebtoken
 
 ## 目录结构
 
-``` sh
+```sh
 
 - config            // 配置文件夹
 - controllers       // 控制器，处理路由逻辑
@@ -47,7 +47,7 @@ token生成：jsonwebtoken
 
 ### 1、初始化工程
 
-``` sh
+```sh
 npm init -y
 ```
 
@@ -55,21 +55,19 @@ npm init -y
 
 安装生产环境依赖:
 
-``` sh
+```sh
 npm i koa koa-body koa-router log4js pm2  axios jsonwebtoken
 ```
 
 安装生产环境依赖:
 
-``` sh
+```sh
 npm i @types/koa @types/koa-router @types/log4js  @types/jsonwebtoken prettier eslint nodemon typescript ts-node  @types/node -D
 ```
 
-
 ### 3、创建ts管理文件：tsconfig.json
 
-
-``` json
+```json
 {
   "compilerOptions": {
     // 目标语言版本
@@ -96,50 +94,49 @@ npm i @types/koa @types/koa-router @types/log4js  @types/jsonwebtoken prettier e
   }
 }
 ```
+
 ### 4、配置ESLINT代码检测
 
 ESLint 是一个用于识别和报告在 ECMAScript/JavaScript 代码中发现的模式的工具，其目标是使代码更加一致并避免错误。
 
-
 补充安装开发依赖:
-``` sh
-npm i  @typescript-eslint/parser @typescript-eslint/eslint-plugin -D 
+
+```sh
+npm i eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin -D
 ```
+
 安装完成后在根目录下分别创建 .eslintrc 和 .eslintignore 文件，在 .eslintrc文件中填充一些配置项：
 
 ```json
 {
-    //该配置项主要用于指示此.eslintrc文件是Eslint在项目内使用的根级别文件
-    "root":true,
-    //默认情况下，Eslint使用其内置的 Espree 解析器，该解析器与标准 JavaScript 运行时和版本兼容.
-    //而我们需要将ts代码解析为eslint兼容的AST，所以此处我们使用 @typescript-eslint/parser
-    "parser":"@typescript-eslint/parser",
-    //该配置项告诉eslint我们拓展了哪些指定的配置集
-    "extends":[
-        //该配置集是 ESLint 内置的“推荐”，它打开一组小的、合理的规则，用于检查众所周知的最佳实践
-        "eslint:recommended",
-        //该配置集是typescript-eslint的推荐，它与eslint:recommended相似，但它启用了特定于ts的规则
-        "@typescript-eslint/recommended",
-        //该配置集禁用 eslint:recommended 配置集中已经由 typeScript 处理的规则，防止eslint和typescript之间的冲突。
-        "@typescript-eslint/eslint-recommended"
-    ],
-    //该配置项指示要加载的插件
-    // @typescript-eslint 插件使得我们能够在我们的存储库中使用typescript-eslint包定义的规则集
-    "plugins":["@typescript-eslint"]
+  //该配置项主要用于指示此.eslintrc文件是Eslint在项目内使用的根级别文件
+  "root": true,
+  //默认情况下，Eslint使用其内置的 Espree 解析器，该解析器与标准 JavaScript 运行时和版本兼容.而我们需要将ts代码解析为eslint兼容的AST，所以此处我们使用 @typescript-eslint/parser
+  "parser": "@typescript-eslint/parser",
+  //该配置项告诉eslint我们拓展了哪些指定的配置集
+  "extends": [
+    //该配置集是 ESLint 内置的“推荐”，它打开一组小的、合理的规则，用于检查众所周知的最佳实践
+    "eslint:recommended",
+    //该配置集是typescript-eslint的推荐，它与eslint:recommended相似，但它启用了特定于ts的规则
+    "plugin:@typescript-eslint/recommended",
+    //该配置集禁用 eslint:recommended 配置集中已经由 typeScript 处理的规则，防止eslint和typescript之间的冲突。
+    "plugin:@typescript-eslint/eslint-recommended"
+  ],
+  //该配置项指示要加载的插件
+  // @typescript-eslint 插件使得我们能够在我们的存储库中使用typescript-eslint包定义的规则集
+  "plugins": ["@typescript-eslint"]
 }
 ```
 
 在.eslintignore中填入当前需要忽略的文件，包括编译输出目录build， 所有node_modules文件夹 和package-lock.json文件
 
 ```js
-build
-node_modules
-package-lock.json
+build / node_modules / package - lock.json
 ```
 
-接下来,在package.json中新增执行eslint工具的脚本,关于所使用的eslint命令行工具的可用options，可以在eslint的[官方文档](https://eslint.org/docs/latest/use/command-line-interface#)中获取详细信息。
+在package.json中新增执行eslint工具的脚本,关于所使用的eslint命令行工具的可用options，可以在eslint的[官方文档](https://eslint.org/docs/latest/use/command-line-interface#)中获取详细信息。
 
-``` json
+```json
  "scripts": {
       "lint": "eslint . --ext .js,.ts"
   }
@@ -150,13 +147,13 @@ package-lock.json
 工程目录下新建`test.ts`
 
 ```ts
-function test(){
-    console.log("test");
-} 
+function test() {
+  console.log('test')
+}
 ```
 
 运行脚本`npm run lint`
-抛出错误：  `error  'test' is defined but never used  ` 说明配置OK
+抛出错误： `error  'test' is defined but never used  ` 说明配置OK
 
 ![image-20240113135256662](attachments/image-20240113135256662.png)
 
@@ -164,9 +161,56 @@ function test(){
 
 Prettier 是一个 Opinionated 的代码格式化工具。
 
+安装:
 
+```sh
+npm i  prettier -D
+```
 
+在项目根目录下创建 .prettierrc 和 .prettierignore 文件
+`.prettierrc `配置如下
 
+```json
+{
+  "semi": false,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "printWidth": 140
+}
+```
+
+> semi: 设置为 false，表示不使用分号作为语句结束符。
+> tabWidth: 设置为 2，表示使用两个空格作为一个制表符的宽度。
+> singleQuote: 设置为 true，表示使用单引号而不是双引号来定义字符串。
+> trailingComma: 设置为 "es5"，表示在对象或数组的最后一个元素之后> 允许添加逗号。
+> printWidth: 设置为 140，表示每行代码的最大宽度为 140 个字符。
+
+`.prettierignore `配置如下
+
+```
+build/
+node_modules/
+package-lock.json
+```
+
+关于prettier的详细的配置项，可以查阅[官网文档](https://prettier.io/docs/en/options)了解详细信息。
+
+在package.json中新增执行prettier工具的脚本
+
+```json
+ "scripts": {
+      "format": "prettier --config .prettierrc . --write"
+  }
+```
+
+测试：`console.log('test');`带有`;`号，不符合`"semi": false`配置项的规范
+
+![image-20240113141545484](attachments/image-20240113141545484.png)
+
+运行脚本`npm run format` 分号被格式化删除，说明配置OK
+
+![image-20240113141823140](attachments/image-20240113141823140.png)
 
 ### 6、创建项目主文件夹：src
 
@@ -174,47 +218,27 @@ Prettier 是一个 Opinionated 的代码格式化工具。
 
 ### 7、src下创建入口文件：app.ts
 
-
-
 ### 8、src下创建工具库文件夹：utils
-
-
 
 ### 9、src下新增配置文件夹：config
 
-
-
 ### 10、src下新增日志文件夹：logs
-
-
 
 ### 11、src下新增中间件文件夹：middlewares
 
-
-
 ### 12、src下新增路由文件夹：routers
-
-
 
 ### 13、src下新增控制器文件夹：controllers
 
-
-
 ### 14、src下新增服务文件夹：services
-
-
 
 ### 15、src下新增数据库访问ORM层文件夹：prisma
 
-
-
 ### 16、src下新增测试文件夹：tests
-
-
 
 ## 使用
 
-``` sh
+```sh
 # 安装依赖
 npm install
 # 启动项目
