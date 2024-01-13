@@ -25,6 +25,8 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/koa": "^2.14.0",
     "@types/koa-router": "^7.4.8",
@@ -32,6 +34,7 @@
     "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
+    "commitlint": "^18.4.4",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
