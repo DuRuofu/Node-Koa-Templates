@@ -157,6 +157,8 @@ function test() {
 
 ![image-20240113135256662](attachments/image-20240113135256662.png)
 
+ 
+
 ### 5、配置Prettier代码格式化
 
 Prettier 是一个 Opinionated 的代码格式化工具。
@@ -254,42 +256,123 @@ npm i  eslint-config-prettier eslint-plugin-prettier -D
 
 ```json
 {
-    //该配置项主要用于指示此.eslintrc文件是Eslint在项目内使用的根级别文件
-    "root":true,
-    //默认情况下，Eslint使用其内置的 Espree 解析器，该解析器与标准 JavaScript 运行时和版本兼容.而我们需要将ts代码解析为eslint兼容的AST，所以此处我们使用 @typescript-eslint/parser
-    "parser":"@typescript-eslint/parser",
-    //该配置项告诉eslint我们拓展了哪些指定的配置集
-    "extends":[
-        //该配置集是 ESLint 内置的“推荐”，它打开一组小的、合理的规则，用于检查众所周知的最佳实践
-        "eslint:recommended",
-        //该配置集是typescript-eslint的推荐，它与eslint:recommended相似，但它启用了特定于ts的规则
-        "plugin:@typescript-eslint/recommended",
-        //该配置集禁用 eslint:recommended 配置集中已经由 typeScript 处理的规则，防止eslint和typescript之间的冲突。
-        "plugin:@typescript-eslint/eslint-recommended",
-        //eslint-config-prettier配置集，这会关闭一些与 Prettier 冲突的 ESLint 规则
-        "prettier"
-    ],
-    //该配置项指示要加载的插件
-    // @typescript-eslint 插件使得我们能够在我们的存储库中使用typescript-eslint包定义的规则集
-    // prettier该插件将 Prettier 规则转换为 ESLint 规则
-    "plugins":["@typescript-eslint","prettier"],
-    "rules":{
-        //打开eslint-plugin-prettier插件提供的规则，该插件从 ESLint 内运行 Prettier
-        "prettier/prettier": "error",
-        //关闭对应的这两个 ESLint 核心规则，这两个规则和prettier插件一起使用会出现问题
-        "arrow-body-style": "off",
-        "prefer-arrow-callback": "off"
-    }
+  //该配置项主要用于指示此.eslintrc文件是Eslint在项目内使用的根级别文件
+  "root": true,
+  //默认情况下，Eslint使用其内置的 Espree 解析器，该解析器与标准 JavaScript 运行时和版本兼容.而我们需要将ts代码解析为eslint兼容的AST，所以此处我们使用 @typescript-eslint/parser
+  "parser": "@typescript-eslint/parser",
+  //该配置项告诉eslint我们拓展了哪些指定的配置集
+  "extends": [
+    //该配置集是 ESLint 内置的“推荐”，它打开一组小的、合理的规则，用于检查众所周知的最佳实践
+    "eslint:recommended",
+    //该配置集是typescript-eslint的推荐，它与eslint:recommended相似，但它启用了特定于ts的规则
+    "plugin:@typescript-eslint/recommended",
+    //该配置集禁用 eslint:recommended 配置集中已经由 typeScript 处理的规则，防止eslint和typescript之间的冲突。
+    "plugin:@typescript-eslint/eslint-recommended",
+    //eslint-config-prettier配置集，这会关闭一些与 Prettier 冲突的 ESLint 规则
+    "prettier"
+  ],
+  //该配置项指示要加载的插件
+  // @typescript-eslint 插件使得我们能够在我们的存储库中使用typescript-eslint包定义的规则集
+  // prettier该插件将 Prettier 规则转换为 ESLint 规则
+  "plugins": ["@typescript-eslint", "prettier"],
+  "rules": {
+    //打开eslint-plugin-prettier插件提供的规则，该插件从 ESLint 内运行 Prettier
+    "prettier/prettier": "error",
+    //关闭对应的这两个 ESLint 核心规则，这两个规则和prettier插件一起使用会出现问题
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
+  }
 }
 ```
 
+### 7、配置Husky工具
 
+`git hooks`是一些自定义的脚本，用于控制git工作的流程。git hooks 是本地的，不会被同步到 git 仓库里。为了保证每个人的本地仓库都能执行预设的 git hooks，于是就有了 husky。
+
+Husky可以在项目中植入设定的 git hooks，在 git 提交代码的前后，预设的 git hooks 可以得到执行，以对代码、文件等进行预设的检查，一旦检查不通过，就可以阻止当前的代码提交，避免了不规范的代码和 git 提交出现在项目中。
+
+
+安装：
+
+```sh
+npm i  -D husky
+```
+
+初始化husky
+
+```sh
+npx husky install
+```
+
+根目录会生成`.husky文件`
+
+在package.json中新增脚本
+
+```json
+"scripts": {
+    "prepare": "husky install",
+}
+```
+
+这会使得，当其他人克隆该项目并安装依赖时会自动通过husky启用git hook
+
+我们需要的第一个git hook是在提交commit之前执行我们的eslint工具对代码进行质量和格式检查，也就是在提交commit之前执行package.json中的lint脚本，我们通过husky命令来创建pre-commit这个git hook
+
+```sh
+npx husky add .husky/pre-commit "npm run lint"
+```
+
+.husky文件夹多出命令
+
+![image-20240113145021748](attachments/image-20240113145021748.png)
+
+测试：提交有格式错误的代码
+
+![image-20240113145132680](attachments/image-20240113145132680.png)
+
+![image-20240113145203422](attachments/image-20240113145203422.png)
+
+成功抛出错误,提交被终止：
+
+![image-20240113145242183](attachments/image-20240113145242183.png)
+
+### 7、配置lint-staged工具
+
+它的作用是仅对变更的文件执行相关操作，在这里，就是执行eslint检查这项操作，同时还能忽略我们所要忽略的文件。
+
+安装：`npm i  -D lint-staged`
+
+创建 .lintstagedrc.js 配置文件
+
+填充一下该配置文件
+
+```js
+const { ESLint } = require('eslint');
+
+const removeIgnoredFiles = async (files) => {
+  const eslint = new ESLint();
+  const ignoredFiles = await Promise.all(files.map((file) => eslint.isPathIgnored(file)));
+  const filteredFiles = files.filter((_, i) => !ignoredFiles[i]);
+  return filteredFiles.join(' ');
+};
+
+module.exports = {
+  '*': async (files) => {
+    const filesToLint = await removeIgnoredFiles(files);
+    return [`eslint ${filesToLint} --max-warnings=0`];
+  },
+};
+```
+
+该配置文件中的代码片段的含义是，对所有被lint-staged检测到的文件，其中过滤掉我们所需要忽略的文件，然后执行eslint脚本。
+
+手动更改一下husky为我们创建的pre-commit这个git hook，将其变更为执行lint-staged命令（npx lint-staged），而不是直接执行package.json中的脚本。
+
+![image-20240113150043041](attachments/image-20240113150043041.png)
 
 
 
 ### 6、创建项目主文件夹：src
-
-
 
 ### 7、src下创建入口文件：app.ts
 
