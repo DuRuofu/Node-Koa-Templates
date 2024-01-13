@@ -430,7 +430,9 @@ npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'
   }
 ```
 
-测试：`console.log('test');`带有`;`号，不符合`"semi": false`配置项的规范
+使用脚本`npm run cz`即可执行commit message的创建。具体选项可参考https://juejin.cn/post/7024103006752735269
+
+![image-20240113154944688](attachments/image-20240113154944688.png)
 
 ### 7、src下创建入口文件：app.ts
 
