@@ -12,7 +12,7 @@
 web框架: koa + ts
 热更新：nodemon + ts-node
 代码格式检查：eslint
-代码格式化：prettier
+代码格式化：prettier + onchange
 orm：prisma
 日志：log4js
 token生成：jsonwebtoken
@@ -211,6 +211,81 @@ package-lock.json
 运行脚本`npm run format` 分号被格式化删除，说明配置OK
 
 ![image-20240113141823140](attachments/image-20240113141823140.png)
+
+### 6、配置Prettier 和 Eslint 协同工作
+
+Eslint既包含代码质量规则，也包含代码风格规则，当我们使用Prettier来对代码进行格式化时，Eslint的大部分代码风格的规则其实是不必要的，而且更糟糕的是，Eslint的代码风格的规则往往会跟Prettier发生冲突，所以我们需要应用一些Eslint的配置集来关闭与Prettier冲突或不必要的规则，并且将Prettier的规则转换为Eslint的规则，从而让Eslint能够完全按照我们的诉求向我们提供错误或警告信息。
+
+在这里，会用上两个配置，分别为eslint-config-prettier 和 eslint-plugin-prettier，前者作用是关闭所有可能干扰 Prettier 规则的 ESLint 规则，确保将其放在最后，这样它有机会覆盖其他配置集，后者作用是将 Prettier 规则转换为 ESLint 规则。
+
+安装：
+
+```sh
+npm i  eslint-config-prettier eslint-plugin-prettier -D
+```
+
+修改.eslintrc文件配置，添加
+
+```json
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+     //新增prettier项
+    "prettier"
+  ],
+  //新增prettier插件
+  "plugins": ["@typescript-eslint","prettier"]
+ //新增rules
+   "rules":{
+    //打开eslint-plugin-prettier插件提供的规则，该插件从 ESLint 内运行 Prettier
+    "prettier/prettier": "error",
+    //关闭对应的这两个 ESLint 核心规则，这两个规则和prettier插件一起使用会出现问题
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
+}
+}
+```
+
+分别是extends prettier 配置，加载 prettier 插件，和添加三条rules,添加后如下
+
+```json
+{
+    //该配置项主要用于指示此.eslintrc文件是Eslint在项目内使用的根级别文件
+    "root":true,
+    //默认情况下，Eslint使用其内置的 Espree 解析器，该解析器与标准 JavaScript 运行时和版本兼容.而我们需要将ts代码解析为eslint兼容的AST，所以此处我们使用 @typescript-eslint/parser
+    "parser":"@typescript-eslint/parser",
+    //该配置项告诉eslint我们拓展了哪些指定的配置集
+    "extends":[
+        //该配置集是 ESLint 内置的“推荐”，它打开一组小的、合理的规则，用于检查众所周知的最佳实践
+        "eslint:recommended",
+        //该配置集是typescript-eslint的推荐，它与eslint:recommended相似，但它启用了特定于ts的规则
+        "plugin:@typescript-eslint/recommended",
+        //该配置集禁用 eslint:recommended 配置集中已经由 typeScript 处理的规则，防止eslint和typescript之间的冲突。
+        "plugin:@typescript-eslint/eslint-recommended",
+        //eslint-config-prettier配置集，这会关闭一些与 Prettier 冲突的 ESLint 规则
+        "prettier"
+    ],
+    //该配置项指示要加载的插件
+    // @typescript-eslint 插件使得我们能够在我们的存储库中使用typescript-eslint包定义的规则集
+    // prettier该插件将 Prettier 规则转换为 ESLint 规则
+    "plugins":["@typescript-eslint","prettier"],
+    "rules":{
+        //打开eslint-plugin-prettier插件提供的规则，该插件从 ESLint 内运行 Prettier
+        "prettier/prettier": "error",
+        //关闭对应的这两个 ESLint 核心规则，这两个规则和prettier插件一起使用会出现问题
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off"
+    }
+}
+```
+
+
+
+
 
 ### 6、创建项目主文件夹：src
 
