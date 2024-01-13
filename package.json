@@ -1,10 +1,11 @@
 {
-  "name": "node-express-templates",
+  "name": "node-koa-templates",
   "version": "1.0.0",
-  "description": "Using server templates for express and prisma.",
-  "main": "app.ts",
+  "description": "Using server templates for koa and prisma.",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "lint": "eslint . --ext .js,.ts"
   },
   "keywords": [],
   "author": "DuRuofu",
@@ -27,6 +28,9 @@
     "@types/koa-router": "^7.4.8",
     "@types/log4js": "^2.3.5",
     "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
     "prettier": "^3.2.1",
     "prisma": "^5.8.0"
   }
