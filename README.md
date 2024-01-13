@@ -5,13 +5,14 @@
 ## 依赖
 
 ```
-web框架: express + ts
+web框架: koa + ts
 热更新：nodemon + ts-node
+代码格式化：prettier
 orm：prisma
 日志：log4js
 token生成：jsonwebtoken
 进程守护：pm2
-``
+```
 
 ## 结构
 

@@ -1,4 +1,4 @@
-import { ENV } from '../config/constant'
+import { ENV } from './constant'
 
 export const apps = [
 
