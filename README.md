@@ -372,7 +372,65 @@ module.exports = {
 
 
 
-### 6、创建项目主文件夹：src
+### 8、配置commitlint，commitizen工具
+
+使用commitlint工具并搭配git hook从而在提交commit前对我们的commit message进行格式检查。
+
+安装：`npm i -D @commitlint/cli @commitlint/config-conventional`
+安装完成后，在项目根目录下创建配置文件 .commitlintrc.json，并向其中填入内容:
+
+```json
+{
+    "extends": ["@commitlint/config-conventional"],
+    "rules": { 
+        "scope-empty": [2, "never"] 
+    }
+}
+```
+
+- "extends": ["@commitlint/config-conventional"] 的作用是直接拓展官方的预设配置，
+- "rules": { "scope-empty": [2, "never"] }而这条规则是要求commit message的scope即范围不能为空
+
+然后我们使用Husky添加 commit-msg的git hook，通过npx执行husky命令完成添加
+
+```sh
+npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'
+```
+
+作用是在我们提交commit或者修改commit-msg时对commit-msg执行相关校验，如此一来，我们就可以确保我们的项目拥有一个统一的符合规范的commit message。
+
+示例：
+
+错误提交信息会抛出错误：
+
+![image-20240113153618789](attachments/image-20240113153618789.png)
+
+![image-20240113153624901](attachments/image-20240113153624901.png)
+
+正确提交信息不会抛出错误：
+
+![image-20240113153711467](attachments/image-20240113153711467.png)
+
+ commitlint配置好了，下一步就是要引入commitizen来帮助我们便捷地创建符合commitlint规范的commit message
+
+安装：`npm i  -D commitizen cz-conventional-changelog`
+
+安装好后，创建 .czrc 配置文件，并向文件中填入内容
+```
+{"path":"cz-conventional-changelog"}
+```
+
+- cz-conventional-changelog是commitizen的 conventional-changelog 适配器，使用该适配器，commitizen将以AngularJS 的commit message规范逐步引导我们完成commit message的创建。
+
+在package.json中新增脚本:cz
+
+```json
+ "scripts": {
+      "cz": "cz"
+  }
+```
+
+测试：`console.log('test');`带有`;`号，不符合`"semi": false`配置项的规范
 
 ### 7、src下创建入口文件：app.ts
 

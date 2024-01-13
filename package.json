@@ -7,7 +7,8 @@
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "lint": "eslint . --ext .js,.ts",
     "format": "prettier --config .prettierrc . --write",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cz": "cz"
   },
   "keywords": [],
   "author": "DuRuofu",
@@ -34,7 +35,9 @@
     "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
+    "commitizen": "^4.3.0",
     "commitlint": "^18.4.4",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
