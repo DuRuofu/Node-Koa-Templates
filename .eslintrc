@@ -23,6 +23,8 @@
         "prettier/prettier": "error",
         //关闭对应的这两个 ESLint 核心规则，这两个规则和prettier插件一起使用会出现问题
         "arrow-body-style": "off",
-        "prefer-arrow-callback": "off"
+        "prefer-arrow-callback": "off",
+        "@typescript-eslint/no-unused-vars": ["off"],
+        "@typescript-eslint/no-explicit-any": ["off"]
     }
 }

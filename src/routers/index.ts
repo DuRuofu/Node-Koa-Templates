@@ -1,22 +1,10 @@
-// src/routes/index.ts
+//集中手动挂载路由
+import exampleRouter from './example.router';
+import testRouter from './test.router';
 
-import { Express, Request, Response, Router } from 'express';
-
-// 路由配置接口
-interface RouterConf {
-  path: string;
-  router: Router;
-  meta?: unknown;
+function MountRoute(app: any) {
+  //app.use(exampleRouter.routes()).use(exampleRouter.allowedMethods());
+  app.use(testRouter.routes()).use(testRouter.allowedMethods());
 }
 
-// 路由配置
-const routerConf: Array<RouterConf> = [];
-
-function routes(app: Express) {
-  // 根目录
-  app.get('/', (req: Request, res: Response) => res.status(200).send('Hello Shinp!!!'));
-
-  routerConf.forEach((conf) => app.use(conf.path, conf.router));
-}
-
-export default routes;
+export default MountRoute;
