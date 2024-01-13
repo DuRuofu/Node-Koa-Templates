@@ -1,6 +1,6 @@
 # Node-Koa-Templates
 
-自用Node-Koa后端服务框架模板
+自用Node-Koa后端服务框架模板，工程化配置
 参考：
 
 1. [[东方骏]Koa2 + Ts 项目结构搭建 保姆级教程](https://juejin.cn/post/7198116097320976442)。
@@ -65,37 +65,9 @@ npm i koa koa-body koa-router log4js pm2  axios jsonwebtoken
 npm i @types/koa @types/koa-router @types/log4js  @types/jsonwebtoken prettier eslint nodemon typescript ts-node  @types/node -D
 ```
 
-### 3、创建ts管理文件：tsconfig.json
 
-```json
-{
-  "compilerOptions": {
-    // 目标语言版本
-    "target": "esnext",
-    // 指定生成代码的模板标准
-    "module": "commonjs",
-    // 指定编译目录（要编译哪个目录）
-    "rootDir": "./src",
-    // 严格模式
-    "strict": true,
-    //  tsc编译后存放目录
-    "outDir": "./build",
-    // 没有默认导出时, 编译器会创建一个默认导出
-    "allowSyntheticDefaultImports": true,
-    // 允许export= 导出, 由import from导入
-    "esModuleInterop": true,
-    // 禁止对同一个文件的不一致的引用
-    "forceConsistentCasingInFileNames": true
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  }
-}
-```
 
-### 4、配置ESLINT代码检测
+### 3、配置ESLINT代码检测
 
 ESLint 是一个用于识别和报告在 ECMAScript/JavaScript 代码中发现的模式的工具，其目标是使代码更加一致并避免错误。
 
@@ -159,7 +131,7 @@ function test() {
 
  
 
-### 5、配置Prettier代码格式化
+### 4、配置Prettier代码格式化
 
 Prettier 是一个 Opinionated 的代码格式化工具。
 
@@ -214,7 +186,7 @@ package-lock.json
 
 ![image-20240113141823140](attachments/image-20240113141823140.png)
 
-### 6、配置Prettier 和 Eslint 协同工作
+### 5、配置Prettier 和 Eslint 协同工作
 
 Eslint既包含代码质量规则，也包含代码风格规则，当我们使用Prettier来对代码进行格式化时，Eslint的大部分代码风格的规则其实是不必要的，而且更糟糕的是，Eslint的代码风格的规则往往会跟Prettier发生冲突，所以我们需要应用一些Eslint的配置集来关闭与Prettier冲突或不必要的规则，并且将Prettier的规则转换为Eslint的规则，从而让Eslint能够完全按照我们的诉求向我们提供错误或警告信息。
 
@@ -285,7 +257,7 @@ npm i  eslint-config-prettier eslint-plugin-prettier -D
 }
 ```
 
-### 7、配置Husky工具
+### 6、配置Husky工具
 
 `git hooks`是一些自定义的脚本，用于控制git工作的流程。git hooks 是本地的，不会被同步到 git 仓库里。为了保证每个人的本地仓库都能执行预设的 git hooks，于是就有了 husky。
 
@@ -433,8 +405,41 @@ npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'
 使用脚本`npm run cz`即可执行commit message的创建。具体选项可参考https://juejin.cn/post/7024103006752735269
 
 ![image-20240113154944688](attachments/image-20240113154944688.png)
+### 9、创建ts管理文件：tsconfig.json
 
+```json
+{
+  "compilerOptions": {
+    // 目标语言版本
+    "target": "esnext",
+    // 指定生成代码的模板标准
+    "module": "commonjs",
+    // 指定编译目录（要编译哪个目录）
+    "rootDir": "./src",
+    // 严格模式
+    "strict": true,
+    //  tsc编译后存放目录
+    "outDir": "./build",
+    // 没有默认导出时, 编译器会创建一个默认导出
+    "allowSyntheticDefaultImports": true,
+    // 允许export= 导出, 由import from导入
+    "esModuleInterop": true,
+    // 禁止对同一个文件的不一致的引用
+    "forceConsistentCasingInFileNames": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}
+```
 ### 7、src下创建入口文件：app.ts
+
+```ts
+```
+
+
 
 ### 8、src下创建工具库文件夹：utils
 

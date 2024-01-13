@@ -1,6 +1,6 @@
 {
-  "semi": false,
-  "endOfLine":"auto",
+  "semi": true,
+  "endOfLine": "auto",
   "tabWidth": 2,
   "singleQuote": true,
   "trailingComma": "es5",

@@ -4,3 +4,7 @@ package-lock.json
 .env
 README.md
 *attachments/
+*/assets/
+*/logs/
+public/
+*assets/

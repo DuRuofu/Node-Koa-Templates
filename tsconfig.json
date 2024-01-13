@@ -7,7 +7,7 @@
     // 指定编译目录（要编译哪个目录）
     "rootDir": "./src",
     // 严格模式
-    "strict": true,
+    "strict": false,
     //  tsc编译后存放目录
     "outDir": "./build",
     // 没有默认导出时, 编译器会创建一个默认导出

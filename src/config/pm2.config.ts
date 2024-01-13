@@ -1,4 +1,4 @@
-import { ENV } from './constant'
+import { ENV } from './constant';
 
 export const apps = [
   {
@@ -70,4 +70,4 @@ export const apps = [
       NODE_ENV: ENV.development, //process.env.NODE_ENV值
     },
   },
-]
+];
