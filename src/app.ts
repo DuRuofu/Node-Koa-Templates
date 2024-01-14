@@ -18,17 +18,16 @@ const app = new Koa();
 // 挂载日志中间件
 app.use(loggerMiddleware);
 
+// 挂载错误处理中间件
+//app.use(errorHandler);
+
 // 挂载body解析中间件
 app.use(koaBody({ multipart: true }));
-
-// 挂载错误处理中间件
-app.use(errorHandler);
 
 // 挂载静态资源中间件
 app.use(Static(path.join(__dirname + '/../public')));
 
-// 路由挂载
-// MountRoute(app);
+// 路由自动挂载
 app.use(router.routes()).use(router.allowedMethods());
 
 // 挂载响应处理中间件

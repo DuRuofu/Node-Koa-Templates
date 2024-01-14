@@ -10,7 +10,7 @@
 
 ```
 web框架: koa + ts
-热更新：nodemon + ts-node
+热更新：ts-node-dev + ts-node
 代码格式检查：eslint
 代码格式化：prettier + onchange
 orm：prisma
@@ -434,15 +434,567 @@ npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'
 
 ![image-20240113154944688](attachments/image-20240113154944688.png)
 
-### 7、src下创建入口文件：app.ts
+### 9、src下创建入口文件：app.ts
 
-### 8、src下创建工具库文件夹：utils
+填充下面的内容：
 
-### 9、src下新增配置文件夹：config
+```ts
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
+import path from 'path';
+import Koa from 'koa';
+import koaBody from 'koa-body';
+import Static from 'koa-static';
+import { PORT } from './config/constant';
+import { loggerMiddleware } from './middlewares/log';
+import { errorHandler } from './middlewares/error';
+import { responseHandler } from './middlewares/response';
+import { getIpAddress } from './utils/util';
+import router from './routers/index';
 
-### 10、src下新增日志文件夹：logs
+// 创建APP实例
+const app = new Koa();
 
-### 11、src下新增中间件文件夹：middlewares
+// 挂载日志中间件
+app.use(loggerMiddleware);
+
+// 挂载body解析中间件
+app.use(koaBody({ multipart: true }));
+
+// 挂载错误处理中间件
+app.use(errorHandler);
+
+// 挂载静态资源中间件
+app.use(Static(path.join(__dirname + '/../public')));
+
+// 路由挂载
+app.use(router.routes()).use(router.allowedMethods());
+
+// 挂载响应处理中间件
+app.use(responseHandler);
+
+//http 服务
+const httpPort = PORT.http;
+const httpServer = http.createServer(app.callback());
+httpServer.listen(httpPort);
+httpServer.on('error', (err: Error) => {
+  console.log(err);
+});
+httpServer.on('listening', () => {
+  const ip = getIpAddress();
+  const address = `http://${ip}:${httpPort}`;
+  const localAddress = `http://localhost:${httpPort}`;
+  console.log(`app started at address:${localAddress} or ${address}`);
+});
+
+//https 服务
+const httpsPort = PORT.https;
+const ACoptions = {
+  key: fs.readFileSync(path.resolve(__dirname, './assets/example.com.key')), // SSL私钥文件路径
+  cert: fs.readFileSync(path.resolve(__dirname, './assets/example.com_bundle.crt')), // SSL证书文件路径
+};
+const httpsServer = https.createServer(ACoptions, app.callback());
+httpsServer.listen(httpsPort);
+httpsServer.on('error', (err) => {
+  console.log(err);
+});
+
+httpsServer.on('listening', () => {
+  const ip = getIpAddress();
+  const address = `https://${ip}:${httpsPort}`;
+  const localAddress = `https://localhost:${httpsPort}`;
+  console.log(`app started at address:${localAddress} or ${address}`);
+});
+
+```
+
+### 10 、src下创建工具库文件夹：utils
+
+utils文件夹下新增常用函数封装文件：util.ts：
+
+```typescript
+import { Context } from 'vm'
+import { JWT } from '../config/constant'
+import jwt from 'jsonwebtoken'
+
+/*获取当前ip地址*/
+export const getIpAddress = () => {
+  const interfaces = require('os').networkInterfaces()
+  for (const devName in interfaces) {
+    const temp = interfaces[devName]
+    for (let i = 0; i < temp.length; i++) {
+      const alias = temp[i]
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address
+      }
+    }
+  }
+}
+// 获取客户端ip地址
+export const getClientIpAddress = (ctx: Context) => {
+  const headers = ctx.headers
+  if (headers['x-forwarded-for']) {
+    const ipList = headers['x-forwarded-for'].split(',')
+    return ipList[0]
+  }
+  return '0.0.0.0'
+}
+
+
+```
+
+
+
+### 11、src下新增配置文件夹：config
+
+config文件夹下新增常用接口状态code：code.ts
+
+> 这里随便写点作为示例，具体根据自己业务情况来写
+
+```ts
+//常用接口状态code
+export const CODE = {
+  success: { code: 0, message: 'success', key: 'success' },
+  tokenFailed: { code: 1, message: 'token校验失败', key: 'tokenFailed' },
+  missingParameters: { code: 2, message: '缺少参数', key: 'missingParameters' },
+  adminUserIsExist: { code: 3, message: '账号名已存在', key: 'adminUserIsExist' },
+};
+
+```
+
+config文件夹下新增全局通用的配置参数文件：constant.ts
+
+> 内容仅作为示例，
+
+```ts
+// 环境变量配置
+import { anyKeyObject } from "../type/global";
+
+export const ENV = {
+  development: "development",
+  production: "production",
+};
+
+// mysql配置
+export const DATABASE = {
+  // 本地环境
+  development: {
+    dbName: "xxx",
+    user: "root",
+    password: "xxx",
+    host: "xxx",
+    port: 3306,
+  },
+
+  // 阿里云
+  production: {
+    dbName: "xxx",
+    user: "root",
+    password: "xxx",
+    host: "xxx",
+    port: 3306,
+  },
+};
+
+// jsonwebtoken-jwt配置
+export const JWT = {
+  secret: "xxx", //密钥
+  expires: 60 * 60 * 24 * 30, // 30天
+};
+
+// sms短信配置
+export const SMS = {
+  accessKeyId: "xxx",
+  accessKeySecret: "xxx",
+  signName: "xxx",
+  templateCode: "xxx",
+};
+
+// 平台Map
+export const PLATFORM = {
+  wxMini: "微信小程序",
+  wxH5: "微信H5",
+  webH5: "webH5",
+  dyMini: "抖音小程序",
+  ksMini: "快手小程序",
+  qqMini: "QQ小程序",
+};
+
+// 支付配置
+export const PAY = {
+  wx: {
+    miniAppid: "xxx",
+    h5Appid: "xxx",
+    mchid: "xxx",
+    v3Key: "xxx", //https://pay.weixin.qq.com/index.php/core/cert/api_cert#/api-password-v3
+  },
+};
+
+// 支付方式配置
+export const PAY_TYPE = [{ label: "微信小程序支付", value: 1 }];
+
+// xxx
+export const WX_MINI = {
+  appid: "xxx",
+  secret: "xxx",
+};
+
+// 全局参数
+export const FIXED_KEY = {
+  port: 3232,
+};
+
+```
+
+config文件夹下新增pm2配置文件：pm2.config.ts
+
+```ts
+const ENV = {
+  development: "development",
+  production: "production",
+};
+
+// eslint-disable-next-line no-undef
+module.exports = {
+  apps: [
+    {
+      name: "production", //需与package.json里--only 后缀名相同
+      script: "./src/app.js",// 运营入口
+      args: "one two",
+      instances: 2,//cpu有几核开几个就行；我服务器是2核4g所以开了2个
+      cron_restart: "0 03 * * *",//每天凌晨3点重启；
+      autorestart: true,
+      watch: false,
+      min_uptime: "200s",
+      max_restarts: 10,
+      ignore_watch: [
+        // 不用监听的文件
+        "node_modules",
+        ".idea",
+        "log",
+      ],
+      max_memory_restart: "300M",//内存占用超过300M后重启
+      restart_delay: "3000",
+      env: {
+        NODE_ENV: ENV.production, //process.env.NODE_ENV值
+      },
+    },
+    {
+      name: "test", //需与package.json里--only 后缀名相同
+      script: "./src/app.js",
+      args: "one two",
+      instances: 1,
+      cron_restart: "0 03 * * *",//每天凌晨3点重启；
+      autorestart: true,
+      watch: true,
+      ignore_watch: [
+        // 不用监听的文件
+        "node_modules",
+        ".idea",
+        "log",
+      ],
+      max_memory_restart: "300M",
+      env: {
+        NODE_ENV: ENV.development, //process.env.NODE_ENV值
+      },
+    },
+  ],
+};
+```
+
+### 12、src下新增中间件文件夹：middleware
+
+添加错误处理中间件：`error.ts`
+
+```ts
+// 这个middleware处理在其它middleware中出现的异常,我们在next()后面进行异常捕获，出现异常直接进入这个中间件进行处理
+//返回统一出口中间件
+import Koa from 'koa';
+import { logger } from '../middlewares/log';
+
+export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
+  return next().catch((err) => {
+    if (typeof err === 'object') {
+      ctx.body = {
+        code: err.code,
+        data: null,
+        message: err.message,
+      };
+    } else {
+      ctx.body = {
+        code: -1,
+        data: null,
+        message: err,
+      };
+    }
+
+    logger.error(err);
+    // 保证返回状态是 200
+    ctx.status = 200;
+    return Promise.resolve();
+  });
+};
+
+```
+
+日志记录中间件：`log.ts`
+
+```ts
+import Koa from 'koa';
+import log4js from 'log4js';
+import { getClientIpAddress } from '../utils/util';
+
+log4js.configure({
+  pm2: true,
+  appenders: {
+    everything: {
+      type: 'dateFile',
+      filename: 'logs\\log',
+      pattern: 'yyyy-MM-dd.log',
+      alwaysIncludePattern: true, // 设置文件名称为 filename + pattern
+      keepFileExt: true,
+      numBackups: 30, // 保留最近20个历史日志文件，可根据需求调整
+      compress: true, // 压缩历史日志文件
+    },
+  },
+  categories: {
+    default: { appenders: ['everything'], level: 'debug' },
+  },
+});
+
+export const logger = log4js.getLogger();
+export const loggerMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
+  // 请求开始时间
+  const start = new Date();
+  await next();
+  // 结束时间
+  const ms = Number(new Date()) - Number(start);
+  // 打印出请求相关参数
+  const remoteAddress = getClientIpAddress(ctx);
+  const logText = `${ctx.method} ${ctx.status} ${ctx.url} 请求参数： ${JSON.stringify(ctx.request.body)} 响应参数： ${JSON.stringify(
+    ctx.body
+  )} - ${remoteAddress} - ${ms}ms`;
+  logger.info(logText);
+};
+
+```
+
+返回统一出口中间件:`response.ts`
+
+```ts
+//返回统一出口中间件
+import Koa from 'koa';
+import { CODE } from '../config/code';
+
+// 这个middleware用于将ctx.result中的内容最终回传给客户端
+
+export const responseHandler = (ctx: Koa.Context) => {
+  if (ctx.body !== undefined) {
+    ctx.type = 'json';
+    ctx.body = {
+      code: CODE.success.code,
+      data: ctx.body,
+      message: CODE.success.message,
+    };
+  }
+};
+
+```
+
+
+
+### 13、业务流程实现
+
+业务流程实现是最复杂的部分，设计到四个文件夹，分别是`routers` `controllers` `services` 和 `prisma`
+
+#### 13.1、src下创建路由文件夹：routers
+
+`routers`目录下新建index.ts文件,用于自动路由挂载：
+
+```ts
+import fs from 'fs';
+import path from 'path';
+import Router from 'koa-router';
+const router = new Router();
+
+fs.readdirSync(__dirname).forEach((file) => {
+  // console.log(file)
+  if (file !== 'index.js') {
+    import(path.join(__dirname, file))
+      .then((r) => {
+        router.use(r.default.routes());
+      })
+      .catch((error) => {
+        // 处理导入错误
+        console.log('路由自动加载错误' + error);
+      });
+  }
+});
+
+export default router;
+```
+
+然后业务模块统一命名为：`xxx.route.ts`
+下面展示一个最简单的路由范例：`test.route.ts`
+
+```ts
+//测试路由
+import Router from 'koa-router';
+const router = new Router({ prefix: '/test' });
+
+// 增
+router.post('/post', (ctx: any, next: any) => {
+  console.log('测试路由:post');
+  ctx.body = '这是一个测试路由,post请求正常!';
+});
+
+// 删
+router.delete('/delete', (ctx: any, next: any) => {
+  console.log('测试路由:delete');
+  ctx.body = '这是一个测试路由,delete请求正常!';
+});
+
+// 查
+router.get('/get', (ctx: any, next: any) => {
+  console.log('测试路由:get');
+  ctx.body = '这是一个测试路由,get请求正常!';
+});
+
+// 改
+router.put('/update', (ctx: any, next: any) => {
+  console.log('测试路由:put');
+  ctx.body = '这是一个测试路由,put请求正常!';
+});
+
+export default router;
+```
+
+> 此时将`app.ts`缺少的依赖补上，运行主程序，能成功访问则，则确认路由部署成功。
+
+### ![image-20240115033332310](attachments/image-20240115033332310.png)
+
+下面我们展示一个基本的业务流程搭建，搭建一个`example.route.ts`模块
+
+首先在路由文件夹建立`example.route.ts`，这里实现最简单的增删改查
+
+```ts
+//实例路由模块，该文件负责定义路由规则
+
+import Router from 'koa-router';
+const router = new Router({ prefix: '/example' });
+import Controllers from '../controllers/example.controller';
+
+// 增
+router.post('/post', Controllers.post);
+
+// 删
+router.delete('/delete', Controllers.delete);
+
+// 查
+router.get('/get', Controllers.get);
+
+// 改
+router.put('/update', Controllers.put);
+
+export default router;
+```
+
+#### 13.2、src下创建路由逻辑处理文件夹：controllers
+
+刚才的`example.route.ts`中的
+```ts
+import Controllers from '../controllers/example.controller';
+```
+
+就是将逻辑处理部分模块化到Controllers里了。
+
+接着我们新建`example.controller.ts`,填充下面的内容：
+```ts
+//这个文件负责接口的业务逻辑
+import ExampleService from '../services/example.service';
+
+// 处理bigint类型的数据
+function bigIntToString(value) {
+  const MAX_SAFE_INTEGER = 2 ** 53 - 1;
+  return value <= MAX_SAFE_INTEGER ? Number(value) : value.toString();
+}
+
+class ExampleController {
+  //增
+  async post(ctx: any, next: any) {
+    // 获取数据
+    const { Name, Password, Email, Phone } = ctx.request.body;
+    // 数据验证
+
+    // 操作数据库
+    const res = await ExampleService.createExample(Name, Password, Email, Phone);
+
+    // 返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = JSON.stringify(newRes);
+  }
+
+  //删
+  async delete(ctx: any, next: any) {
+    // 获取数据
+    const { AccountId } = ctx.request.body;
+
+    // 数据验证
+
+    // 操作数据库
+    const res = await ExampleService.deleteExample(AccountId);
+
+    // 返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = JSON.stringify(newRes);
+  }
+
+  //查
+  async get(ctx: any, next: any) {
+    // 获取数据
+    const { id } = ctx.request.body;
+
+    // 数据验证
+
+    // 操作数据库
+    const res = await ExampleService.getExample(id);
+
+    // 返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = JSON.stringify(newRes);
+  }
+
+  //改
+  async put(ctx: any, next: any) {
+    // 获取数据
+    console.log(ctx.request.body);
+
+    // 数据验证
+    const { AccountId, Name, Password, Email, Phone } = ctx.request.body;
+
+    // 操作数据库
+    const res = await ExampleService.updateExample(AccountId, Name, Password, Email, Phone);
+
+    // 返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = JSON.stringify(newRes);
+  }
+}
+
+export default new ExampleController();
+
+```
+
+这部分向下又涉及数据部分，所以我们先配置ORM环境
+
+#### 13.3 src下新增数据库访问ORM层文件夹：prisma
+
+安装依赖：
 
 ### 12、src下新增路由文件夹：routers
 
@@ -450,7 +1002,7 @@ npx husky add .husky/commit-msg 'npx --no -- commitlint --edit "$1"'
 
 ### 14、src下新增服务文件夹：services
 
-### 15、src下新增数据库访问ORM层文件夹：prisma
+### 15、
 
 ### 16、src下新增测试文件夹：tests
 

@@ -8,12 +8,12 @@ import Controllers from '../controllers/example.controller';
 router.post('/post', Controllers.post);
 
 // 删
-router.delete('/delete', Controllers.delete);
+router.post('/delete', Controllers.delete);
 
 // 查
 router.get('/get', Controllers.get);
 
 // 改
-router.put('/update', Controllers.put);
+router.post('/update', Controllers.put);
 
 export default router;
