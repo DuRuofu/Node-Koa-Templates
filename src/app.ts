@@ -5,14 +5,12 @@ import path from 'path';
 import Koa from 'koa';
 import koaBody from 'koa-body';
 import Static from 'koa-static';
-import MountRoute from './routers/index';
 import { PORT } from './config/constant';
 import { loggerMiddleware } from './middlewares/log';
 import { errorHandler } from './middlewares/error';
 import { responseHandler } from './middlewares/response';
 import { getIpAddress } from './utils/util';
-
-// const router = new Router();
+import router from './routers/index';
 
 // 创建APP实例
 const app = new Koa();
@@ -30,7 +28,8 @@ app.use(errorHandler);
 app.use(Static(path.join(__dirname + '/../public')));
 
 // 路由挂载
-MountRoute(app);
+// MountRoute(app);
+app.use(router.routes()).use(router.allowedMethods());
 
 // 挂载响应处理中间件
 app.use(responseHandler);

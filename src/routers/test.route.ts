@@ -1,4 +1,4 @@
-//实例路由模块，该文件负责定义路由规则
+//测试路由
 import Router from 'koa-router';
 const router = new Router({ prefix: '/test' });
 

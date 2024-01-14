@@ -2,7 +2,7 @@
 
 import Router from 'koa-router';
 const router = new Router({ prefix: '/example' });
-import Controllers from '../controllers/example.controllers';
+import Controllers from '../controllers/example.controller';
 
 // 增
 router.post('/post', Controllers.post);
