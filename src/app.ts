@@ -11,6 +11,7 @@ import { errorHandler } from './middlewares/error';
 import { responseHandler } from './middlewares/response';
 import { getIpAddress } from './utils/util';
 import router from './routers/index';
+import { koaSwagger } from 'koa2-swagger-ui';
 
 // 创建APP实例
 const app = new Koa();
@@ -29,6 +30,9 @@ app.use(Static(path.join(__dirname + '/../public')));
 
 // 路由自动挂载
 app.use(router.routes()).use(router.allowedMethods());
+
+// 挂载swagger文档中间件
+app.use(koaSwagger({ routePrefix: '/swagger', swaggerOptions: { url: '/docs' } }));
 
 // 挂载响应处理中间件
 app.use(responseHandler);
