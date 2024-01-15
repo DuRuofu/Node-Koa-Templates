@@ -992,26 +992,159 @@ export default new ExampleController();
 
 这部分向下又涉及数据部分，所以我们先配置ORM环境
 
-#### 13.3 src下新增数据库访问ORM层文件夹：prisma
+#### 13.3 src下新增prisma数据库配置文件夹prisma
 
-安装依赖：
+安装依赖：`npm i prisma  @prisma/client -D `
+使用`npx prisma --help`可以查看prisma 帮助，常用命令有下面这几个
 
-### 12、src下新增路由文件夹：routers
+| 命令     | 说明                                                  |
+| -------- | ----------------------------------------------------- |
+| init     | 在应用中初始化 Prisma                                 |
+| generate | 主要用来生成 Prisma Client                            |
+| db       | 管理数据库的模式和生命周期                            |
+| migrate  | 迁移数据库                                            |
+| studio   | 启动一个Web 端的工作台来管理数据                      |
+| validate | 检查 Prisma 的模式文件的语法是否正确                  |
+| format   | 格式化Prisma的模式文件，默认就是 prisma/schema.prisma |
 
-### 13、src下新增控制器文件夹：controllers
+首先我们初始化 Prisma，使用`npx prisma init`命令
 
-### 14、src下新增服务文件夹：services
+这个命令的效果是在命令所在目录，创建一个 `.env` 文件，一个 `prisma` 目录，并在此目录下创建 `schema.prisma` 文件。这里我们把prisma目录移动到src目录下，.env保留在根目录。
 
-### 15、
+`.env` 文件用于存放数据库连接信息，`prisma` 目录，用来存放和 Prisma 相关的文件，其中的`schema.prisma` 是使用 Primsa 的主要配置文件，称之为 Prisma schema 文件，它包含三个基本结构：
+
+- 数据源
+- 生成器
+- 数据模型定义
+
+> 这里可以安装`Prisma` 插件，增强schema.prisma文件的编辑体验。
+
+prisma/schema.prisma配置如下
+
+```js
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Example {
+  
+  AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
+  Name        String   @map("name")
+  Password    String   @map("password")
+  Email       String   @default("test@test.com") @map("email")
+  Phone       String   @default("12312341234") @map("phone")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  pdatedTime  DateTime @updatedAt @map("updated_time")
+
+  @@map("example")
+}
+```
+
+> `generator` 指定了要生成的 Prisma Client 为 JavaScript 语言。
+>
+> `datasource` 指定了数据库连接是 mysql 数据库，以及数据库配置信息。
+>
+> `Example`是自定义的数据模型，对应数据库的一张表
+
+.env 内容如下,配置数据库连接和数据库名称
+
+```sh
+DATABASE_URL=mysql://root:3.1415926@localhost:3306/example_db
+```
+
+执行`npx prisma migrate dev --name init` 将数据库设计更新到真正的数据库
+数据库已经自动生成符合的表结构。
+
+![image-20240115165900768](attachments/image-20240115165900768.png)
+
+下面我们基于这张表实现最基本的增删改查：
+
+会议一下Controllers模块里，我们把对数据库操作都封装到services层，所以我们新建services文件夹，其中example模块对应的数据操作文件命名为`example.service.ts`
+
+内容：
+
+```ts
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+class ExampleService {
+  // 增
+  async createExample(Name: string, Password: string, Email: string, Phone: string) {
+    const result = await prisma.example.create({
+      data: {
+        Name,
+        Password,
+        Email,
+        Phone,
+      },
+    });
+    return result;
+  }
+
+  // 删
+  async deleteExample(AccountId: number) {
+    const result = await prisma.example.delete({
+      where: { AccountId },
+    });
+    return result;
+  }
+
+  // 改
+  async updateExample(AccountId: number, Name: string, Password: string, Email: string, Phone: string) {
+    const result = await prisma.example.update({
+      where: { AccountId },
+      data: {
+        Name,
+        Password,
+        Email,
+        Phone,
+      },
+    });
+    return result;
+  }
+
+  // 查
+  async getExample(AccountId) {
+    const result = await prisma.example.findUnique({
+      where: { AccountId },
+    });
+    return result;
+  }
+}
+
+export default new ExampleService();
+
+```
+
+上面就是针对数据库增删改查的操作，相较于传统的sql，要简单不少。
+
+有关`Prisma` 的其他内容，自行查阅官方文档即可。
+
+自此就实现了最基本的整套基础api服务。
+
+
+
+### 14、配置Swagger用于生成文档
+
+Swagger（目前用OpenAPI Specification代替）是一个用于设计、构建、记录和使用REST API的强大工具。通过使用Swagger，开发者可以定义API的结构，确保API的稳定性，并生成协作所需的文档。
+
+安装依赖：`npm install swagger-jsdoc swagger-ui-express --save`
 
 ### 16、src下新增测试文件夹：tests
 
-## 使用
+​	用于单元测试
 
-```sh
-# 安装依赖
-npm install
-# 启动项目
-npm run dev
 
-```
+
+## 其他参考
+
+1. https://www.bilibili.com/video/BV1UM4y1T7QF/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=ef5a0ab0106372751602034cdd9ab98e
+2. https://juejin.cn/post/7231152303583100988#heading-5
+3. https://www.baasapi.com/blog/prisma

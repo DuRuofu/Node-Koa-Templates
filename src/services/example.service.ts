@@ -3,15 +3,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 class ExampleService {
-  // async createUser(user: any, password: any) {
-  //   return '写入数据库成功';
-  // }
-  // //读取用户信息
-  // async getUserInfo() {
-  //   const result = await prisma.user.findMany();
-  //   return result;
-  // }
-
   // 增
   async createExample(Name: string, Password: string, Email: string, Phone: string) {
     const result = await prisma.example.create({

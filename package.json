@@ -23,6 +23,8 @@
     "koa-static": "^5.0.0",
     "log4js": "^6.9.1",
     "pm2": "^5.3.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   },
