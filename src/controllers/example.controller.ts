@@ -1,5 +1,6 @@
 //这个文件负责接口的业务逻辑
 import ExampleService from '../services/example.service';
+import { CODE } from '../config/code';
 
 // 处理bigint类型的数据
 function bigIntToString(value) {
@@ -7,20 +8,24 @@ function bigIntToString(value) {
   return value <= MAX_SAFE_INTEGER ? Number(value) : value.toString();
 }
 
+//增
 class ExampleController {
-  //增
   async post(ctx: any, next: any) {
     // 获取数据
     const { Name, Password, Email, Phone } = ctx.request.body;
     // 数据验证
 
     // 操作数据库
-    const res = await ExampleService.createExample(Name, Password, Email, Phone);
+    const res = await ExampleService.createExample(ctx, Name, Password, Email, Phone);
 
     // 返回数据
     const newRes = { ...res };
     if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = JSON.stringify(newRes);
+    ctx.body = {
+      code: 0,
+      msg: '添加数据成功',
+      data: newRes,
+    };
   }
 
   //删
@@ -31,12 +36,16 @@ class ExampleController {
     // 数据验证
 
     // 操作数据库
-    const res = await ExampleService.deleteExample(AccountId);
+    const res = await ExampleService.deleteExample(ctx, AccountId);
 
     // 返回数据
     const newRes = { ...res };
     if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = JSON.stringify(newRes);
+    ctx.body = {
+      code: 0,
+      msg: '删除数据成功',
+      data: newRes,
+    };
   }
 
   //查
@@ -47,12 +56,16 @@ class ExampleController {
     // 数据验证
 
     // 操作数据库
-    const res = await ExampleService.getExample(id);
+    const res = await ExampleService.getExample(ctx, id);
 
     // 返回数据
     const newRes = { ...res };
     if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = JSON.stringify(newRes);
+    ctx.body = {
+      code: 0,
+      msg: '删除数据成功',
+      data: newRes,
+    };
   }
 
   //改
@@ -64,12 +77,16 @@ class ExampleController {
     const { AccountId, Name, Password, Email, Phone } = ctx.request.body;
 
     // 操作数据库
-    const res = await ExampleService.updateExample(AccountId, Name, Password, Email, Phone);
+    const res = await ExampleService.updateExample(ctx, AccountId, Name, Password, Email, Phone);
 
     // 返回数据
     const newRes = { ...res };
     if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = JSON.stringify(newRes);
+    ctx.body = {
+      code: 0,
+      msg: '删除数据成功',
+      data: JSON.stringify(newRes),
+    };
   }
 }
 

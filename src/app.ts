@@ -18,11 +18,11 @@ import { koaSwagger } from 'koa2-swagger-ui';
 // 创建APP实例
 const app = new Koa();
 
+// 挂载错误处理中间件
+app.use(errorHandler);
+
 // 挂载日志中间件
 app.use(loggerMiddleware);
-
-// 挂载错误处理中间件
-//app.use(errorHandler);
 
 // 挂载body解析中间件
 app.use(koaBody({ multipart: true }));

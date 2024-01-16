@@ -1,16 +1,16 @@
 //返回统一出口中间件
-import Koa from 'koa';
-import { CODE } from '../config/code';
+import { Context, Next } from 'koa';
 
 // 这个middleware用于将ctx.result中的内容最终回传给客户端
-
-export const responseHandler = (ctx: Koa.Context) => {
-  if (ctx.body !== undefined) {
+export const responseHandler = async (ctx: Context, next: Next) => {
+  console.log('responseHandler');
+  if (ctx.result !== undefined) {
     ctx.type = 'json';
     ctx.body = {
-      code: CODE.success.code,
-      data: ctx.body,
-      message: CODE.success.message,
+      code: 200,
+      msg: ctx.msg || '成功',
+      data: ctx.result,
     };
+    await next();
   }
 };

@@ -14,7 +14,7 @@ model Example {
   AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
   Name        String   @map("name")
   Password    String   @map("password")
-  Email       String   @default("test@test.com") @map("email")
+  Email       String   @default("test@test.com") @map("email") @unique
   Phone       String   @default("12312341234") @map("phone")
   IsDeleted   Boolean  @default(false) @map("is_deleted")
   CreatedTime DateTime @default(now()) @map("created_time")

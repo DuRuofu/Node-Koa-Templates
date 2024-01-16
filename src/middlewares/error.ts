@@ -1,15 +1,17 @@
 // 这个middleware处理在其它middleware中出现的异常,我们在next()后面进行异常捕获，出现异常直接进入这个中间件进行处理
-//返回统一出口中间件
 import Koa from 'koa';
 import { logger } from '../middlewares/log';
 
-export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
-  return next().catch((err) => {
+export const errorHandler = async (ctx: Koa.Context, next: Koa.Next) => {
+  try {
+    return await next();
+  } catch (err) {
+    //console.log('errorHandler');
     if (typeof err === 'object') {
       ctx.body = {
-        code: err.code,
-        data: null,
-        message: err.message,
+        code: err.code || err.status || 500,
+        message: err.message || '服务器内部错误',
+        data: [],
       };
     } else {
       ctx.body = {
@@ -18,10 +20,9 @@ export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
         message: err,
       };
     }
-
     logger.error(err);
     // 保证返回状态是 200
     ctx.status = 200;
-    return Promise.resolve();
-  });
+    return await Promise.resolve();
+  }
 };
