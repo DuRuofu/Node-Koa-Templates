@@ -1,33 +1,24 @@
 //测试路由
 import Router from 'koa-router';
-const router = new Router({ prefix: '/test' });
+const router = new Router({ prefix: '/v1/test' });
 
 /**
  * @swagger
- * /v1/menu/list/${appId}:
+ * tags:
+ *   name: 测试路由
+ *   description: 用于测试最基本的路由功能
+ */
+
+/**
+ * @swagger
+ * /v1/test/post:
  *   post:
- *     description: 获取菜单列表
- *     tags: [菜单模块]
- *     produces:
- *       - application/json
- *     parameters:
- *     - in: "body"
- *       name: "body"
- *       description: "查询参数"
- *       schema:
- *         $ref: "#/definitions/Menu"
+ *     summary: 测试post请求
+ *     description: 测试post请求
+ *     tags: [测试路由]
  *     responses:
  *       200:
- *         description: 获取成功
- *         schema:
- *           type: object
- *           properties:
- *             total:
- *               type: number
- *             rows:
- *               type: array
- *               items:
- *                   $ref: '#/definitions/MenuModel'
+ *         description: 这是一个测试路由,post请求正常!
  *
  */
 router.post('/post', (ctx: any, next: any) => {
@@ -35,19 +26,52 @@ router.post('/post', (ctx: any, next: any) => {
   ctx.body = '这是一个测试路由,post请求正常!';
 });
 
-// 删
+/**
+ * @swagger
+ * /v1/test/delete:
+ *   delete:
+ *     summary: 测试delete请求
+ *     description: 测试delete请求
+ *     tags: [测试路由]
+ *     responses:
+ *       200:
+ *         description: 这是一个测试路由,delete请求正常!
+ *
+ */
 router.delete('/delete', (ctx: any, next: any) => {
   console.log('测试路由:delete');
   ctx.body = '这是一个测试路由,delete请求正常!';
 });
 
-// 查
+/**
+ * @swagger
+ * /v1/test/get:
+ *   get:
+ *     summary: 测试get请求
+ *     description: 测试get请求
+ *     tags: [测试路由]
+ *     responses:
+ *       200:
+ *         description: 这是一个测试路由,get请求正常!
+ *
+ */
 router.get('/get', (ctx: any, next: any) => {
   console.log('测试路由:get');
   ctx.body = '这是一个测试路由,get请求正常!';
 });
 
-// 改
+/**
+ * @swagger
+ * /v1/test/put:
+ *   put:
+ *     summary: 测试put请求
+ *     description: 测试put请求
+ *     tags: [测试路由]
+ *     responses:
+ *       200:
+ *         description: 这是一个测试路由,put请求正常!
+ *
+ */
 router.put('/update', (ctx: any, next: any) => {
   console.log('测试路由:put');
   ctx.body = '这是一个测试路由,put请求正常!';

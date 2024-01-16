@@ -6,11 +6,15 @@ import { PORT } from '../config/constant';
 const swaggerDefinition = {
   info: {
     // API informations (required)
-    title: '账号系统', // Title (required)
+    title: 'Swagger接口文档', // Title (required)
     version: '1.0.0', // Version (required)
-    description: '账号和权限', // Description (optional)
+    description: 'Swagger接口文档', // Description (optional)
   },
-  host: `http://${AddressIp.address()}:${PORT}`, // Host (optional)
+  contact: {
+    name: 'name',
+    url: 'url',
+  },
+  host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
   basePath: '/', // Base path (optional)
 };
 

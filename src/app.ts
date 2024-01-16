@@ -3,11 +3,13 @@ import http from 'http';
 import https from 'https';
 import path from 'path';
 import Koa from 'koa';
+import Cors from 'koa2-cors';
 import koaBody from 'koa-body';
 import Static from 'koa-static';
 import { PORT } from './config/constant';
 import { loggerMiddleware } from './middlewares/log';
 import { errorHandler } from './middlewares/error';
+import { corsHandler } from './middlewares/cors';
 import { responseHandler } from './middlewares/response';
 import { getIpAddress } from './utils/util';
 import router from './routers/index';
@@ -24,6 +26,9 @@ app.use(loggerMiddleware);
 
 // 挂载body解析中间件
 app.use(koaBody({ multipart: true }));
+
+// 挂载跨域中间件
+app.use(Cors(corsHandler));
 
 // 挂载静态资源中间件
 app.use(Static(path.join(__dirname + '/../public')));
