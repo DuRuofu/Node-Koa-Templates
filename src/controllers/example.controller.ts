@@ -1,12 +1,7 @@
 //这个文件负责接口的业务逻辑
 import ExampleService from '../services/example.service';
 import { CODE } from '../config/code';
-
-// 处理bigint类型的数据
-function bigIntToString(value) {
-  const MAX_SAFE_INTEGER = 2 ** 53 - 1;
-  return value <= MAX_SAFE_INTEGER ? Number(value) : value.toString();
-}
+import { bigIntToString } from '../utils/util';
 
 //增
 class ExampleController {

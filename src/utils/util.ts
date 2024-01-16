@@ -26,6 +26,12 @@ export const getClientIpAddress = (ctx: Context) => {
   return '0.0.0.0';
 };
 
+// 处理bigint类型的数据
+export function bigIntToString(value: any) {
+  const MAX_SAFE_INTEGER = 2 ** 53 - 1;
+  return value <= MAX_SAFE_INTEGER ? Number(value) : value.toString();
+}
+
 // 通过token解析userId
 // export const decodeToken = (token: string) => {
 //   const jwtInfo = jwt.verify(token, JWT.secret) as any;
