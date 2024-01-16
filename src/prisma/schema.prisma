@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,17 +7,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
+// 示例表
 model Example {
-  
-  AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
+  AccountId   BigInt   @id @default(autoincrement()) @map("example_id")
   Name        String   @map("name")
   Password    String   @map("password")
-  Email       String   @default("test@test.com") @map("email") @unique
+  Email       String   @unique @default("test@test.com") @map("email")
   Phone       String   @default("12312341234") @map("phone")
   IsDeleted   Boolean  @default(false) @map("is_deleted")
   CreatedTime DateTime @default(now()) @map("created_time")
-  pdatedTime  DateTime @updatedAt @map("updated_time")
+  UpdatedTime DateTime @updatedAt @map("updated_time")
 
   @@map("example")
+}
+
+// 用户表
+model Account {
+  AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
+  Name        String   @map("name")
+  Password    String   @map("password")
+  Email       String   @default("test@test.com") @map("email")
+  Phone       String   @default("12312341234") @map("phone")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  UpdatedTime DateTime @updatedAt @map("updated_time")
+
+  @@map("account")
+}
+
+// 角色表
+model Role {
+  RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
+  Name        String   @map("name")
+  description String   @map("description")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  UpdatedTime DateTime @updatedAt @map("updated_time")
+
+  @@map("role")
+}
+
+//用户角色表
+model AccountRole {
+  AccountRoleId BigInt   @id @default(autoincrement()) @map("account_role_id")
+  AccountId   BigInt   @map("account_id")
+  RoleId      BigInt   @map("role_id")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  UpdatedTime DateTime @updatedAt @map("updated_time")
+
+  @@map("account_role")
+}
+
+// 权限表
+model Permission {
+  PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
+  Name         String   @map("name")
+  IsDeleted    Boolean  @default(false) @map("is_deleted")
+  CreatedTime  DateTime @default(now()) @map("created_time")
+  UpdatedTime  DateTime @updatedAt @map("updated_time")
+
+  @@map("permission")
+}
+
+
+// 角色权限表
+model RolePermission {
+  RolePermissionId BigInt   @id @default(autoincrement()) @map("role_permission_id")
+  RoleId           BigInt   @map("role_id")
+  PermissionId     BigInt   @map("permission_id")
+  IsDeleted        Boolean  @default(false) @map("is_deleted")
+  CreatedTime      DateTime @default(now()) @map("created_time")
+  UpdatedTime      DateTime @updatedAt @map("updated_time")
+
+  @@map("role_permission")
 }
