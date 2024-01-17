@@ -1,14 +1,32 @@
-//这个文件负责接口的业务逻辑
+//这个文件用户管理接口的业务逻辑
 import AccountService from '../services/account.service';
 import { CODE } from '../config/code';
 import { bigIntToString } from '../utils/util';
-//增
+
 class AccountController {
   //用户注册
   async register(ctx: any, next: any) {
     // 获取数据
     const { Name, Password, Email, Phone } = ctx.request.body;
-    // 数据验证
+    // 数据校验
+    ctx.verifyParams({
+      Name: {
+        type: 'string',
+        required: true,
+      },
+      Password: {
+        type: 'string',
+        required: true,
+      },
+      Email: {
+        type: 'string',
+        required: false,
+      },
+      Phone: {
+        type: 'string',
+        required: false,
+      },
+    });
 
     // 操作数据库
     const res = await AccountService.createAccount(ctx, Name, Password, Email, Phone);

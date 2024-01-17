@@ -63,12 +63,13 @@ model Account {
   AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
   Name        String   @map("name")
   Password    String   @map("password")
-  AvatarUrl   String   @map("avatar_url")@default("https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png")
-  Email       String   @default("test@test.com") @map("email")
-  Phone       String   @default("12312341234") @map("phone")
+  AvatarUrl   String   @default("https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png") @map("avatar_url")
+  Email       String   @unique @default("test@test.com") @map("email")
+  Phone       String   @unique @default("12312341234") @map("phone")
   IsDeleted   Boolean  @default(false) @map("is_deleted")
   CreatedTime DateTime @default(now()) @map("created_time")
   UpdatedTime DateTime @updatedAt @map("updated_time")
+
   @@map("account")
 }
 
@@ -87,11 +88,11 @@ model Role {
 //用户角色中间表
 model AccountRole {
   AccountRoleId BigInt   @id @default(autoincrement()) @map("account_role_id")
-  AccountId   BigInt   @map("account_id")
-  RoleId      BigInt   @map("role_id")
-  IsDeleted   Boolean  @default(false) @map("is_deleted")
-  CreatedTime DateTime @default(now()) @map("created_time")
-  UpdatedTime DateTime @updatedAt @map("updated_time")
+  AccountId     BigInt   @map("account_id")
+  RoleId        BigInt   @map("role_id")
+  IsDeleted     Boolean  @default(false) @map("is_deleted")
+  CreatedTime   DateTime @default(now()) @map("created_time")
+  UpdatedTime   DateTime @updatedAt @map("updated_time")
 
   @@map("account_role")
 }
@@ -106,7 +107,6 @@ model Permission {
 
   @@map("permission")
 }
-
 
 // 角色权限中间表
 model RolePermission {

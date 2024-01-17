@@ -6,7 +6,7 @@ export const errorHandler = async (ctx: Koa.Context, next: Koa.Next) => {
   try {
     return await next();
   } catch (err) {
-    //console.log('errorHandler');
+    console.log(err.status);
     if (typeof err === 'object') {
       ctx.body = {
         code: err.code || err.status || 500,

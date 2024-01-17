@@ -1137,6 +1137,62 @@ Swagger（目前用OpenAPI Specification代替）是一个用于设计、构建�
 
 安装依赖：`npm install swagger-jsdoc swagger-ui-express --save`
 
+
+
+### 15、安装koa-parameter 进行路由参数校验
+
+安装依赖`npm install koa-parameter --save`
+用法
+
+```js
+const Koa = require('koa');
+const parameter = require('koa-parameter');
+ 
+const app = new Koa();
+ 
+parameter(app); // add verifyParams method, but don't add middleware to catch the error
+// app.use(parameter(app)); // also add a middleware to catch the error.
+ 
+app.use(async function (ctx) {
+  ctx.verifyParams({
+    name: 'string'
+  });
+});
+```
+
+在路由处理函数中使用添加` ctx.verifyParams`数据校验即可
+
+```ts
+class AccountController {
+  //用户注册
+  async register(ctx: any, next: any) {
+    // 获取数据
+    const { Name, Password, Email, Phone } = ctx.request.body;
+    // 数据校验
+    ctx.verifyParams({
+      Name: {
+        type: 'string',
+        required: true,
+      },
+      Password: {
+        type: 'string',
+        required: true,
+      },
+      Email: {
+        type: 'string',
+        required: false,
+      },
+      Phone: {
+        type: 'string',
+        required: false,
+      },
+    });
+
+    // 操作数据库
+```
+
+
+
 ### 16、src下新增测试文件夹：tests
 
 ​	用于单元测试
