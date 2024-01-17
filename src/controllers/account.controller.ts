@@ -7,10 +7,11 @@ class AccountController {
   //用户注册
   async register(ctx: any, next: any) {
     // 获取数据
-    const { Name, Password, Email, Phone } = ctx.request.body;
+    const { Account, Password, Email, Phone } = ctx.request.body;
+    const Name = Account;
     // 数据校验
     ctx.verifyParams({
-      Name: {
+      Account: {
         type: 'string',
         required: true,
       },
@@ -29,7 +30,7 @@ class AccountController {
     });
 
     // 操作数据库
-    const res = await AccountService.createAccount(ctx, Name, Password, Email, Phone);
+    const res = await AccountService.createAccount(ctx, Account, Password, Name, Email, Phone);
 
     //返回数据
     const newRes = { ...res };
@@ -42,7 +43,33 @@ class AccountController {
   }
 
   //用户登录
-  async login(ctx: any, next: any) {}
+  async login(ctx: any, next: any) {
+    // 获取数据
+    const { Account, Password } = ctx.request.body;
+    // 数据校验
+    ctx.verifyParams({
+      Account: {
+        type: 'string',
+        required: true,
+      },
+      Password: {
+        type: 'string',
+        required: true,
+      },
+    });
+
+    // 操作数据库
+    const res = await AccountService.login(ctx, Account, Password);
+
+    //返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = {
+      code: 0,
+      msg: '用户登录成功',
+      data: newRes,
+    };
+  }
 }
 
 export default new AccountController();

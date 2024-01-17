@@ -61,8 +61,9 @@ model Example {
 // 用户表
 model Account {
   AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
-  Name        String   @map("name")
+  Account     String   @unique @map("account")
   Password    String   @map("password")
+  Name        String   @map("name")
   AvatarUrl   String   @default("https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png") @map("avatar_url")
   Email       String   @unique @default("test@test.com") @map("email")
   Phone       String   @unique @default("12312341234") @map("phone")

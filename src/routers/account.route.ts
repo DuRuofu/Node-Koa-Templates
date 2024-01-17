@@ -19,8 +19,8 @@ import Controllers from '../controllers/account.controller';
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
- *      - name: Name
- *        description: 用户名
+ *      - name: Account
+ *        description: 账号
  *        in: formData
  *        required: true
  *      - name: Password
@@ -54,6 +54,7 @@ import Controllers from '../controllers/account.controller';
 // #endregion
 router.post('/register', Controllers.register);
 
+//#region 用户登陆
 /**
  * @swagger
  * /v1/account/login:
@@ -63,14 +64,34 @@ router.post('/register', Controllers.register);
  *     tags: [用户模块]
  *     produces:
  *     - application/json
- *     parameters:
- *      - name: username
- *        description: 用户名
+ *     parameters: # 请求参数：
+ *      - name: Account
+ *        description: 账号
+ *        in: formData
+ *        required: true
+ *      - name: Password
+ *        description: 密码
+ *        in: formData
+ *        required: true
  *     responses:
  *       200:
- *         description: 用户注册成功
- *
+ *         description: 用登陆成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 登陆信息
+ *             example: 用户登陆成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
  */
+// #endregion
 router.post('/login', Controllers.login);
 
 // 删除用户
