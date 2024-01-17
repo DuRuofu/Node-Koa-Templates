@@ -16,6 +16,13 @@ const swaggerDefinition = {
   },
   host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
   basePath: '/', // Base path (optional)
+  securityDefinitions: {
+    token: {
+      type: 'apiKey',
+      name: 'authorization',
+      in: 'header',
+    },
+  },
 };
 
 const options = {

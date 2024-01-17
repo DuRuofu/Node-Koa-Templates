@@ -7,7 +7,9 @@ import Cors from 'koa2-cors';
 import koaBody from 'koa-body';
 import Static from 'koa-static';
 import parameter from 'koa-parameter';
+import jwt from 'koa-jwt';
 import { PORT } from './config/constant';
+import { JWT } from './config/constant';
 import { loggerMiddleware } from './middlewares/log';
 import { errorHandler } from './middlewares/error';
 import { corsHandler } from './middlewares/cors';
@@ -15,6 +17,7 @@ import { responseHandler } from './middlewares/response';
 import { getIpAddress } from './utils/util';
 import router from './routers/index';
 import { koaSwagger } from 'koa2-swagger-ui';
+import { PublicRouter } from './config/constant';
 
 // 创建APP实例
 const app = new Koa();
@@ -24,6 +27,9 @@ app.use(errorHandler);
 
 // 挂载日志中间件
 app.use(loggerMiddleware);
+
+// 挂载jwt中间件
+app.use(jwt({ secret: JWT.secret }).unless({ path: PublicRouter }));
 
 // 挂载body解析中间件
 app.use(koaBody({ multipart: true }));

@@ -11,7 +11,7 @@ export const ENV = {
 
 // JWT配置参数
 export const JWT = {
-  secret: '', //token密钥
+  secret: 'SZw*QCX684K$d10JYWBpQFQ__pI)VAN@HZnmnjS', //token密钥
   expires: 60 * 60 * 24 * 30, // 30天
 };
 
@@ -20,3 +20,6 @@ export const PORT = {
   http: 3000,
   https: 3001,
 };
+
+// 公共路由(不用jwt验证)
+export const PublicRouter = [/\/swagger/, /\/docs/, /^\/public/, /\/account\/login/, /\/account\/register/];

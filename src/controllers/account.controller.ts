@@ -2,6 +2,9 @@
 import AccountService from '../services/account.service';
 import { CODE } from '../config/code';
 import { bigIntToString } from '../utils/util';
+import { sign } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
+import { JWT } from '../config/constant';
 
 class AccountController {
   //用户注册
@@ -61,13 +64,28 @@ class AccountController {
     // 操作数据库
     const res = await AccountService.login(ctx, Account, Password);
 
-    //返回数据
+    // 颁发token
     const newRes = { ...res };
     if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    const token = 'Bearer ' + sign({ AccountId: newRes.AccountId }, JWT.secret, { expiresIn: JWT.expires });
+
+    // 返回数据
+
     ctx.body = {
       code: 0,
       msg: '用户登录成功',
-      data: newRes,
+      data: { token: token },
+    };
+  }
+  //
+  async getAllAccount(ctx: any, next: any) {
+    console.log(ctx.request.header.authorization);
+    //const user = verify(ctx.request.header.authorization.split(' ')[1], JWT.secret);
+    //console.log(user);
+    ctx.body = {
+      code: 0,
+      msg: '查询成功',
+      data: {},
     };
   }
 }
