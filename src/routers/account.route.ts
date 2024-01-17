@@ -129,6 +129,39 @@ router.post('/login', Controllers.login);
 // #endregion
 router.get('/getAllAccount', Controllers.getAllAccount);
 
+//#region 获取单个用户信息
+/**
+ * @swagger
+ * /v1/account/getAccount:
+ *   get:
+ *     summary: 查询单个用户
+ *     description: 查询单个用户信息
+ *     tags: [用户模块]
+ *     responses:
+ *       200:
+ *         description: 查询用户信息成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户信息成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
+ */
+// #endregion
+router.get('/getAccount', Controllers.getAccount);
+
 // 更新用户
 
 export default router;

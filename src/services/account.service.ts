@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import Static from 'koa-static';
 const prisma = new PrismaClient();
 
 class AccountService {
@@ -36,6 +37,30 @@ class AccountService {
       } else {
         ctx.throw(400, '用户名不存在', { code: 400, message: '用户名不存在', data: '' });
       }
+    } catch (error) {
+      //console.log(error);
+      ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+    }
+  }
+
+  // 获取所有用户
+  async getAllAccount(ctx: any) {
+    try {
+      const result = await prisma.account.findMany();
+      return result;
+    } catch (error) {
+      //console.log(error);
+      ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+    }
+  }
+
+  // 获取单个用户
+  async getAccount(ctx: any) {
+    try {
+      const result = await prisma.account.findUnique({
+        where: { AccountId: ctx.state.user.AccountId },
+      });
+      return result;
     } catch (error) {
       //console.log(error);
       ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });

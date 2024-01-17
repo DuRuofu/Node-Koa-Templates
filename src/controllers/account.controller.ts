@@ -77,17 +77,37 @@ class AccountController {
       data: { token: token },
     };
   }
-  //
+
+  // 查询所有用户
   async getAllAccount(ctx: any, next: any) {
-    console.log(ctx.request.header.authorization);
-    //const user = verify(ctx.request.header.authorization.split(' ')[1], JWT.secret);
-    //console.log(user);
+    // 操作数据库
+    const res = await AccountService.getAllAccount(ctx);
+
+    // 处理bigint类型的数据
+    res.forEach((val, idx) => {
+      if (typeof val.AccountId === 'bigint') res[idx].AccountId = bigIntToString(val.AccountId);
+    });
+    // 返回数据
     ctx.body = {
       code: 0,
       msg: '查询成功',
-      data: {},
+      data: res,
+    };
+  }
+
+  // 查询单个用户
+  async getAccount(ctx: any, next: any) {
+    // 操作数据库
+    const res = await AccountService.getAccount(ctx);
+
+    // 返回数据
+    const newRes = { ...res };
+    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    ctx.body = {
+      code: 0,
+      msg: '查询成功',
+      data: newRes,
     };
   }
 }
-
 export default new AccountController();
