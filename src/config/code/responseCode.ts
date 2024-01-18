@@ -21,10 +21,10 @@ const PARAM_IS_BLANK = async (ctx: Koa.Context, msg = '请求参数为空') => n
 const PARAM_TYPE_ERROR = async (ctx: Koa.Context, msg = '请求参数类型错误') => new ParameterError(1003, msg).throwErr(ctx);
 const PARAM_NOT_COMPLETE = async (ctx: Koa.Context, msg = '请求参数缺失') => new ParameterError(1004, msg).throwErr(ctx);
 // 401
-const TOKEN_IS_BLANK = async (ctx: Koa.Context) => new AuthError(4004, 'token为空').throwErr(ctx);
-const TOKEN_EXPIRED = async (ctx: Koa.Context) => new AuthError(4001, 'token过期').throwErr(ctx);
-const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(4002, 'token无效').throwErr(ctx);
-const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(4003, msg).throwErr(ctx);
+export const TOKEN_IS_BLANK = async (ctx: Koa.Context) => new AuthError(4004, 'token为空').throwErr(ctx);
+export const TOKEN_EXPIRED = async (ctx: Koa.Context) => new AuthError(4001, 'token过期').throwErr(ctx);
+export const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(4002, 'token无效').throwErr(ctx);
+export const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(4003, msg).throwErr(ctx);
 // 404
 export const NotFound = async (ctx: Koa.Context) => new NotFoundError(404, '未找到api,请检查请求路径以及请求方法是否出错').throwErr(ctx);
 

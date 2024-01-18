@@ -22,4 +22,4 @@ export const PORT = {
 };
 
 // 公共路由(不用jwt验证)
-export const PublicRouter = [/\/swagger/, /\/docs/, /^\/public/, /\/account\/login/, /\/account\/register/];
+export const PublicRouter = [/\/swagger/, /\/docs/, /^\/public/, /\/account\/login/, /\/account\/register/, /\/favicon\.png/];
