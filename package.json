@@ -5,6 +5,7 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "test": "ts-node-dev  src/middlewares/casbin.ts",
     "lint": "eslint . --ext .js,.ts",
     "format": "prettier --config .prettierrc . --write",
     "prepare": "husky install",
@@ -16,6 +17,8 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.8.0",
+    "casbin": "^5.28.0",
+    "casbin-prisma-adapter": "^1.5.0",
     "dotenv": "^16.3.1",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.15.0",
@@ -55,6 +58,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.1",
-    "prisma": "^5.8.0"
+    "prisma": "^5.8.0",
+    "ts-node": "^10.9.2"
   }
 }

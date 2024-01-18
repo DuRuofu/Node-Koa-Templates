@@ -9,3 +9,5 @@ README.md
 public/
 *assets/
 *prisma/
+**/policy.csv
+**/casbin.model.conf

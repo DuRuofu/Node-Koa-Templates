@@ -1592,7 +1592,11 @@ const format = (err: any, ctx: any) => {
 
 ### 18.添加权限认证系统
 
+> 可参考：https://github.com/DuRuofu/Prisma-adapter-Casbin-demo
 
+添加依赖：
+
+`npm install casbin casbin-prisma-adapter --save`
 
 
 
