@@ -705,39 +705,6 @@ module.exports = {
 
 ### 12、src下新增中间件文件夹：middleware
 
-添加错误处理中间件：`error.ts`
-
-```ts
-// 这个middleware处理在其它middleware中出现的异常,我们在next()后面进行异常捕获，出现异常直接进入这个中间件进行处理
-//返回统一出口中间件
-import Koa from 'koa';
-import { logger } from '../middlewares/log';
-
-export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
-  return next().catch((err) => {
-    if (typeof err === 'object') {
-      ctx.body = {
-        code: err.code,
-        data: null,
-        message: err.message,
-      };
-    } else {
-      ctx.body = {
-        code: -1,
-        data: null,
-        message: err,
-      };
-    }
-
-    logger.error(err);
-    // 保证返回状态是 200
-    ctx.status = 200;
-    return Promise.resolve();
-  });
-};
-
-```
-
 日志记录中间件：`log.ts`
 
 ```ts
@@ -1066,7 +1033,9 @@ DATABASE_URL=mysql://root:3.1415926@localhost:3306/example_db
 
 下面我们基于这张表实现最基本的增删改查：
 
-会议一下Controllers模块里，我们把对数据库操作都封装到services层，所以我们新建services文件夹，其中example模块对应的数据操作文件命名为`example.service.ts`
+#### 13.4 src下新建services文件夹
+
+回忆一下Controllers模块里，我们把对数据库操作都封装到services层，所以我们新建services文件夹，其中example模块对应的数据操作文件命名为`example.service.ts`
 
 内容：
 
@@ -1258,6 +1227,78 @@ app.use(koaSwagger({ routePrefix: '/swagger', swaggerOptions: { url: '/docs' } }
 router.post('/register', Controllers.register);
 ```
 
+有token鉴权的的路由需要在注释里加入`security`选型，如下;
+
+```ts
+//#region 获取用户列表
+/**
+ * @swagger
+ * /v1/account/getAllAccount:
+ *   get:
+ *     summary: 查询用户列表
+ *     description: 查询用户列表
+ *     tags: [用户模块]
+ *     responses:
+ *       200:
+ *         description: 查询用户列表成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户列表成功
+ *           data:
+ *             type: object
+ *             description: 用户列表信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
+ */
+// #endregion
+```
+
+最后：需要将跨域中间件置于jwt认证中间键之前，不然swagger请求会出现跨域错误
+``` ts
+// 创建APP实例
+const app = new Koa();
+
+// 挂载错误处理中间件
+app.use(errorHandler);
+
+// 挂载日志中间件
+app.use(loggerMiddleware);
+
+// 挂载跨域中间件
+app.use(Cors(corsHandler));
+
+// 挂载jwt中间件
+app.use(Jwtauth);
+
+// 挂载body解析中间件
+app.use(koaBody({ multipart: true }));
+
+// 挂载参数校验中间件
+app.use(parameter(app));
+
+// 挂载静态资源中间件
+app.use(Static(path.join(__dirname + '/../public')));
+
+// 路由自动挂载
+app.use(router.routes()).use(router.allowedMethods());
+
+// 挂载swagger文档中间件
+app.use(koaSwagger({ routePrefix: '/swagger', swaggerOptions: { url: '/docs' } }));
+
+// 挂载响应处理中间件
+app.use(responseHandler);
+```
+
 
 
 ### 15、安装koa-parameter 进行路由参数校验
@@ -1330,11 +1371,232 @@ class AccountController {
    };
    ```
 
-2. 
+2. 自定义JWT拦截器（这里没使用koa-jwt是因为在使用它时老出现莫名其妙的错误）、
+
+   在中间件文件夹`middlewares`添加`jwt.ts`,内容如下
+
+   ```ts
+   import { verify } from 'jsonwebtoken';
+   import { JWT } from '../config/constant';
+   import Koa from 'koa';
+   import { TOKEN_EXPIRED, TOKEN_INVALID } from '../config/code/responseCode';
+   import { PublicRouter } from '../config/constant';
+   
+   export const Jwtauth = async (ctx: Koa.Context, next: Koa.Next) => {
+     // 检查当前请求的路径，如果匹配指定的路由，则跳过认证
+     if (checkIgnore(ctx.path)) {
+       await next();
+       return;
+     }
+     const { authorization = '' } = ctx.request.header;
+     const token = authorization.replace('Bearer ', '');
+     // console.log(token)
+     try {
+       // user中包含了payload的信息(id)
+       const user = verify(token, JWT.secret);
+       ctx.state.user = user;
+     } catch (err) {
+       switch (err.name) {
+         // token过期
+         case 'TokenExpiredError':
+           return await TOKEN_EXPIRED(ctx);
+         // token错误
+         case 'JsonWebTokenError':
+           return await TOKEN_INVALID(ctx);
+       }
+     }
+   
+     await next();
+   };
+   
+   // 判断是否应该跳过认证的辅助函数
+   function checkIgnore(path: string): boolean {
+     // 在这里添加需要跳过认证的路由规则
+     const ignoreRoutes = PublicRouter;
+     return ignoreRoutes.some((route) => route.test(path));
+   }
+   
+   ```
+
+   这里的`PublicRouter`在配置文件里如下
+
+   ```ts
+   // 公共路由(不用jwt验证)
+   export const PublicRouter = [/\/swagger/, /\/docs/, /^\/public/, /\/account\/login/, /\/account\/register/, /\/favicon\.png/];
+   
+   ```
+
+   
+
+### 17、添加错误处理中间件：
+
+在config下新建code目录，定义返回状态，添加下列文件
+
+`errCode.ts`
+
+```ts
+import Koa from 'koa';
+export class ErrorModel {
+  code: number;
+  msg: string;
+  statusCode: number;
+  constructor(code = 500, msg = '未知服务器错误', statusCode = 500) {
+    this.code = code; //data携带的内部异常状态码
+    this.msg = msg; // 消息
+    this.statusCode = statusCode; //外层的状态码
+  }
+  throwErr(ctx: Koa.Context) {
+    //抛出错误
+    ctx.throw(this.statusCode, this.msg, {
+      code: this.code,
+      flag: 'ErrorModel',
+    });
+  }
+}
+// 400参数错误
+export class ParameterError extends ErrorModel {
+  constructor(code, msg = '请求错误') {
+    super(code, msg, 400);
+  }
+}
+// 401错误
+export class AuthError extends ErrorModel {
+  constructor(code, msg = 'token认证失败') {
+    super(code, msg, 401);
+  }
+}
+// 404
+export class NotFoundError extends ErrorModel {
+  constructor(code, msg = '未找到该api') {
+    super(code, msg, 404);
+  }
+}
+// 500
+export class InternalServerError extends ErrorModel {
+  constructor(code, msg = '服务器内部错误') {
+    super(code, msg, 500);
+  }
+}
+
+```
+
+`successCode.ts`
+
+```ts
+import Koa from 'koa';
+class SuccessModel {
+  code: number;
+  msg: any;
+  data?: any;
+  constructor(code, msg, data?) {
+    this.code = code || 200;
+    this.msg = msg || '操作成功';
+    if (data) {
+      this.data = data;
+    }
+  }
+  success(ctx: Koa.Context) {
+    // 所有的响应都是json，koa处理好的方式，直接用
+    ctx.body = this;
+  }
+}
+
+export default SuccessModel;
+
+```
+
+`responseCode.ts`
+
+```ts
+import SuccessModel from './successCode';
+import { ParameterError, AuthError, NotFoundError, InternalServerError } from './errCode';
+import Koa from 'koa';
+
+// 200 请求成功
+const SUCCESS = async (ctx: Koa.Context, data, msg) => new SuccessModel(200, msg, data).success(ctx);
+// 权限限制
+const USER_NO_PERMISSION = async (ctx: Koa.Context, msg = '没有权限') => new SuccessModel(2100, msg).success(ctx);
+// 用户错误
+const USER_NOT_LOGIN = async (ctx: Koa.Context) => new SuccessModel(2001, '用户未登录').success(ctx);
+const USER_ACCOUNT_EXPIRED = async (ctx: Koa.Context) => new SuccessModel(2002, '账号已过期').success(ctx);
+const USER_ACCOUNT_DISABLE = async (ctx: Koa.Context) => new SuccessModel(2003, '账号不可用').success(ctx);
+const USER_ACCOUNT_NOT_EXIST = async (ctx: Koa.Context) => new SuccessModel(2004, '账号不存在').success(ctx);
+const USER_ACCOUNT_ALREADY_EXIST = async (ctx: Koa.Context, msg = '账号已存在') => new SuccessModel(2005, msg).success(ctx);
+const USER_ACCOUNT_USE_BY_OTHERS = async (ctx: Koa.Context) => new SuccessModel(2006, '账号下线').success(ctx);
+const USER_PWD_ERROR = async (ctx: Koa.Context) => new SuccessModel(2007, '密码错误').success(ctx);
+
+// 400
+const PARAM_NOT_VALID = async (ctx: Koa.Context, msg = '请求参数无效') => new ParameterError(1001, msg).throwErr(ctx);
+const PARAM_IS_BLANK = async (ctx: Koa.Context, msg = '请求参数为空') => new ParameterError(1002, msg).throwErr(ctx);
+const PARAM_TYPE_ERROR = async (ctx: Koa.Context, msg = '请求参数类型错误') => new ParameterError(1003, msg).throwErr(ctx);
+const PARAM_NOT_COMPLETE = async (ctx: Koa.Context, msg = '请求参数缺失') => new ParameterError(1004, msg).throwErr(ctx);
+// 401
+export const TOKEN_IS_BLANK = async (ctx: Koa.Context) => new AuthError(4004, 'token为空').throwErr(ctx);
+export const TOKEN_EXPIRED = async (ctx: Koa.Context) => new AuthError(4001, 'token过期').throwErr(ctx);
+export const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(4002, 'token无效').throwErr(ctx);
+export const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(4003, msg).throwErr(ctx);
+// 404
+export const NotFound = async (ctx: Koa.Context) => new NotFoundError(404, '未找到api,请检查请求路径以及请求方法是否出错').throwErr(ctx);
+
+// 500
+const FAIL = async (ctx: Koa.Context, msg) => new InternalServerError(500, msg).throwErr(ctx);
+const FILE_UPLOAD_FAIL = async (ctx: Koa.Context) => new InternalServerError(5001, '文件上传失败').throwErr(ctx);
+
+//参考链接：https://juejin.cn/post/6847902223138029581
+
+```
+
+`responseCode.ts`里就是我们返回消息或抛出错误直接使用的接口，使用下面的方式就可以在任意位置抛出错误：
+
+```ts
+// 404
+app.use(async (ctx, next) => {
+    // 抛出404
+	await NotFound(ctx)
+})
+```
+
+最后，在中间件文件夹添加`error.ts`
+
+```ts
+// 错误处理中间件
+import { ErrorModel } from '../config/code/errCode';
+
+export const errorHandler = async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    //判断是否为已知错误
+    if (err.flag === 'ErrorModel') {
+      format(err, ctx);
+    } else {
+      //对于未知的错误返回统一的消息
+      format(new ErrorModel(), ctx);
+    }
+  }
+};
+
+// 格式化错误响应
+const format = (err: any, ctx: any) => {
+  ctx.status = err.statusCode;
+  ctx.body = {
+    code: err.code,
+    msg: err.message || err.msg,
+    request: ctx.method + ' >> ' + ctx.url,
+  };
+};
+
+```
 
 
 
-### 16、src下新增测试文件夹：tests
+### 18.添加权限认证系统
+
+
+
+
+
+### 19、src下新增测试文件夹：tests
 
 ​	用于单元测试
 
@@ -1345,3 +1607,5 @@ class AccountController {
 1. https://www.bilibili.com/video/BV1UM4y1T7QF/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=ef5a0ab0106372751602034cdd9ab98e
 2. https://juejin.cn/post/7231152303583100988#heading-5
 3. https://www.baasapi.com/blog/prisma
+4. https://juejin.cn/post/6847902223138029581
+5. https://www.bilibili.com/video/BV1d64y1Y7Cg?p=11&vd_source=ef5a0ab0106372751602034cdd9ab98e

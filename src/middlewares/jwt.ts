@@ -21,11 +21,9 @@ export const Jwtauth = async (ctx: Koa.Context, next: Koa.Next) => {
     switch (err.name) {
       // token过期
       case 'TokenExpiredError':
-        console.log('token过期');
         return await TOKEN_EXPIRED(ctx);
       // token错误
       case 'JsonWebTokenError':
-        console.log('token错误');
         return await TOKEN_INVALID(ctx);
     }
   }

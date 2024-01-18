@@ -12,8 +12,6 @@ export const errorHandler = async (ctx, next) => {
       //对于未知的错误返回统一的消息
       format(new ErrorModel(), ctx);
     }
-    await ctx.response; // 等待响应发送给客户端
-    return Promise.resolve();
   }
 };
 
