@@ -1,8 +1,7 @@
 //这个文件负责接口的业务逻辑
 import ExampleService from '../services/example.service';
-import { CODE } from '../config/code';
 import { bigIntToString } from '../utils/util';
-
+import { NotFound } from '../config/code/responseCode';
 //增
 class ExampleController {
   async post(ctx: any, next: any) {

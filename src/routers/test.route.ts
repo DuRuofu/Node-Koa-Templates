@@ -1,7 +1,6 @@
 //测试路由
 import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/test' });
-
 /**
  * @swagger
  * tags:

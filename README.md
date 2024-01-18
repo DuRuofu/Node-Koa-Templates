@@ -565,7 +565,7 @@ export const CODE = {
 
 config文件夹下新增全局通用的配置参数文件：constant.ts
 
-> 内容仅作为示例，
+> 内容仅作为示例，按实际业务动态处理
 
 ```ts
 // 环境变量配置
@@ -1137,6 +1137,127 @@ Swagger（目前用OpenAPI Specification代替）是一个用于设计、构建�
 
 安装依赖：`npm install swagger-jsdoc swagger-ui-express --save`
 
+在中间件文件夹`middlewares`添加`swagger.config.ts`,内容如下
+``` ts
+import path from 'path';
+import swaggerJSDoc from 'swagger-jsdoc';
+import AddressIp from 'ip';
+import { PORT } from '../config/constant';
+
+const swaggerDefinition = {
+  info: {
+    // API informations (required)
+    title: 'Swagger接口文档', // Title (required)
+    version: '1.0.0', // Version (required)
+    description: 'Swagger接口文档', // Description (optional)
+  },
+  contact: {
+    name: 'name',
+    url: 'url',
+  },
+  host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
+  basePath: '/', // Base path (optional)
+  securityDefinitions: {
+    token: {
+      type: 'apiKey',
+      name: 'authorization',
+      in: 'header',
+    },
+  },
+};
+
+const options = {
+  swaggerDefinition,
+  apis: [path.join(__dirname, '/../routers/*.ts')], // all api
+};
+
+const jsonSpc = swaggerJSDoc(options);
+export default jsonSpc;
+
+```
+
+在路由文件夹新建`swagger.route.ts`文件,内容如下:
+``` ts
+//koa集成swagger生成接口文档
+
+import Router from 'koa-router';
+import { Context } from 'koa';
+import swaggerJSDoc from '../middlewares/swagger.config';
+const router = new Router();
+
+router.get('/docs', (ctx: Context) => {
+  ctx.body = swaggerJSDoc;
+});
+export default router;
+
+```
+
+在入口文件挂载路由即可
+``` ts
+import { koaSwagger } from 'koa2-swagger-ui';
+
+// 路由自动挂载
+app.use(router.routes()).use(router.allowedMethods());
+
+// 挂载swagger文档中间件
+app.use(koaSwagger({ routePrefix: '/swagger', swaggerOptions: { url: '/docs' } }));
+
+```
+
+之后访问对应路径就可看到对应在线文档了:
+
+![image-20240118115207642](attachments/image-20240118115207642.png)
+
+下面的API参数，通过编写注释实现，具体语法可参看Swagger官方文档，如下：
+
+``` ts
+//#region 用户注册
+/**
+ * @swagger
+ * /v1/account/register:
+ *   post:
+ *     summary: 用户注册
+ *     description: 用户注册
+ *     tags: [用户模块]
+ *     produces:
+ *     - application/json
+ *     parameters: # 请求参数：
+ *      - name: Account
+ *        description: 账号
+ *        in: formData
+ *        required: true
+ *      - name: Password
+ *        description: 密码
+ *        in: formData
+ *        required: true
+ *      - name: Email
+ *        description: 邮箱
+ *        in: formData
+ *      - name: Phone
+ *        description: 手机号
+ *        in: formData
+ *     responses:
+ *       200:
+ *         description: 用户注册成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 状态信息
+ *             example: 用户注册成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.post('/register', Controllers.register);
+```
+
 
 
 ### 15、安装koa-parameter 进行路由参数校验
@@ -1190,6 +1311,26 @@ class AccountController {
 
     // 操作数据库
 ```
+
+### 16、进行JWT鉴权
+
+使用jsonwebtoken包实现，安装依赖`npm i jsonwebtoken`
+
+1. 登陆时，登陆成功返回token,
+
+   ```ts
+   const token = 'Bearer ' + sign({ AccountId: newRes.AccountId }, JWT.secret, { expiresIn: JWT.expires });
+   
+   // 返回数据
+   
+   ctx.body = {
+       code: 0,
+       msg: '用户登录成功',
+       data: { token: token },
+   };
+   ```
+
+2. 
 
 
 

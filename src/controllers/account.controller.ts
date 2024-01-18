@@ -1,9 +1,7 @@
 //这个文件用户管理接口的业务逻辑
 import AccountService from '../services/account.service';
-import { CODE } from '../config/code';
 import { bigIntToString } from '../utils/util';
 import { sign } from 'jsonwebtoken';
-import { verify } from 'jsonwebtoken';
 import { JWT } from '../config/constant';
 
 class AccountController {

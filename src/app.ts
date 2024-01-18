@@ -29,7 +29,7 @@ app.use(errorHandler);
 app.use(loggerMiddleware);
 
 // 挂载jwt中间件
-app.use(jwt({ secret: JWT.secret }).unless({ path: PublicRouter }));
+//app.use(jwt({ secret: JWT.secret }).unless({ path: PublicRouter }));
 
 // 挂载body解析中间件
 app.use(koaBody({ multipart: true }));
