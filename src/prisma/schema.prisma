@@ -59,18 +59,7 @@ model Example {
 // }
 
 // CasbinRule
-model CasbinRule {
-  id    Int     @id @default(autoincrement())
-  ptype String
-  v0    String?
-  v1    String?
-  v2    String?
-  v3    String?
-  v4    String?
-  v5    String?
 
-  @@map("casbin_rule")
-}
 
 // 用户表
 model Account {
@@ -88,49 +77,76 @@ model Account {
   @@map("account")
 }
 
-// 角色表
-model Role {
-  RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
-  Name        String   @map("name")
-  description String   @map("description")
-  IsDeleted   Boolean  @default(false) @map("is_deleted")
-  CreatedTime DateTime @default(now()) @map("created_time")
-  UpdatedTime DateTime @updatedAt @map("updated_time")
 
-  @@map("role")
+// Casbin规则仓库
+model CasbinRule {
+  id    Int     @id @default(autoincrement())
+  ptype String
+  v0    String?
+  v1    String?
+  v2    String?
+  v3    String?
+  v4    String?
+  v5    String?
+
+  @@map("casbin_rule")
 }
 
-//用户角色中间表
-model AccountRole {
-  AccountRoleId BigInt   @id @default(autoincrement()) @map("account_role_id")
-  AccountId     BigInt   @map("account_id")
-  RoleId        BigInt   @map("role_id")
-  IsDeleted     Boolean  @default(false) @map("is_deleted")
-  CreatedTime   DateTime @default(now()) @map("created_time")
-  UpdatedTime   DateTime @updatedAt @map("updated_time")
 
-  @@map("account_role")
-}
 
-// 权限表
-model Permission {
-  PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
-  Name         String   @map("name")
-  IsDeleted    Boolean  @default(false) @map("is_deleted")
-  CreatedTime  DateTime @default(now()) @map("created_time")
-  UpdatedTime  DateTime @updatedAt @map("updated_time")
 
-  @@map("permission")
-}
 
-// 角色权限中间表
-model RolePermission {
-  RolePermissionId BigInt   @id @default(autoincrement()) @map("role_permission_id")
-  RoleId           BigInt   @map("role_id")
-  PermissionId     BigInt   @map("permission_id")
-  IsDeleted        Boolean  @default(false) @map("is_deleted")
-  CreatedTime      DateTime @default(now()) @map("created_time")
-  UpdatedTime      DateTime @updatedAt @map("updated_time")
 
-  @@map("role_permission")
-}
+
+
+
+
+
+//·························废弃··············································//
+// // 角色表
+// model Role {
+//   RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
+//   Name        String   @map("name")
+//   description String   @map("description")
+//   IsDeleted   Boolean  @default(false) @map("is_deleted")
+//   CreatedTime DateTime @default(now()) @map("created_time")
+//   UpdatedTime DateTime @updatedAt @map("updated_time")
+
+//   @@map("role")
+// }
+
+// //用户角色中间表
+// model AccountRole {
+//   AccountRoleId BigInt   @id @default(autoincrement()) @map("account_role_id")
+//   AccountId     BigInt   @map("account_id")
+//   RoleId        BigInt   @map("role_id")
+//   IsDeleted     Boolean  @default(false) @map("is_deleted")
+//   CreatedTime   DateTime @default(now()) @map("created_time")
+//   UpdatedTime   DateTime @updatedAt @map("updated_time")
+
+//   @@map("account_role")
+// }
+
+// // 权限表
+// model Permission {
+//   PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
+//   Name         String   @map("name")
+//   IsDeleted    Boolean  @default(false) @map("is_deleted")
+//   CreatedTime  DateTime @default(now()) @map("created_time")
+//   UpdatedTime  DateTime @updatedAt @map("updated_time")
+
+//   @@map("permission")
+// }
+
+// // 角色权限中间表
+// model RolePermission {
+//   RolePermissionId BigInt   @id @default(autoincrement()) @map("role_permission_id")
+//   RoleId           BigInt   @map("role_id")
+//   PermissionId     BigInt   @map("permission_id")
+//   IsDeleted        Boolean  @default(false) @map("is_deleted")
+//   CreatedTime      DateTime @default(now()) @map("created_time")
+//   UpdatedTime      DateTime @updatedAt @map("updated_time")
+
+//   @@map("role_permission")
+// }
+//·························废弃··············································//
