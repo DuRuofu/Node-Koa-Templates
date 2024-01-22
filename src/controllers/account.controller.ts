@@ -107,5 +107,8 @@ class AccountController {
       data: newRes,
     };
   }
+
+  // 删除用户
+  async deleteAccount(ctx: any, next: any) {}
 }
 export default new AccountController();

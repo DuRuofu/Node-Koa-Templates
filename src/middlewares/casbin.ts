@@ -21,6 +21,11 @@ class Casbin {
     console.log(roles); // 输出该用户所拥有的角色
   }
 
+  // 查询角色的用户
+  // async getRolesAccount(Role:string){
+
+  // }
+
   // 添加用户的角色(根据accountId)
   async addAccountRole(accountId: number, role: string) {
     await this.enforcer.addRoleForUser(accountId.toString(), role);

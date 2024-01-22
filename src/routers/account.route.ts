@@ -6,7 +6,7 @@
  */
 import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/account' });
-import Controllers from '../controllers/account.controller';
+import Controller from '../controllers/account.controller';
 
 //#region 用户注册
 /**
@@ -14,7 +14,7 @@ import Controllers from '../controllers/account.controller';
  * /v1/account/register:
  *   post:
  *     summary: 用户注册
- *     description: 用户注册
+ *     description: 用户注册(待完善)
  *     tags: [用户模块]
  *     produces:
  *     - application/json
@@ -52,7 +52,7 @@ import Controllers from '../controllers/account.controller';
  *             description: 用户信息
  */
 // #endregion
-router.post('/register', Controllers.register);
+router.post('/register', Controller.register);
 
 //#region 用户登陆
 /**
@@ -92,9 +92,40 @@ router.post('/register', Controllers.register);
  *             description: 用户信息
  */
 // #endregion
-router.post('/login', Controllers.login);
+router.post('/login', Controller.login);
 
-// 删除用户
+//#region 删除用户
+/**
+ * @swagger
+ * /v1/account/deleteAccount:
+ *   delete:
+ *     summary: 删除某个用户 (待开发)
+ *     description: 删除某个用户
+ *     tags: [用户模块]
+ *     responses:
+ *       200:
+ *         description: 删除某个用户成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除某个用户成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
+ */
+// #endregion
+router.delete('/deleteAccount', Controller.deleteAccount);
 
 //#region 获取用户列表
 /**
@@ -127,7 +158,7 @@ router.post('/login', Controllers.login);
  *        - authorization
  */
 // #endregion
-router.get('/getAllAccount', Controllers.getAllAccount);
+router.get('/getAllAccount', Controller.getAllAccount);
 
 //#region 获取单个用户信息
 /**
@@ -160,8 +191,31 @@ router.get('/getAllAccount', Controllers.getAllAccount);
  *        - authorization
  */
 // #endregion
-router.get('/getAccount', Controllers.getAccount);
+router.get('/getAccount', Controller.getAccount);
 
-// 更新用户
+//#region 更新用户信息
+/**
+ * @swagger
+ * /v1/account/uploadAvatar:
+ *   post:
+ *     summary: 更新用户信息 (待开发)
+ *     description: 更新用户信息
+ *     tags: [用户模块]
+ *
+ */
+// #endregion
+router.post('/uploadAvatar');
 
+//#region 修改用户密码
+/**
+ * @swagger
+ * /v1/account/updataPassword:
+ *   post:
+ *     summary: 修改用户密码 (待开发)
+ *     description: 修改用户密码
+ *     tags: [用户模块]
+ *
+ */
+// #endregion
+router.post('/updataPassword');
 export default router;

@@ -92,7 +92,17 @@ model CasbinRule {
   @@map("casbin_rule")
 }
 
+// 角色表
+model Role {
+  RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
+  Name        String   @map("name")
+  description String   @map("description")
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  CreatedTime DateTime @default(now()) @map("created_time")
+  UpdatedTime DateTime @updatedAt @map("updated_time")
 
+  @@map("role")
+}
 
 
 
@@ -103,17 +113,7 @@ model CasbinRule {
 
 
 //·························废弃··············································//
-// // 角色表
-// model Role {
-//   RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
-//   Name        String   @map("name")
-//   description String   @map("description")
-//   IsDeleted   Boolean  @default(false) @map("is_deleted")
-//   CreatedTime DateTime @default(now()) @map("created_time")
-//   UpdatedTime DateTime @updatedAt @map("updated_time")
 
-//   @@map("role")
-// }
 
 // //用户角色中间表
 // model AccountRole {
