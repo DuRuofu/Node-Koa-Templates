@@ -5,12 +5,13 @@ export const errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
+    console.log(err);
     //判断是否为已知错误
     if (err.flag === 'ErrorModel') {
-      format(err, ctx);
+      return format(err, ctx);
     } else {
       //对于未知的错误返回统一的消息
-      format(new ErrorModel(), ctx);
+      return format(new ErrorModel(), ctx);
     }
   }
 };

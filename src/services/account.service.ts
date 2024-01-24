@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import Static from 'koa-static';
 const prisma = new PrismaClient();
-
+import { FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
 class AccountService {
   // 用户注册
   async createAccount(ctx: any, Account: string, Password: string, Name: string, Email: string, Phone: string) {
@@ -18,7 +18,8 @@ class AccountService {
       return result;
     } catch (error) {
       //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '添加用户数据失败', data: '' });
+      await FAIL(ctx, '数据库错误:添加用户数据失败');
+      //await ctx.throw(400, '数据库错误', { code: 400, message: '添加用户数据失败', data: '' });
     }
   }
 
@@ -32,14 +33,17 @@ class AccountService {
         if (result.Password === Password) {
           return result;
         } else {
-          ctx.throw(400, '密码错误', { code: 400, message: '密码错误', data: '' });
+          await USER_PWD_ERROR(ctx);
+          //ctx.throw(400, '密码错误', { code: 400, message: '密码错误', data: '' });
         }
       } else {
-        ctx.throw(400, '用户名不存在', { code: 400, message: '用户名不存在', data: '' });
+        await USER_ACCOUNT_ALREADY_EXIST(ctx);
+        //ctx.throw(400, '用户名不存在', { code: 400, message: '用户名不存在', data: '' });
       }
     } catch (error) {
       //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+      await FAIL(ctx, '数据库错误:查询用户数据失败');
+      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 
@@ -50,7 +54,8 @@ class AccountService {
       return result;
     } catch (error) {
       //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+      await FAIL(ctx, '数据库错误:查询用户数据失败');
+      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 
@@ -63,7 +68,8 @@ class AccountService {
       return result;
     } catch (error) {
       //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+      await FAIL(ctx, '数据库错误:查询用户数据失败');
+      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 }
