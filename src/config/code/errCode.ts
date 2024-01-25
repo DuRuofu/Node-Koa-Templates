@@ -1,4 +1,5 @@
 import Koa from 'koa';
+// 错误模型
 export class ErrorModel {
   code: number;
   msg: string;
@@ -16,27 +17,44 @@ export class ErrorModel {
     });
   }
 }
-// 400参数错误
+
+// 400:请求无效，例如请求体或参数错误
 export class ParameterError extends ErrorModel {
-  constructor(code, msg = '请求错误') {
+  constructor(code: number, msg = '请求错误') {
     super(code, msg, 400);
   }
 }
-// 401错误
+
+// 401:未通过服务端认证，API 密钥过期或不存在时可能会发生
 export class AuthError extends ErrorModel {
-  constructor(code, msg = 'token认证失败') {
+  constructor(code: number, msg = '未通过服务端认证') {
     super(code, msg, 401);
   }
 }
-// 404
+
+// 403:无权操作，检查操作对象是否正在使用或有依赖约束
+export class PermissionError extends ErrorModel {
+  constructor(code: number, msg = '未通过服务端认证') {
+    super(code, msg, 401);
+  }
+}
+// 404:找不到请求路径或请求的对象不存在
 export class NotFoundError extends ErrorModel {
-  constructor(code, msg = '未找到该api') {
+  constructor(code: number, msg = '未找到该api') {
     super(code, msg, 404);
   }
 }
+
+// 404:请求的资源已存在或数量超过限制
+export class ExcessiveError extends ErrorModel {
+  constructor(code: number, msg = '未找到该api') {
+    super(code, msg, 404);
+  }
+}
+
 // 500
 export class InternalServerError extends ErrorModel {
-  constructor(code, msg = '服务器内部错误') {
+  constructor(code: number, msg = '服务器内部错误') {
     super(code, msg, 500);
   }
 }

@@ -21,7 +21,7 @@ const format = (err: any, ctx: any) => {
   ctx.status = err.statusCode;
   ctx.body = {
     code: err.code,
-    msg: err.message || err.msg,
-    request: ctx.method + ' >> ' + ctx.url,
+    message: err.message || err.msg,
+    data: { request: ctx.method + ' >> ' + ctx.url },
   };
 };

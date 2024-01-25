@@ -46,7 +46,7 @@ app.use(Static(path.join(__dirname + '/../public')));
 app.use(router.routes()).use(router.allowedMethods());
 
 // 挂载swagger文档中间件
-app.use(koaSwagger({ routePrefix: '/swagger', swaggerOptions: { url: '/docs' } }));
+app.use(koaSwagger({ routePrefix: '/api-docs', swaggerOptions: { url: '/docs' } }));
 
 // 挂载响应处理中间件
 app.use(responseHandler);

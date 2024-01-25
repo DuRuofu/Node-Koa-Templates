@@ -1,35 +1,37 @@
 import SuccessModel from './successCode';
-import { ParameterError, AuthError, NotFoundError, InternalServerError } from './errCode';
+import { ParameterError, AuthError, NotFoundError, InternalServerError, PermissionError } from './errCode';
 import Koa from 'koa';
 
+// 成功
 // 200 请求成功
-const SUCCESS = async (ctx: Koa.Context, data: any, msg: any) => new SuccessModel(200, msg, data).success(ctx);
-// 权限限制
-const USER_NO_PERMISSION = async (ctx: Koa.Context, msg = '没有权限') => new SuccessModel(2100, msg).success(ctx);
-// 用户错误
-const USER_NOT_LOGIN = async (ctx: Koa.Context) => new SuccessModel(2001, '用户未登录').success(ctx);
-const USER_ACCOUNT_EXPIRED = async (ctx: Koa.Context) => new SuccessModel(2002, '账号已过期').success(ctx);
-const USER_ACCOUNT_DISABLE = async (ctx: Koa.Context) => new SuccessModel(2003, '账号不可用').success(ctx);
-const USER_ACCOUNT_NOT_EXIST = async (ctx: Koa.Context) => new SuccessModel(2004, '账号不存在').success(ctx);
-export const USER_ACCOUNT_ALREADY_EXIST = async (ctx: Koa.Context, msg = '账号已存在') => new SuccessModel(2005, msg).success(ctx);
-const USER_ACCOUNT_USE_BY_OTHERS = async (ctx: Koa.Context) => new SuccessModel(2006, '账号下线').success(ctx);
-export const USER_PWD_ERROR = async (ctx: Koa.Context) => new SuccessModel(2007, '密码错误').success(ctx);
+export const SUCCESS = async (ctx: Koa.Context, data: any, msg: any) => new SuccessModel(200, msg, data).success(ctx);
 
+// 失败
 // 400
-const PARAM_NOT_VALID = async (ctx: Koa.Context, msg = '请求参数无效') => new ParameterError(1001, msg).throwErr(ctx);
-const PARAM_IS_BLANK = async (ctx: Koa.Context, msg = '请求参数为空') => new ParameterError(1002, msg).throwErr(ctx);
-const PARAM_TYPE_ERROR = async (ctx: Koa.Context, msg = '请求参数类型错误') => new ParameterError(1003, msg).throwErr(ctx);
-const PARAM_NOT_COMPLETE = async (ctx: Koa.Context, msg = '请求参数缺失') => new ParameterError(1004, msg).throwErr(ctx);
-// 401
-export const TOKEN_IS_BLANK = async (ctx: Koa.Context) => new AuthError(4004, 'token为空').throwErr(ctx);
-export const TOKEN_EXPIRED = async (ctx: Koa.Context) => new AuthError(4001, 'token过期').throwErr(ctx);
-export const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(4002, 'token无效').throwErr(ctx);
-export const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(4003, msg).throwErr(ctx);
-// 404
-export const NotFound = async (ctx: Koa.Context) => new NotFoundError(404, '未找到api,请检查请求路径以及请求方法是否出错').throwErr(ctx);
+export const PARAM_NOT_VALID = async (ctx: Koa.Context, msg = '请求参数无效') => new ParameterError(40001, msg).throwErr(ctx);
+export const PARAM_IS_BLANK = async (ctx: Koa.Context, msg = '请求参数为空') => new ParameterError(40002, msg).throwErr(ctx);
+export const PARAM_TYPE_ERROR = async (ctx: Koa.Context, msg = '请求参数类型错误') => new ParameterError(40003, msg).throwErr(ctx);
+export const PARAM_NOT_COMPLETE = async (ctx: Koa.Context, msg = '请求参数缺失') => new ParameterError(40004, msg).throwErr(ctx);
+export const USER_NOT_LOGIN = async (ctx: Koa.Context, msg = '用户未登录') => new ParameterError(40005, msg).throwErr(ctx);
+export const USER_ACCOUNT_NOT_EXIST = async (ctx: Koa.Context, msg = '账号不存在') => new ParameterError(40006, msg).throwErr(ctx);
+export const USER_ACCOUNT_ALREADY_EXIST = async (ctx: Koa.Context, msg = '账号已存在') => new ParameterError(40007, msg).throwErr(ctx);
+export const USER_PWD_ERROR = async (ctx: Koa.Context, msg = '密码错误') => new ParameterError(40008, msg).throwErr(ctx);
 
-// 500
-export const FAIL = async (ctx: Koa.Context, msg) => new InternalServerError(500, msg).throwErr(ctx);
-const FILE_UPLOAD_FAIL = async (ctx: Koa.Context) => new InternalServerError(5001, '文件上传失败').throwErr(ctx);
-export const DB_FAIL = async (ctx: Koa.Context) => new InternalServerError(5001, '数据库错误').throwErr(ctx);
+// 401 未通过服务端认证
+export const TOKEN_IS_BLANK = async (ctx: Koa.Context) => new AuthError(40101, 'token为空').throwErr(ctx);
+export const TOKEN_EXPIRED = async (ctx: Koa.Context) => new AuthError(40102, 'token过期').throwErr(ctx);
+export const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(40103, 'token无效').throwErr(ctx);
+export const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(40104, msg).throwErr(ctx);
+
+// 403 权限限制
+export const A = async (ctx: Koa.Context) => new PermissionError(40301, '权限错误').throwErr(ctx);
+
+// 404 未找到请求路径或请求的对象不存在
+export const NotFound = async (ctx: Koa.Context) => new NotFoundError(40401, '未找到api,请检查请求路径以及请求方法是否出错').throwErr(ctx);
+
+// 500 服务器内部错误
+export const FAIL = async (ctx: Koa.Context, msg) => new InternalServerError(50001, msg).throwErr(ctx);
+const FILE_UPLOAD_FAIL = async (ctx: Koa.Context) => new InternalServerError(50002, '文件上传失败').throwErr(ctx);
+export const DB_FAIL = async (ctx: Koa.Context) => new InternalServerError(50003, '数据库错误').throwErr(ctx);
+
 //参考链接：https://juejin.cn/post/6847902223138029581
