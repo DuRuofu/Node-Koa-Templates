@@ -37,18 +37,16 @@ class ExampleController {
   //查
   async get(ctx: any, next: any) {
     // 获取数据
-    const { ExampleId } = ctx.request.body;
-
-    // 数据验证
-    console.log('test');
 
     // 操作数据库
-    const res = await ExampleService.getExample(ctx, ExampleId);
+    const res = await ExampleService.getExample(ctx);
 
-    // 返回数据
-    const newRes = { ...res };
-    if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
-    await SUCCESS(ctx, newRes, '查询数据成功');
+    // 处理bigint类型的数据
+    res.forEach((val, idx) => {
+      if (typeof val.ExampleId === 'bigint') res[idx].ExampleId = bigIntToString(val.ExampleId);
+    });
+
+    await SUCCESS(ctx, res, '查询数据成功');
   }
 
   //改

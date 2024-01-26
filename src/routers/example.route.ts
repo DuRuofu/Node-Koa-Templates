@@ -63,13 +63,6 @@ router.delete('/delete', Controllers.delete);
  *     summary: 测试数据库查询
  *     description: 测试数据库查询
  *     tags: [数据库示例]
- *     produces:
- *     - application/json
- *     parameters: # 请求参数：
- *      - name: ExampleId
- *        description: 测试id
- *        in: formData
- *        required: true
  *     responses:
  *       200:
  *         description:
@@ -91,11 +84,25 @@ router.get('/get', Controllers.get);
  *        description: 测试id
  *        in: formData
  *        required: true
+ *      - name: Name
+ *        description: 名称
+ *        in: formData
+ *        required: true
+ *      - name: Password
+ *        description: 密码
+ *        in: formData
+ *        required: true
+ *      - name: Email
+ *        description: 邮箱
+ *        in: formData
+ *      - name: Phone
+ *        description: 手机号
+ *        in: formData
  *     responses:
  *       200:
  *         description:
  *
  */
-router.put('/update', Controllers.put);
+router.put('/put', Controllers.put);
 
 export default router;

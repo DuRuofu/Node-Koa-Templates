@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "ts-node-dev  src/middlewares/casbin.ts",
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint . --ext .js,.ts,.json",
     "format": "prettier --config .prettierrc . --write",
     "prepare": "husky install",
     "cz": "cz",
+    "opendb": "npx prisma studio --schema ./src/prisma/schema.prisma",
     "updatedb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma"
   },
   "keywords": [],

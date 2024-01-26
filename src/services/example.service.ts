@@ -53,11 +53,9 @@ class ExampleService {
   }
 
   // 查
-  async getExample(ctx, ExampleId) {
+  async getExample(ctx) {
     try {
-      const result = await prisma.example.findUnique({
-        where: { ExampleId },
-      });
+      const result = await prisma.example.findMany({});
       return result;
     } catch (error) {
       //console.log(error);
