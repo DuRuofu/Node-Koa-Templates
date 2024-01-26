@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
+import { DB_FAIL } from '../config/code/responseCode';
 const prisma = new PrismaClient();
 
 class ExampleService {
@@ -16,29 +16,29 @@ class ExampleService {
       });
       return result;
     } catch (error) {
-      //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '添加数据失败', data: '' });
+      await DB_FAIL(ctx);
     }
   }
 
   // 删
-  async deleteExample(ctx, AccountId: number) {
+  async deleteExample(ctx, ExampleId: number) {
+    console.log(ExampleId);
     try {
       const result = await prisma.example.delete({
-        where: { AccountId },
+        where: { ExampleId },
       });
       return result;
     } catch (error) {
-      //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '删除数据失败', data: '' });
+      console.log(error);
+      await DB_FAIL(ctx);
     }
   }
 
   // 改
-  async updateExample(ctx, AccountId: number, Name: string, Password: string, Email: string, Phone: string) {
+  async updateExample(ctx, ExampleId: number, Name: string, Password: string, Email: string, Phone: string) {
     try {
       const result = await prisma.example.update({
-        where: { AccountId },
+        where: { ExampleId },
         data: {
           Name,
           Password,
@@ -48,21 +48,20 @@ class ExampleService {
       });
       return result;
     } catch (error) {
-      //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '修改数据失败', data: '' });
+      await DB_FAIL(ctx);
     }
   }
 
   // 查
-  async getExample(ctx, AccountId) {
+  async getExample(ctx, ExampleId) {
     try {
       const result = await prisma.example.findUnique({
-        where: { AccountId },
+        where: { ExampleId },
       });
       return result;
     } catch (error) {
       //console.log(error);
-      ctx.throw(400, '数据库错误', { code: 400, message: '查询数据失败', data: '' });
+      await DB_FAIL(ctx);
     }
   }
 }

@@ -9,7 +9,7 @@ datasource db {
 
 // 示例表
 model Example {
-  AccountId   BigInt   @id @default(autoincrement()) @map("example_id")
+  ExampleId   BigInt   @id @default(autoincrement()) @map("example_id")
   Name        String   @map("name")
   Password    String   @map("password")
   Email       String   @unique @default("test@test.com") @map("email")

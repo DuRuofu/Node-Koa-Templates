@@ -31,7 +31,7 @@ export const NotFound = async (ctx: Koa.Context) => new NotFoundError(40401, '�
 
 // 500 服务器内部错误
 export const FAIL = async (ctx: Koa.Context, msg) => new InternalServerError(50001, msg).throwErr(ctx);
-const FILE_UPLOAD_FAIL = async (ctx: Koa.Context) => new InternalServerError(50002, '文件上传失败').throwErr(ctx);
-export const DB_FAIL = async (ctx: Koa.Context) => new InternalServerError(50003, '数据库错误').throwErr(ctx);
+export const FILE_UPLOAD_FAIL = async (ctx: Koa.Context) => new InternalServerError(50002, '文件上传失败').throwErr(ctx);
+export const DB_FAIL = async (ctx: Koa.Context) => new InternalServerError(50003, '数据库操作失败').throwErr(ctx);
 
 //参考链接：https://juejin.cn/post/6847902223138029581

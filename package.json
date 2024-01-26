@@ -10,7 +10,7 @@
     "format": "prettier --config .prettierrc . --write",
     "prepare": "husky install",
     "cz": "cz",
-    "updatadb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma"
+    "updatedb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "DuRuofu",

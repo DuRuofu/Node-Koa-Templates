@@ -1,7 +1,7 @@
 //这个文件负责接口的业务逻辑
 import ExampleService from '../services/example.service';
 import { bigIntToString } from '../utils/util';
-import { NotFound } from '../config/code/responseCode';
+import { SUCCESS } from '../config/code/responseCode';
 //增
 class ExampleController {
   async post(ctx: any, next: any) {
@@ -14,52 +14,41 @@ class ExampleController {
 
     // 返回数据
     const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = {
-      code: 0,
-      msg: '添加数据成功',
-      data: newRes,
-    };
+    if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
+
+    await SUCCESS(ctx, newRes, '添加数据成功');
   }
 
   //删
   async delete(ctx: any, next: any) {
     // 获取数据
-    const { AccountId } = ctx.request.body;
+    const { ExampleId } = ctx.request.body;
 
     // 数据验证
-
     // 操作数据库
-    const res = await ExampleService.deleteExample(ctx, AccountId);
+    const res = await ExampleService.deleteExample(ctx, ExampleId);
 
     // 返回数据
     const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = {
-      code: 0,
-      msg: '删除数据成功',
-      data: newRes,
-    };
+    if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
+    await SUCCESS(ctx, newRes, '删除数据成功');
   }
 
   //查
   async get(ctx: any, next: any) {
     // 获取数据
-    const { id } = ctx.request.body;
+    const { ExampleId } = ctx.request.body;
 
     // 数据验证
+    console.log('test');
 
     // 操作数据库
-    const res = await ExampleService.getExample(ctx, id);
+    const res = await ExampleService.getExample(ctx, ExampleId);
 
     // 返回数据
     const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = {
-      code: 0,
-      msg: '删除数据成功',
-      data: newRes,
-    };
+    if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
+    await SUCCESS(ctx, newRes, '查询数据成功');
   }
 
   //改
@@ -75,7 +64,7 @@ class ExampleController {
 
     // 返回数据
     const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
+    if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
     ctx.body = {
       code: 0,
       msg: '删除数据成功',

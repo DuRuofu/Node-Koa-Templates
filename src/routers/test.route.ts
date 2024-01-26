@@ -1,5 +1,6 @@
 //测试路由
 import Router from 'koa-router';
+import { SUCCESS } from '../config/code/responseCode';
 const router = new Router({ prefix: '/v1/test' });
 /**
  * @swagger
@@ -20,9 +21,9 @@ const router = new Router({ prefix: '/v1/test' });
  *         description: 这是一个测试路由,post请求正常!
  *
  */
-router.post('/post', (ctx: any, next: any) => {
+router.post('/post', async (ctx: any, next: any) => {
   console.log('测试路由:post');
-  ctx.body = '这是一个测试路由,post请求正常!';
+  await SUCCESS(ctx, {}, '这是一个测试路由,post请求正常!');
 });
 
 /**
@@ -37,9 +38,9 @@ router.post('/post', (ctx: any, next: any) => {
  *         description: 这是一个测试路由,delete请求正常!
  *
  */
-router.delete('/delete', (ctx: any, next: any) => {
+router.delete('/delete', async (ctx: any, next: any) => {
   console.log('测试路由:delete');
-  ctx.body = '这是一个测试路由,delete请求正常!';
+  await SUCCESS(ctx, {}, '这是一个测试路由,delete请求正常!');
 });
 
 /**
@@ -54,9 +55,9 @@ router.delete('/delete', (ctx: any, next: any) => {
  *         description: 这是一个测试路由,get请求正常!
  *
  */
-router.get('/get', (ctx: any, next: any) => {
+router.get('/get', async (ctx: any, next: any) => {
   console.log('测试路由:get');
-  ctx.body = '这是一个测试路由,get请求正常!';
+  await SUCCESS(ctx, {}, '这是一个测试路由,get请求正常!');
 });
 
 /**
@@ -71,9 +72,9 @@ router.get('/get', (ctx: any, next: any) => {
  *         description: 这是一个测试路由,put请求正常!
  *
  */
-router.put('/update', (ctx: any, next: any) => {
+router.put('/put', async (ctx: any, next: any) => {
   console.log('测试路由:put');
-  ctx.body = '这是一个测试路由,put请求正常!';
+  await SUCCESS(ctx, {}, '这是一个测试路由,put请求正常!');
 });
 
 export default router;

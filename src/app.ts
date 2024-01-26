@@ -4,7 +4,7 @@ import https from 'https';
 import path from 'path';
 import Koa from 'koa';
 import Cors from 'koa2-cors';
-import koaBody from 'koa-body';
+import koaBody, { HttpMethodEnum } from 'koa-body';
 import Static from 'koa-static';
 import parameter from 'koa-parameter';
 import { PORT } from './config/constant';
@@ -34,7 +34,9 @@ app.use(Cors(corsHandler));
 app.use(Jwtauth);
 
 // 挂载body解析中间件
-app.use(koaBody({ multipart: true }));
+app.use(
+  koaBody({ parsedMethods: [HttpMethodEnum.POST, HttpMethodEnum.PUT, HttpMethodEnum.PATCH, HttpMethodEnum.GET, HttpMethodEnum.DELETE] })
+);
 
 // 挂载参数校验中间件
 app.use(parameter(app));
