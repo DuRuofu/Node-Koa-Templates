@@ -6,6 +6,7 @@ README.md
 *attachments/
 */assets/
 */logs/
+*/docs/
 public/
 *assets/
 *prisma/

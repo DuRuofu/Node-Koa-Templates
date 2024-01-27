@@ -2,5 +2,6 @@ build/
 node_modules/
 package-lock.json
 README.md
+*/docs/
 **/policy.csv
 **/casbin.model.conf
