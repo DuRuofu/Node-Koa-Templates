@@ -11,7 +11,8 @@
     "prepare": "husky install",
     "cz": "cz",
     "opendb": "npx prisma studio --schema ./src/prisma/schema.prisma",
-    "updatedb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma"
+    "updatedb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
+    "addmodule": "ts-node ./src/script/createModule.ts"
   },
   "keywords": [],
   "author": "DuRuofu",
