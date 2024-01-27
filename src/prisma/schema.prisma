@@ -60,10 +60,9 @@ model Example {
 
 // CasbinRule
 
-
 // 用户表
 model Account {
-  AccountId   BigInt   @id @default(autoincrement()) @map("account_id")
+  AccountId   String   @id @default(uuid()) @map("account_id")
   Account     String   @unique @map("account")
   Password    String   @map("password")
   Name        String   @map("name")
@@ -76,7 +75,6 @@ model Account {
 
   @@map("account")
 }
-
 
 // Casbin规则仓库
 model CasbinRule {
@@ -104,16 +102,7 @@ model Role {
   @@map("role")
 }
 
-
-
-
-
-
-
-
-
 //·························废弃··············································//
-
 
 // //用户角色中间表
 // model AccountRole {

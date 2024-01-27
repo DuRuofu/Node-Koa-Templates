@@ -3,44 +3,43 @@ import AccountService from '../services/account.service';
 import { bigIntToString } from '../utils/util';
 import { sign } from 'jsonwebtoken';
 import { JWT } from '../config/constant';
-
+import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
 class AccountController {
   //用户注册
   async register(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        Account: {
+          type: 'string',
+          required: true,
+          message: '账户不能为空',
+        },
+        Password: {
+          type: 'string',
+          required: true,
+          message: '密码不能为空',
+        },
+        Email: {
+          type: 'string',
+          required: true,
+        },
+        Phone: {
+          type: 'string',
+          required: false,
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
     // 获取数据
     const { Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
-    // 数据校验
-    ctx.verifyParams({
-      Account: {
-        type: 'string',
-        required: true,
-      },
-      Password: {
-        type: 'string',
-        required: true,
-      },
-      Email: {
-        type: 'string',
-        required: false,
-      },
-      Phone: {
-        type: 'string',
-        required: false,
-      },
-    });
-
     // 操作数据库
     const res = await AccountService.createAccount(ctx, Account, Password, Name, Email, Phone);
 
     //返回数据
-    const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = {
-      code: 0,
-      msg: '用户注册成功',
-      data: newRes,
-    };
+    await SUCCESS(ctx, res, '用户注册成功');
   }
 
   //用户登录
@@ -63,17 +62,10 @@ class AccountController {
     const res = await AccountService.login(ctx, Account, Password);
 
     // 颁发token
-    const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    const token = 'Bearer ' + sign({ AccountId: newRes.AccountId }, JWT.secret, { expiresIn: JWT.expires });
+    const token = 'Bearer ' + sign({ AccountId: res.AccountId }, JWT.secret, { expiresIn: JWT.expires });
 
     // 返回数据
-
-    ctx.body = {
-      code: 0,
-      msg: '用户登录成功',
-      data: { token: token },
-    };
+    await SUCCESS(ctx, { token: token }, '用户登录成功');
   }
 
   // 查询所有用户
@@ -81,16 +73,8 @@ class AccountController {
     // 操作数据库
     const res = await AccountService.getAllAccount(ctx);
 
-    // 处理bigint类型的数据
-    res.forEach((val, idx) => {
-      if (typeof val.AccountId === 'bigint') res[idx].AccountId = bigIntToString(val.AccountId);
-    });
     // 返回数据
-    ctx.body = {
-      code: 0,
-      msg: '查询成功',
-      data: res,
-    };
+    await SUCCESS(ctx, res, '查询成功');
   }
 
   // 查询单个用户
@@ -99,13 +83,8 @@ class AccountController {
     const res = await AccountService.getAccount(ctx);
 
     // 返回数据
-    const newRes = { ...res };
-    if (typeof res.AccountId === 'bigint') newRes.AccountId = bigIntToString(res.AccountId);
-    ctx.body = {
-      code: 0,
-      msg: '查询成功',
-      data: newRes,
-    };
+    // 返回数据
+    await SUCCESS(ctx, res, '查询成功');
   }
 
   // 删除用户

@@ -63,11 +63,7 @@ class ExampleController {
     // 返回数据
     const newRes = { ...res };
     if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
-    ctx.body = {
-      code: 0,
-      msg: '删除数据成功',
-      data: JSON.stringify(newRes),
-    };
+    await SUCCESS(ctx, newRes, '修改数据成功');
   }
 }
 

@@ -1,11 +1,11 @@
 // 错误处理中间件
 import { ErrorModel } from '../config/code/errCode';
 
-export const errorHandler = async (ctx, next) => {
+export const errorHandler = async (ctx: any, next: any) => {
   try {
     await next();
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     //判断是否为已知错误
     if (err.flag === 'ErrorModel') {
       return format(err, ctx);
@@ -22,6 +22,6 @@ const format = (err: any, ctx: any) => {
   ctx.body = {
     code: err.code,
     msg: err.message || err.msg,
-    data: { request: ctx.method + ' >> ' + ctx.url },
+    data: err.data || { request: ctx.method + ' >> ' + ctx.url },
   };
 };

@@ -8,7 +8,8 @@ export const SUCCESS = async (ctx: Koa.Context, data: any, msg: any) => new Succ
 
 // 失败
 // 400
-export const PARAM_NOT_VALID = async (ctx: Koa.Context, msg = '请求参数无效') => new ParameterError(40001, msg).throwErr(ctx);
+export const PARAM_NOT_VALID = async (ctx: Koa.Context, msg = '请求参数无效', data?: any) =>
+  new ParameterError(40001, msg, data).throwErr(ctx);
 export const PARAM_IS_BLANK = async (ctx: Koa.Context, msg = '请求参数为空') => new ParameterError(40002, msg).throwErr(ctx);
 export const PARAM_TYPE_ERROR = async (ctx: Koa.Context, msg = '请求参数类型错误') => new ParameterError(40003, msg).throwErr(ctx);
 export const PARAM_NOT_COMPLETE = async (ctx: Koa.Context, msg = '请求参数缺失') => new ParameterError(40004, msg).throwErr(ctx);
