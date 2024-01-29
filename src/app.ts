@@ -21,11 +21,11 @@ import { Jwtauth } from './middlewares/jwt';
 // 创建APP实例
 const app = new Koa();
 
-// 挂载错误处理中间件
-app.use(errorHandler);
-
 // 挂载日志中间件
 app.use(loggerMiddleware);
+
+// 挂载错误处理中间件
+app.use(errorHandler);
 
 // 挂载跨域中间件
 app.use(Cors(corsHandler));

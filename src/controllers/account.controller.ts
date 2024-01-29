@@ -47,16 +47,20 @@ class AccountController {
     // 获取数据
     const { Account, Password } = ctx.request.body;
     // 数据校验
-    ctx.verifyParams({
-      Account: {
-        type: 'string',
-        required: true,
-      },
-      Password: {
-        type: 'string',
-        required: true,
-      },
-    });
+    try {
+      ctx.verifyParams({
+        Account: {
+          type: 'string',
+          required: true,
+        },
+        Password: {
+          type: 'string',
+          required: true,
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
 
     // 操作数据库
     const res = await AccountService.login(ctx, Account, Password);
