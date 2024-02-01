@@ -27,7 +27,7 @@ class AccountService {
   async login(ctx: any, Account: string, Password: string) {
     try {
       const result = await prisma.account.findUnique({
-        where: { Account: Account },
+        where: { Account: Account, IsDeleted: false },
       });
       if (result) {
         if (result.Password === Password) {
@@ -63,7 +63,14 @@ class AccountService {
   async getAccount(ctx: any) {
     try {
       const result = await prisma.account.findUnique({
-        where: { AccountId: ctx.state.user.AccountId },
+        where: { AccountId: ctx.state.user.AccountId, IsDeleted: false },
+        select: {
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
       });
       return result;
     } catch (error) {
