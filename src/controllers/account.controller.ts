@@ -72,11 +72,39 @@ class AccountController {
     await SUCCESS(ctx, { token: token }, '用户登录成功');
   }
 
-  // 查询所有用户
-  async getAllAccount(ctx: any, next: any) {
+  // 查询所有用户(无分页)
+  async getAllAccountList(ctx: any, next: any) {
     // 操作数据库
-    const res = await AccountService.getAllAccount(ctx);
+    const res = await AccountService.getAllAccountList(ctx);
 
+    // 返回数据
+    await SUCCESS(ctx, res, '查询成功');
+  }
+
+  // 查询用户列表(分页)
+  async getAllAccount(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        Page: {
+          type: 'string',
+          required: true,
+          message: '当前页数不能为空',
+        },
+        Iimit: {
+          type: 'string',
+          required: true,
+          message: '每页记录数不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    console.log(ctx.request.query);
+    // 数据提取
+    const { Page, Iimit } = ctx.request.query;
+    // 操作数据库
+    const res = await AccountService.getAllAccount(ctx, parseInt(Page), parseInt(Iimit));
     // 返回数据
     await SUCCESS(ctx, res, '查询成功');
   }

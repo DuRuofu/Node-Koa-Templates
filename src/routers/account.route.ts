@@ -127,14 +127,60 @@ router.post('/login', Controller.login);
 // #endregion
 router.delete('/deleteAccount', Controller.deleteAccount);
 
-//#region 获取用户列表
+//#region 获取用户列表(不分页)
+/**
+ * @swagger
+ * /v1/account/getAllAccountList:
+ *   get:
+ *     summary: 获取用户列表(不分页)
+ *     description: 查询用户列表
+ *     tags: [用户模块]
+ *     responses:
+ *       200:
+ *         description: 查询用户列表成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户列表成功
+ *           data:
+ *             type: object
+ *             description: 用户列表信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
+ */
+// #endregion
+router.get('/getAllAccountList', Controller.getAllAccountList);
+
+//#region 获取用户列表(分页)
 /**
  * @swagger
  * /v1/account/getAllAccount:
  *   get:
- *     summary: 查询用户列表
+ *     summary: 获取用户列表(分页)
  *     description: 查询用户列表
  *     tags: [用户模块]
+ *     produces:
+ *     - application/x-www-form-urlencoded
+ *     parameters: # 请求参数：
+ *      - name: Page
+ *        description: 当前页数
+ *        in: query
+ *        type: string
+ *        required: true
+ *      - name: Iimit
+ *        description: 每页记录数
+ *        in: query
+ *        type: string
+ *        required: true
  *     responses:
  *       200:
  *         description: 查询用户列表成功

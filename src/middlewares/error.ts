@@ -5,7 +5,7 @@ export const errorHandler = async (ctx: any, next: any) => {
   try {
     await next();
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     //判断是否为已知错误
     if (err.flag === 'ErrorModel') {
       return format(err, ctx);

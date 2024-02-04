@@ -4,6 +4,7 @@ import AddressIp from 'ip';
 import { PORT } from '../config/constant';
 
 const swaggerDefinition = {
+  //openapi: '3.0.0',
   info: {
     // API informations (required)
     title: 'Swagger接口文档', // Title (required)

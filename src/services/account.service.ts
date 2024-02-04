@@ -48,11 +48,27 @@ class AccountService {
   }
 
   // 获取所有用户
-  async getAllAccount(ctx: any) {
+  async getAllAccountList(ctx: any) {
     try {
       const result = await prisma.account.findMany();
       return result;
     } catch (error) {
+      //console.log(error);
+      await FAIL(ctx, '数据库错误:查询用户数据失败');
+      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
+    }
+  }
+
+  // 分页查询用户
+  async getAllAccount(ctx: any, page: number, pageSize: number) {
+    try {
+      const result = await prisma.account.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      });
+      return result;
+    } catch (error) {
+      console.log(error);
       //console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
       //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
