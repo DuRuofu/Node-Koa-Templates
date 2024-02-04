@@ -21,18 +21,6 @@ model Example {
   @@map("example")
 }
 
-// // 组织表
-// model Organization {
-//   OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
-//   Name           String   @map("name")
-//   Description    String   @map("description")
-//   IsDeleted      Boolean  @default(false) @map("is_deleted")
-//   CreatedTime    DateTime @default(now()) @map("created_time")
-//   UpdatedTime    DateTime @updatedAt @map("updated_time")
-
-//   @@map("organization")
-// }
-
 // // 团队表
 // model Team {
 //   TeamId      BigInt   @id @default(autoincrement()) @map("team_id")
@@ -60,6 +48,31 @@ model Example {
 
 // CasbinRule
 
+// 组织表
+model Organization {
+  OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
+  Name           String   @map("name")
+  Description    String   @map("description")
+  IsDeleted      Boolean  @default(false) @map("is_deleted")
+  CreatedTime    DateTime @default(now()) @map("created_time")
+  UpdatedTime    DateTime @updatedAt @map("updated_time")
+
+  @@map("organization")
+}
+
+// 团队表
+model Team {
+  TeamId         BigInt   @id @default(autoincrement()) @map("team_id")
+  OrganizationId BigInt   @map("organization_id")
+  Name           String   @map("name")
+  Description    String   @map("description")
+  IsDeleted      Boolean  @default(false) @map("is_deleted")
+  CreatedTime    DateTime @default(now()) @map("created_time")
+  UpdatedTime    DateTime @updatedAt @map("updated_time")
+
+  @@map("team")
+}
+
 // 用户表
 model Account {
   AccountId   String   @id @default(uuid()) @map("account_id")
@@ -76,7 +89,7 @@ model Account {
   @@map("account")
 }
 
-// Casbin规则仓库
+// Casbin权限规则仓库
 model CasbinRule {
   id    Int     @id @default(autoincrement())
   ptype String
