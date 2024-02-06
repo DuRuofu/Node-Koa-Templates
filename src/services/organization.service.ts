@@ -11,6 +11,11 @@ class OrganizationService {
           Name,
           Description,
         },
+        select: {
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {
@@ -35,7 +40,13 @@ class OrganizationService {
   // 查询全部(不分页)
   async getAllOrganizationList(ctx: any) {
     try {
-      const result = await prisma.organization.findMany({});
+      const result = await prisma.organization.findMany({
+        select: {
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
+      });
       return result;
     } catch (error) {
       //console.log(error);
@@ -43,12 +54,17 @@ class OrganizationService {
     }
   }
 
-  // 查询全部(分页)
-  async getOrganizationList(ctx: any, page: number, pageSize: number) {
+  // 查询全部 (分页)
+  async getOrganizationList(ctx: any, Page: number, PageSize: number) {
     try {
       const result = await prisma.organization.findMany({
-        skip: (page - 1) * pageSize,
-        take: pageSize,
+        skip: (Page - 1) * PageSize,
+        take: PageSize,
+        select: {
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {

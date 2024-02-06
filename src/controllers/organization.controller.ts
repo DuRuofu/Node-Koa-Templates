@@ -28,23 +28,47 @@ class OrganizationController {
     const { Name, Description } = ctx.request.body;
     // 操作数据库
     const res = await OrganizationService.createOrganization(ctx, Name, Description);
-    // // 返回数据
-    // const newRes = { ...res };
-    // if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
-    // await SUCCESS(ctx, newRes, '添加数据成功');
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '添加成功');
   }
 
   //删
   async delete(ctx: any, next: any) {
-    // // 获取数据
-    // const { ExampleId } = ctx.request.body;
-    // // 数据验证
-    // // 操作数据库
-    // const res = await exampleService.deleteExample(ctx, ExampleId);
-    // // 返回数据
-    // const newRes = { ...res };
-    // if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
-    // await SUCCESS(ctx, newRes, '删除数据成功');
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        OrganizationId: {
+          type: 'string',
+          required: true,
+          message: '组织id不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const { OrganizationId } = ctx.request.body;
+    // 操作数据库
+    const res = await OrganizationService.deleteOrganization(ctx, OrganizationId);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '删除成功');
+  }
+
+  // 查询全部(不分页)
+  async getAllOrganizationList(ctx: any, next: any) {
+    // 操作数据库
+    const res = await OrganizationService.getAllOrganizationList(ctx);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '查询数据成功');
+  }
+
+  // 查询全部(分页)
+  async getOrganizationList(ctx: any, next: any) {
+    // 操作数据库
+    const { Page, PageSize } = ctx.request.body;
+    const res = await OrganizationService.getOrganizationList(ctx, Page, PageSize);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '查询数据成功');
   }
 
   //查

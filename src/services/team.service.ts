@@ -12,6 +12,12 @@ class TeamService {
           Name,
           Description,
         },
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {
@@ -27,6 +33,12 @@ class TeamService {
         data: {
           IsDeleted: true,
         },
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {
@@ -37,7 +49,14 @@ class TeamService {
   // 查询全部(不分页)
   async getAllTeamList(ctx: any) {
     try {
-      const result = await prisma.team.findMany({});
+      const result = await prisma.team.findMany({
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
+      });
       return result;
     } catch (error) {
       await FAIL(ctx, '数据库错误:查询团队数据失败');
@@ -50,6 +69,12 @@ class TeamService {
       const result = await prisma.team.findMany({
         skip: (page - 1) * pageSize,
         take: pageSize,
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {
@@ -62,6 +87,12 @@ class TeamService {
     try {
       const result = await prisma.team.findMany({
         where: { OrganizationId },
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {
@@ -76,6 +107,12 @@ class TeamService {
         where: { OrganizationId },
         skip: (page - 1) * pageSize,
         take: pageSize,
+        select: {
+          TeamId: true,
+          OrganizationId: true,
+          Name: true,
+          Description: true,
+        },
       });
       return result;
     } catch (error) {

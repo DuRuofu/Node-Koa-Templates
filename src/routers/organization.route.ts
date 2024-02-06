@@ -4,13 +4,14 @@ import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/organization' });
 import Controllers from '../controllers/organization.controller';
 
+//#region 添加组织
 /**
  * @swagger
  * /v1/organization/post:
  *   post:
  *     summary: 添加组织
  *     description: 添加组织
- *     tags: [organization]
+ *     tags: [组织管理模块]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
@@ -18,73 +19,150 @@ import Controllers from '../controllers/organization.controller';
  *        description: 组织名称
  *        in: formData
  *        required: true
- *      - name: Name
- *        Description: 组织描述
+ *      - name: Description
+ *        description: 组织描述
  *        in: formData
+ *        required: true
  *     responses:
  *       200:
- *         description:
+ *         description: 添加成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 信息
+ *           data:
+ *             type: object
+ *             description: 数据
  *     security:
  *      - token: {}
  *      - server_auth:
  *        - authorization
  */
+// #endregion
 router.post('/post', Controllers.post);
 
+//#region 添加组织
 /**
  * @swagger
  * /v1/organization/delete:
  *   delete:
- *     summary: organization
- *     description: organization
- *     tags: [organization]
+ *     summary: 删除组织
+ *     description: 删除组织
+ *     tags: [组织管理模块]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
- *      - name: organizationId
- *        description: 测试id
+ *      - name: OrganizationId
+ *        description: 组织名称
  *        in: formData
  *        required: true
  *     responses:
  *       200:
- *         description:
- *
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 信息
+ *           data:
+ *             type: object
+ *             description: 数据
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
  */
+// #endregion
 router.delete('/delete', Controllers.delete);
 
+//#region 获取用户列表(不分页)
 /**
  * @swagger
- * /v1/organization/get:
+ * /v1/organization/getAllAccountList:
  *   get:
- *     summary: organization
- *     description: organization
- *     tags: [organization]
+ *     summary: 获取组织列表(不分页)
+ *     description: 获取组织列表
+ *     tags: [组织管理模块]
  *     responses:
  *       200:
- *         description:
- *
+ *         description: 查询组织列表成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户列表成功
+ *           data:
+ *             type: object
+ *             description: 用户列表信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
  */
-router.get('/get', Controllers.get);
+// #endregion
+router.get('/getAllOrganizationList', Controllers.getAllOrganizationList);
 
+//#region 获取用户列表(分页)
 /**
  * @swagger
- * /v1/organization/put:
- *   put:
- *     summary: organization
- *     description: organization
- *     tags: [organization]
+ * /v1/organization/getOrganizationList:
+ *   get:
+ *     summary: 获取组织列表(分页)
+ *     description: 获取组织列表
+ *     tags: [组织管理模块]
  *     produces:
- *     - application/json
+ *     - application/x-www-form-urlencoded
  *     parameters: # 请求参数：
- *      - name: organizationId
- *        description: 测试id
- *        in: formData
+ *      - name: Page
+ *        description: 当前页数
+ *        in: query
+ *        type: string
+ *        required: true
+ *      - name: PageSize
+ *        description: 每页记录数
+ *        in: query
+ *        type: string
  *        required: true
  *     responses:
  *       200:
- *         description:
- *
+ *         description: 查询组织列表成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户列表成功
+ *           data:
+ *             type: object
+ *             description: 用户列表信息
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
  */
-router.put('/put', Controllers.put);
+// #endregion
+router.get('/getOrganizationList', Controllers.getOrganizationList);
 
 export default router;

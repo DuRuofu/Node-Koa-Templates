@@ -18,7 +18,6 @@ class AccountService {
       });
       return result;
     } catch (error) {
-      console.log(error);
       await FAIL(ctx, '数据库错误:添加用户数据失败');
     }
   }
@@ -47,7 +46,15 @@ class AccountService {
   // 获取所有用户
   async getAllAccountList(ctx: any) {
     try {
-      const result = await prisma.account.findMany();
+      const result = await prisma.account.findMany({
+        select: {
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
+      });
       return result;
     } catch (error) {
       //console.log(error);
@@ -61,6 +68,13 @@ class AccountService {
       const result = await prisma.account.findMany({
         skip: (page - 1) * pageSize,
         take: pageSize,
+        select: {
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
       });
       return result;
     } catch (error) {
