@@ -19,6 +19,11 @@ import Controller from '../controllers/account.controller';
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
+ *      - name: TeamId
+ *        description: 团队id
+ *        in: formData
+ *        datatype: integer
+ *        required: true
  *      - name: Account
  *        description: 账号
  *        in: formData

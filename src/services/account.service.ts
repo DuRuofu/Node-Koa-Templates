@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import Static from 'koa-static';
 const prisma = new PrismaClient();
+import { bigIntToString } from '../utils/util';
 import { FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
 class AccountService {
   // 用户注册
@@ -18,7 +18,7 @@ class AccountService {
       });
       return result;
     } catch (error) {
-      //console.log(error);
+      console.log(error);
       await FAIL(ctx, '数据库错误:添加用户数据失败');
     }
   }
@@ -52,7 +52,6 @@ class AccountService {
     } catch (error) {
       //console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
-      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 
@@ -68,7 +67,6 @@ class AccountService {
       console.log(error);
       //console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
-      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 
@@ -89,7 +87,6 @@ class AccountService {
     } catch (error) {
       //console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
-      //ctx.throw(400, '数据库错误', { code: 400, message: '查询用户数据失败', data: '' });
     }
   }
 }

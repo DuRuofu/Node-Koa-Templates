@@ -10,6 +10,11 @@ class AccountController {
     // 数据校验
     try {
       ctx.verifyParams({
+        TeamId: {
+          type: 'string',
+          required: true,
+          message: '团队Id不能为空',
+        },
         Account: {
           type: 'string',
           required: true,
@@ -33,13 +38,13 @@ class AccountController {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 获取数据
-    const { Account, Password, Email, Phone } = ctx.request.body;
+    const { TeamId, Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
     // 操作数据库
-    const res = await AccountService.createAccount(ctx, Account, Password, Name, Email, Phone);
+    const res = await AccountService.createAccount(ctx, TeamId, Account, Password, Name, Email, Phone);
 
     //返回数据
-    await SUCCESS(ctx, res, '用户注册成功');
+    await SUCCESS(ctx, bigIntToString(res), '用户注册成功');
   }
 
   //用户登录
@@ -78,7 +83,7 @@ class AccountController {
     const res = await AccountService.getAllAccountList(ctx);
 
     // 返回数据
-    await SUCCESS(ctx, res, '查询成功');
+    await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
 
   // 查询用户列表(分页)
@@ -106,7 +111,7 @@ class AccountController {
     // 操作数据库
     const res = await AccountService.getAllAccount(ctx, parseInt(Page), parseInt(Iimit));
     // 返回数据
-    await SUCCESS(ctx, res, '查询成功');
+    await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
 
   // 查询单个用户
@@ -116,7 +121,7 @@ class AccountController {
 
     // 返回数据
     // 返回数据
-    await SUCCESS(ctx, res, '查询成功');
+    await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
 
   // 删除用户

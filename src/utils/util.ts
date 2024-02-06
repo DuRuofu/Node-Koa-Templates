@@ -26,10 +26,21 @@ export const getClientIpAddress = (ctx: Context) => {
   return '0.0.0.0';
 };
 
-// 处理bigint类型的数据
+// 处理bigint类型的数据，将其转换成字符串(重要依赖)
 export function bigIntToString(value: any) {
-  const MAX_SAFE_INTEGER = 2 ** 53 - 1;
-  return value <= MAX_SAFE_INTEGER ? Number(value) : value.toString();
+  // 直接处理基本类型和BigInt类型
+  if (typeof value !== 'object' || value === null) {
+    return typeof value === 'bigint' ? value.toString() : value;
+  }
+  // 处理数组类型
+  if (Array.isArray(value)) {
+    return value.map((item) => bigIntToString(item));
+  }
+  // 处理对象类型
+  for (const key in value) {
+    value[key] = bigIntToString(value[key]);
+  }
+  return value;
 }
 
 // 通过token解析userId
