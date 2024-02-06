@@ -1,37 +1,62 @@
 import { PrismaClient } from '@prisma/client';
-import { DB_FAIL } from '../config/code/responseCode';
+import { FAIL } from '../config/code/responseCode';
 const prisma = new PrismaClient();
 
-class ExampleService {
-  // 增
-  //   async createExample(ctx, Name: string, Password: string, Email: string, Phone: string) {
-  //     try {
-  //       const result = await prisma.example.create({
-  //         data: {
-  //           Name,
-  //           Password,
-  //           Email,
-  //           Phone,
-  //         },
-  //       });
-  //       return result;
-  //     } catch (error) {
-  //       await DB_FAIL(ctx);
-  //     }
-  //   }
-  //   // 删
-  //   async deleteExample(ctx, ExampleId: number) {
-  //     console.log(ExampleId);
-  //     try {
-  //       const result = await prisma.example.delete({
-  //         where: { ExampleId },
-  //       });
-  //       return result;
-  //     } catch (error) {
-  //       console.log(error);
-  //       await DB_FAIL(ctx);
-  //     }
-  //   }
+class OrganizationService {
+  //增
+  async createOrganization(ctx: any, Name: string, Description: string) {
+    try {
+      const result = await prisma.organization.create({
+        data: {
+          Name,
+          Description,
+        },
+      });
+      return result;
+    } catch (error) {
+      // 失败
+      await FAIL(ctx, '数据库错误:添加组织数据失败');
+    }
+  }
+
+  // 删(逻辑删除)
+  async deleteOrganization(ctx: any, OrganizationId: number) {
+    try {
+      const result = await prisma.organization.update({
+        where: { OrganizationId },
+        data: { IsDeleted: true },
+      });
+      return result;
+    } catch (error) {
+      await FAIL(ctx, '数据库错误:删除组织数据失败');
+    }
+  }
+
+  // 查询全部(不分页)
+  async getAllOrganizationList(ctx: any) {
+    try {
+      const result = await prisma.organization.findMany({});
+      return result;
+    } catch (error) {
+      //console.log(error);
+      await FAIL(ctx, '数据库错误:查询组织数据失败');
+    }
+  }
+
+  // 查询全部(分页)
+  async getOrganizationList(ctx: any, page: number, pageSize: number) {
+    try {
+      const result = await prisma.organization.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      });
+      return result;
+    } catch (error) {
+      //console.log(error);
+      await FAIL(ctx, '数据库错误:查询组织数据失败');
+    }
+  }
+
   //   // 改
   //   async updateExample(ctx, ExampleId: number, Name: string, Password: string, Email: string, Phone: string) {
   //     try {
@@ -49,16 +74,6 @@ class ExampleService {
   //       await DB_FAIL(ctx);
   //     }
   //   }
-  //   // 查
-  //   async getExample(ctx) {
-  //     try {
-  //       const result = await prisma.example.findMany({});
-  //       return result;
-  //     } catch (error) {
-  //       //console.log(error);
-  //       await DB_FAIL(ctx);
-  //     }
-  //   }
 }
 
-export default new ExampleService();
+export default new OrganizationService();

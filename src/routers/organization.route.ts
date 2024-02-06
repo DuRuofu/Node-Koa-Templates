@@ -8,20 +8,26 @@ import Controllers from '../controllers/organization.controller';
  * @swagger
  * /v1/organization/post:
  *   post:
- *     summary: organization
- *     description: organization
+ *     summary: 添加组织
+ *     description: 添加组织
  *     tags: [organization]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
  *      - name: Name
- *        description: 名称
+ *        description: 组织名称
  *        in: formData
  *        required: true
+ *      - name: Name
+ *        Description: 组织描述
+ *        in: formData
  *     responses:
  *       200:
  *         description:
- *
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
  */
 router.post('/post', Controllers.post);
 

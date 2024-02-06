@@ -76,6 +76,7 @@ model Team {
 // 用户表
 model Account {
   AccountId   String   @id @default(uuid()) @map("account_id")
+  TeamId      BigInt   @default(0) @map("team_id")
   Account     String   @unique @map("account")
   Password    String   @map("password")
   Name        String   @map("name")

@@ -1,15 +1,33 @@
 //这个文件负责接口的业务逻辑
-import exampleService from '../services/example.service';
+import OrganizationService from '../services/organization.service';
 import { bigIntToString } from '../utils/util';
-import { SUCCESS } from '../config/code/responseCode';
+import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
 //增
-class ExampleController {
+class OrganizationController {
+  // 添加组织
   async post(ctx: any, next: any) {
-    // // 获取数据
-    // const { Name, Password, Email, Phone } = ctx.request.body;
-    // // 数据验证
-    // // 操作数据库
-    // const res = await exampleService.createExample(ctx, Name, Password, Email, Phone);
+    // 数据校验
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        Name: {
+          type: 'string',
+          required: true,
+          message: '组织名称不能为空',
+        },
+        Description: {
+          type: 'string',
+          required: true,
+          message: '组织描述不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const { Name, Description } = ctx.request.body;
+    // 操作数据库
+    const res = await OrganizationService.createOrganization(ctx, Name, Description);
     // // 返回数据
     // const newRes = { ...res };
     // if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
@@ -60,4 +78,4 @@ class ExampleController {
   }
 }
 
-export default new ExampleController();
+export default new OrganizationController();
