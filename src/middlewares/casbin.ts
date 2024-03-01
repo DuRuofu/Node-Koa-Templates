@@ -1,3 +1,5 @@
+//casbin权限管理中间件
+
 import { newEnforcer } from 'casbin';
 import { PrismaAdapter } from 'casbin-prisma-adapter';
 

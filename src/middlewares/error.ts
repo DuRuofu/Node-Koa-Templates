@@ -1,4 +1,5 @@
 // 错误处理中间件
+
 import { ErrorModel } from '../config/code/errCode';
 
 export const errorHandler = async (ctx: any, next: any) => {

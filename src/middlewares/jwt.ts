@@ -1,3 +1,5 @@
+//JWT认证中间件
+
 import { verify } from 'jsonwebtoken';
 import { JWT } from '../config/constant';
 import Koa from 'koa';

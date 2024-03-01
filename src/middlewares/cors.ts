@@ -1,3 +1,5 @@
+// 跨域中间件
+
 import { Context } from 'koa';
 
 export const corsHandler = {

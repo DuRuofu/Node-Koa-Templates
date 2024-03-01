@@ -1,4 +1,5 @@
 //返回统一出口中间件
+
 import { Context, Next } from 'koa';
 
 // 这个middleware用于将ctx.result中的内容最终回传给客户端

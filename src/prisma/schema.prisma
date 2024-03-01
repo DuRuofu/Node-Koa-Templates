@@ -21,33 +21,6 @@ model Example {
   @@map("example")
 }
 
-// // 团队表
-// model Team {
-//   TeamId      BigInt   @id @default(autoincrement()) @map("team_id")
-//   OrganizationId BigInt   @map("organization_id")
-//   Name        String   @map("name")
-//   Description String   @map("description")
-//   IsDeleted   Boolean  @default(false) @map("is_deleted")
-//   CreatedTime DateTime @default(now()) @map("created_time")
-//   UpdatedTime DateTime @updatedAt @map("updated_time")
-
-//   @@map("team")
-// }
-
-// // 团队成员中间表
-// model TeamMember {
-//   TeamMemberId BigInt   @id @default(autoincrement()) @map("team_member_id")
-//   TeamId       BigInt   @map("team_id")
-//   AccountId    BigInt   @map("account_id")
-//   IsDeleted    Boolean  @default(false) @map("is_deleted")
-//   CreatedTime  DateTime @default(now()) @map("created_time")
-//   UpdatedTime  DateTime @updatedAt @map("updated_time")
-
-//   @@map("team_member")
-// }
-
-// CasbinRule
-
 // 组织表
 model Organization {
   OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
@@ -60,7 +33,7 @@ model Organization {
   @@map("organization")
 }
 
-// 团队表
+// 团队(部门)表
 model Team {
   TeamId         BigInt   @id @default(autoincrement()) @map("team_id")
   OrganizationId BigInt   @map("organization_id")
@@ -90,7 +63,7 @@ model Account {
   @@map("account")
 }
 
-// Casbin权限规则仓库
+// Casbin权限规则
 model CasbinRule {
   id    Int     @id @default(autoincrement())
   ptype String
@@ -115,6 +88,18 @@ model Role {
 
   @@map("role")
 }
+
+// 权限表
+model Permission {
+  PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
+  Name         String   @map("name")
+  IsDeleted    Boolean  @default(false) @map("is_deleted")
+  CreatedTime  DateTime @default(now()) @map("created_time")
+  UpdatedTime  DateTime @updatedAt @map("updated_time")
+
+  @@map("permission")
+}
+
 
 //·························废弃··············································//
 
@@ -152,4 +137,31 @@ model Role {
 
 //   @@map("role_permission")
 // }
+
+// // 团队表
+// model Team {
+//   TeamId      BigInt   @id @default(autoincrement()) @map("team_id")
+//   OrganizationId BigInt   @map("organization_id")
+//   Name        String   @map("name")
+//   Description String   @map("description")
+//   IsDeleted   Boolean  @default(false) @map("is_deleted")
+//   CreatedTime DateTime @default(now()) @map("created_time")
+//   UpdatedTime DateTime @updatedAt @map("updated_time")
+
+//   @@map("team")
+// }
+
+// // 团队成员中间表
+// model TeamMember {
+//   TeamMemberId BigInt   @id @default(autoincrement()) @map("team_member_id")
+//   TeamId       BigInt   @map("team_id")
+//   AccountId    BigInt   @map("account_id")
+//   IsDeleted    Boolean  @default(false) @map("is_deleted")
+//   CreatedTime  DateTime @default(now()) @map("created_time")
+//   UpdatedTime  DateTime @updatedAt @map("updated_time")
+
+//   @@map("team_member")
+// }
+
+// CasbinRule
 //·························废弃··············································//
