@@ -21,7 +21,7 @@ model Example {
   @@map("example")
 }
 
-// 组织表
+// 组织表 (to do :加上组织的标签 3.3)
 model Organization {
   OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
   Name           String   @map("name")
@@ -99,6 +99,7 @@ model Permission {
 
   @@map("permission")
 }
+
 
 
 //·························废弃··············································//

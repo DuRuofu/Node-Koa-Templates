@@ -59,6 +59,45 @@ import Controller from '../controllers/account.controller';
 // #endregion
 router.post('/register', Controller.register);
 
+// //#region 用户登陆
+// /**
+//  * @swagger
+//  * /v1/account/login:
+//  *   post:
+//  *     summary: 用户登陆
+//  *     description: 用户登陆
+//  *     tags: [用户模块]
+//  *     produces:
+//  *     - application/json
+//  *     parameters: # 请求参数：
+//  *      - name: Account
+//  *        description: 账号
+//  *        in: formData
+//  *        required: true
+//  *      - name: Password
+//  *        description: 密码
+//  *        in: formData
+//  *        required: true
+//  *     responses:
+//  *       200:
+//  *         description: 用登陆成功
+//  *         schema:
+//  *          type: object
+//  *          properties:
+//  *           code:
+//  *             type: number
+//  *             description: 状态码
+//  *             example: 200
+//  *           massage:
+//  *             type: string
+//  *             description: 登陆信息
+//  *             example: 用户登陆成功
+//  *           data:
+//  *             type: object
+//  *             description: 用户信息
+//  */
+// // #endregion
+
 //#region 用户登陆
 /**
  * @swagger
@@ -67,34 +106,43 @@ router.post('/register', Controller.register);
  *     summary: 用户登陆
  *     description: 用户登陆
  *     tags: [用户模块]
- *     produces:
- *     - application/json
- *     parameters: # 请求参数：
- *      - name: Account
- *        description: 账号
- *        in: formData
- *        required: true
- *      - name: Password
- *        description: 密码
- *        in: formData
- *        required: true
- *     responses:
- *       200:
- *         description: 用登陆成功
- *         schema:
- *          type: object
- *          properties:
- *           code:
- *             type: number
- *             description: 状态码
- *             example: 200
- *           massage:
- *             type: string
- *             description: 登陆信息
- *             example: 用户登陆成功
- *           data:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
  *             type: object
- *             description: 用户信息
+ *             properties:
+ *               Account:
+ *                 type: string
+ *                 description: 用户账号
+ *               Password:
+ *                 type: string
+ *                 description: 用户密码
+ *             example:
+ *               Account: "11"
+ *               Password: "11"
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid email or password
  */
 // #endregion
 router.post('/login', Controller.login);
@@ -270,3 +318,51 @@ router.post('/uploadAvatar');
 // #endregion
 router.post('/updataPassword');
 export default router;
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *             example:
+ *               email: fake@example.com
+ *               password: password1
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid email or password
+ */

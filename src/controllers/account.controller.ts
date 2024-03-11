@@ -49,8 +49,6 @@ class AccountController {
 
   //用户登录
   async login(ctx: any, next: any) {
-    // 获取数据
-    const { Account, Password } = ctx.request.body;
     // 数据校验
     try {
       ctx.verifyParams({
@@ -66,7 +64,8 @@ class AccountController {
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
-
+    // 获取数据
+    const { Account, Password } = ctx.request.body;
     // 操作数据库
     const res = await AccountService.login(ctx, Account, Password);
 
