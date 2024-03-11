@@ -16,87 +16,52 @@ import Controller from '../controllers/account.controller';
  *     summary: 用户注册
  *     description: 用户注册(待完善)
  *     tags: [用户模块]
- *     produces:
- *     - application/json
- *     parameters: # 请求参数：
- *      - name: TeamId
- *        description: 团队id
- *        in: formData
- *        datatype: integer
- *        required: true
- *      - name: Account
- *        description: 账号
- *        in: formData
- *        required: true
- *      - name: Password
- *        description: 密码
- *        in: formData
- *        required: true
- *      - name: Email
- *        description: 邮箱
- *        in: formData
- *      - name: Phone
- *        description: 手机号
- *        in: formData
- *     responses:
- *       200:
- *         description: 用户注册成功
- *         schema:
- *          type: object
- *          properties:
- *           code:
- *             type: number
- *             description: 状态码
- *             example: 200
- *           massage:
- *             type: string
- *             description: 状态信息
- *             example: 用户注册成功
- *           data:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
  *             type: object
- *             description: 用户信息
+ *             properties:
+ *               TeamId:
+ *                 description: 团队id
+ *               Account:
+ *                 description: 用户账号
+ *               Password:
+ *                 description: 用户密码
+ *               Email:
+ *                 description: 用户邮箱
+ *               Phone:
+ *                 description: 用户手机号
+ *             example:
+ *               TeamId: "1"
+ *               Account: "11"
+ *               Password: "11"
+ *               Email: "1"
+ *               Phone: "1"
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                code:
+ *                 type: number
+ *                 description: 状态码
+ *                 example: 200
+ *                massage:
+ *                 type: string
+ *                 description: 注册信息
+ *                 example: 用户注册成功
+ *                data:
+ *                 type: object
+ *                 description: 用户信息
+ *                 example: {"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","TeamId": "126626262","Account": "2626211","Password": "1126262","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}
  */
 // #endregion
 router.post('/register', Controller.register);
-
-// //#region 用户登陆
-// /**
-//  * @swagger
-//  * /v1/account/login:
-//  *   post:
-//  *     summary: 用户登陆
-//  *     description: 用户登陆
-//  *     tags: [用户模块]
-//  *     produces:
-//  *     - application/json
-//  *     parameters: # 请求参数：
-//  *      - name: Account
-//  *        description: 账号
-//  *        in: formData
-//  *        required: true
-//  *      - name: Password
-//  *        description: 密码
-//  *        in: formData
-//  *        required: true
-//  *     responses:
-//  *       200:
-//  *         description: 用登陆成功
-//  *         schema:
-//  *          type: object
-//  *          properties:
-//  *           code:
-//  *             type: number
-//  *             description: 状态码
-//  *             example: 200
-//  *           massage:
-//  *             type: string
-//  *             description: 登陆信息
-//  *             example: 用户登陆成功
-//  *           data:
-//  *             type: object
-//  *             description: 用户信息
-//  */
-// // #endregion
 
 //#region 用户登陆
 /**
@@ -171,8 +136,6 @@ router.post('/login', Controller.login);
  *             description: 用户信息
  *     security:
  *      - token: {}
- *      - server_auth:
- *        - authorization
  */
 // #endregion
 router.delete('/deleteAccount', Controller.deleteAccount);
@@ -262,6 +225,8 @@ router.get('/getAllAccount/:Page/:Iimit', Controller.getAllAccount);
  *     summary: 查询单个用户信息
  *     description: 查询单个用户信息
  *     tags: [用户模块]
+ *     security:
+ *      - token: {}
  *     parameters: # 请求参数：
  *      - name: Id
  *        description: 用户id
@@ -284,10 +249,6 @@ router.get('/getAllAccount/:Page/:Iimit', Controller.getAllAccount);
  *           data:
  *             type: object
  *             description: 用户信息
- *     security:
- *      - token: {}
- *      - server_auth:
- *        - authorization
  */
 // #endregion
 router.get('/getAccount/:Id', Controller.getAccount);
@@ -319,53 +280,6 @@ router.post('/uploadAvatar');
 router.post('/updataPassword');
 export default router;
 
-/**
- * @swagger
- * /auth/login:
- *   post:
- *     summary: Login
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
- *                 format: password
- *             example:
- *               email: fake@example.com
- *               password: password1
- *     responses:
- *       "200":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *                 tokens:
- *                   $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         description: Invalid email or password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *             example:
- *               code: 401
- *               message: Invalid email or password
- */
-
+//Reference:
 //https://blog.csdn.net/qq_40188459/article/details/113772660
 //https://blog.csdn.net/qq_38734862/article/details/107715579
