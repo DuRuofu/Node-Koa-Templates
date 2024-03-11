@@ -104,10 +104,9 @@ class AccountController {
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
-    console.log(ctx.request.query);
     // 数据提取
-    const { Page, Iimit } = ctx.request.query;
-    // 操作数据库
+    const { Page, Iimit } = ctx.params;
+    console.log(ctx.params);
     const res = await AccountService.getAllAccount(ctx, parseInt(Page), parseInt(Iimit));
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
@@ -115,8 +114,22 @@ class AccountController {
 
   // 查询单个用户
   async getAccount(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        Id: {
+          type: 'string',
+          required: true,
+          message: '用户Id不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 数据提取
+    const id = ctx.params.Id;
     // 操作数据库
-    const res = await AccountService.getAccount(ctx);
+    const res = await AccountService.getAccount(ctx, id);
 
     // 返回数据
     // 返回数据

@@ -13,7 +13,8 @@ const swaggerDefinition = {
     title: 'node-koa-templates API', // Title (required)
     version: '1.0.0', // Version (required)
     summary: 'test',
-    description: 'node-koa-templates API接口文档', // Description (optional)
+    description:
+      'token:   Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiI0ZTFiYjNmNS04YzBiLTQ1NzMtOGU2Zi1hYmY5M2JkYzQyMjQiLCJpYXQiOjE3MTAxNTA3MDEsImV4cCI6MTcxMjc0MjcwMX0.3_o-5nKLLnISV_fJ6n_-eAXX2r_S4W_04JFk3rL5RwU', // Description (optional)
     // 开源协议
     license: {
       name: 'Apache 2.0',

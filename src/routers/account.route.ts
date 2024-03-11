@@ -114,10 +114,8 @@ router.post('/register', Controller.register);
  *             type: object
  *             properties:
  *               Account:
- *                 type: string
  *                 description: 用户账号
  *               Password:
- *                 type: string
  *                 description: 用户密码
  *             example:
  *               Account: "11"
@@ -130,19 +128,18 @@ router.post('/register', Controller.register);
  *             schema:
  *               type: object
  *               properties:
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *                 tokens:
- *                   $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         description: Invalid email or password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *             example:
- *               code: 401
- *               message: Invalid email or password
+ *                code:
+ *                 type: number
+ *                 description: 状态码
+ *                 example: 200
+ *                massage:
+ *                 type: string
+ *                 description: 登陆信息
+ *                 example: 用户登陆成功
+ *                data:
+ *                 type: object
+ *                 description: 用户信息
+ *                 example: {"token": "Bearer eyJhbGciOiJIUzIFJ354bxO7Dw"}
  */
 // #endregion
 router.post('/login', Controller.login);
@@ -185,7 +182,7 @@ router.delete('/deleteAccount', Controller.deleteAccount);
  * @swagger
  * /v1/account/getAllAccountList:
  *   get:
- *     summary: 获取用户列表(不分页)
+ *     summary: 获取全部用户列表(不分页)
  *     description: 查询用户列表
  *     tags: [用户模块]
  *     responses:
@@ -216,23 +213,21 @@ router.get('/getAllAccountList', Controller.getAllAccountList);
 //#region 获取用户列表(分页)
 /**
  * @swagger
- * /v1/account/getAllAccount:
+ * /v1/account/getAllAccount/{Page}/{Iimit}:
  *   get:
  *     summary: 获取用户列表(分页)
  *     description: 查询用户列表
  *     tags: [用户模块]
- *     produces:
- *     - application/x-www-form-urlencoded
  *     parameters: # 请求参数：
  *      - name: Page
  *        description: 当前页数
- *        in: query
- *        type: string
+ *        in: path
+ *        type: number
  *        required: true
  *      - name: Iimit
  *        description: 每页记录数
- *        in: query
- *        type: string
+ *        in: path
+ *        type: number
  *        required: true
  *     responses:
  *       200:
@@ -257,16 +252,21 @@ router.get('/getAllAccountList', Controller.getAllAccountList);
  *        - authorization
  */
 // #endregion
-router.get('/getAllAccount', Controller.getAllAccount);
+router.get('/getAllAccount/:Page/:Iimit', Controller.getAllAccount);
 
-//#region 获取单个用户信息
+//#region 获取某用户信息
 /**
  * @swagger
- * /v1/account/getAccount:
+ * /v1/account/getAccount/{Id}:
  *   get:
- *     summary: 查询单个用户
+ *     summary: 查询单个用户信息
  *     description: 查询单个用户信息
  *     tags: [用户模块]
+ *     parameters: # 请求参数：
+ *      - name: Id
+ *        description: 用户id
+ *        in: path
+ *        required: true
  *     responses:
  *       200:
  *         description: 查询用户信息成功
@@ -290,7 +290,7 @@ router.get('/getAllAccount', Controller.getAllAccount);
  *        - authorization
  */
 // #endregion
-router.get('/getAccount', Controller.getAccount);
+router.get('/getAccount/:Id', Controller.getAccount);
 
 //#region 更新用户信息
 /**
@@ -366,3 +366,6 @@ export default router;
  *               code: 401
  *               message: Invalid email or password
  */
+
+//https://blog.csdn.net/qq_40188459/article/details/113772660
+//https://blog.csdn.net/qq_38734862/article/details/107715579

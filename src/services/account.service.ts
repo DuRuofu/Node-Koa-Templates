@@ -85,10 +85,10 @@ class AccountService {
   }
 
   // 获取单个用户
-  async getAccount(ctx: any) {
+  async getAccount(ctx: any, id: string) {
     try {
       const result = await prisma.account.findUnique({
-        where: { AccountId: ctx.state.user.AccountId, IsDeleted: false },
+        where: { AccountId: id, IsDeleted: false },
         select: {
           Account: true,
           Name: true,
