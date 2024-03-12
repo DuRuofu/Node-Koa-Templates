@@ -65,17 +65,22 @@ class AccountService {
   // 分页查询用户
   async getAllAccount(ctx: any, page: number, pageSize: number) {
     try {
-      const result = await prisma.account.findMany({
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        select: {
-          Account: true,
-          Name: true,
-          AvatarUrl: true,
-          Email: true,
-          Phone: true,
-        },
-      });
+      const result = await prisma.$transaction([
+        // 查询数据
+        prisma.account.findMany({
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+          select: {
+            Account: true,
+            Name: true,
+            AvatarUrl: true,
+            Email: true,
+            Phone: true,
+          },
+        }),
+        // 查询总数
+        prisma.account.count(),
+      ]);
       return result;
     } catch (error) {
       console.log(error);

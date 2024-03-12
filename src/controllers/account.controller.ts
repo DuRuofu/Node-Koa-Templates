@@ -106,10 +106,11 @@ class AccountController {
     }
     // 数据提取
     const { page, limit } = ctx.params;
-    console.log(ctx.params);
+    // 操作数据库
     const res = await AccountService.getAllAccount(ctx, parseInt(page), parseInt(limit));
+    const [accounts, totalCount] = res;
     // 返回数据
-    await SUCCESS(ctx, bigIntToString(res), '查询成功');
+    await SUCCESS(ctx, bigIntToString({ total: totalCount, records: accounts }), '查询成功');
   }
 
   // 查询单个用户(id)
