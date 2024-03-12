@@ -100,7 +100,6 @@ router.post('/organizations', Controllers.post);
  *                 type: object
  *                 description: 用户信息
  *                 example: {"OrganizationId": "2","Name": "南方分部","Description": "无","Level": 1,"LevelName": "二级","ParentId": "1","ISDisabled": false,"IsDeleted": true,"CreatedTime": "2024-03-12T04:39:39.869Z","UpdatedTime": "2024-03-12T04:49:45.146Z","CreatedBy": "4e1bb3f5-8c0b-4573-8e6f-abf93bdc4224","UpdatedBy": "4e1bb3f5-8c0b-4573-8e6f-abf93bdc4224"}
-
  *     security:
  *      - token: {}
  */
@@ -140,50 +139,69 @@ router.delete('/organizations', Controllers.delete);
 // #endregion
 router.get('/organizations', Controllers.getOrganizationTrees);
 
-//#region 获取用户列表(分页)
+//#region 获取全部组织列表
 /**
  * @swagger
- * /v1/organization/getOrganizationList:
- *   get:
- *     summary: 获取组织列表(分页)
+ * /organization/organizations/{id}:
+ *   put:
+ *     summary: 获取组织列表(树形数据)
  *     description: 获取组织列表
  *     tags: [组织管理模块]
- *     produces:
- *     - application/x-www-form-urlencoded
- *     parameters: # 请求参数：
- *      - name: Page
- *        description: 当前页数
- *        in: query
- *        type: string
+ *     parameters:
+ *      - name: id
+ *        description: 组织ID
+ *        in: path
+ *        type: number
  *        required: true
- *      - name: PageSize
- *        description: 每页记录数
- *        in: query
- *        type: string
- *        required: true
- *     responses:
- *       200:
- *         description: 查询组织列表成功
- *         schema:
- *          type: object
- *          properties:
- *           code:
- *             type: number
- *             description: 状态码
- *             example: 200
- *           massage:
- *             type: string
- *             description: 查询信息
- *             example: 查询用户列表成功
- *           data:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
  *             type: object
- *             description: 用户列表信息
+ *             properties:
+ *               Name:
+ *                 description: 组织名称
+ *               Description:
+ *                 description: 组织描述
+ *               Level:
+ *                 description: 组织等级
+ *               LevelName:
+ *                 description: 组织等级名称
+ *               ParentId:
+ *                 description: 上级组织id
+ *             example:
+ *               Name: "南方分部"
+ *               Description: "无"
+ *               Level: "1"
+ *               LevelName: "二级"
+ *               ParentId: "1"
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                code:
+ *                 type: number
+ *                 description: 状态码
+ *                 example: 200
+ *                massage:
+ *                 type: string
+ *                 description: 信息
+ *                 example: 更新组织成功
+ *                data:
+ *                 type: object
+ *                 description: 用户信息
+ *                 example: {"OrganizationId": "11","Name": "南方分部","Description": "无","Level": 1,"LevelName": "二级","ParentId": "1","UpdatedBy": "a450ce5f-6df3-42de-ba8f-34241f1462f1","UpdatedTime": "2024-03-12T13:01:06.767Z"}
  *     security:
  *      - token: {}
  *      - server_auth:
  *        - authorization
  */
 // #endregion
-router.get('/getOrganizationList', Controllers.getOrganizationList);
+router.put('/organizations/:id', Controllers.put);
 
 export default router;

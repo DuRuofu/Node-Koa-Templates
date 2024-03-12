@@ -15,11 +15,6 @@ class OrganizationController {
           required: true,
           message: '组织名称不能为空',
         },
-        Description: {
-          type: 'string',
-          required: true,
-          message: '组织描述不能为空',
-        },
         Level: {
           type: 'string',
           required: true,
@@ -82,43 +77,43 @@ class OrganizationController {
     await SUCCESS(ctx, data, '查询数据成功');
   }
 
-  // 查询全部(分页)
-  async getOrganizationList(ctx: any, next: any) {
-    // 操作数据库
-    const { Page, PageSize } = ctx.request.body;
-    const res = await OrganizationService.getOrganizationList(ctx, Page, PageSize);
-    // 返回数据
-    await SUCCESS(ctx, bigIntToString(res), '查询数据成功');
-  }
-
-  //查
-  async get(ctx: any, next: any) {
-    // // 获取数据
-    // // 操作数据库
-    // const res = await exampleService.getExample(ctx);
-    // // 处理bigint类型的数据
-    // res.forEach((val, idx) => {
-    //   if (typeof val.ExampleId === 'bigint') res[idx].ExampleId = bigIntToString(val.ExampleId);
-    // });
-    // await SUCCESS(ctx, res, '查询数据成功');
-  }
-
   //改
   async put(ctx: any, next: any) {
-    // // 获取数据
-    // console.log(ctx.request.body);
-    // // 数据验证
-    // const { AccountId, Name, Password, Email, Phone } = ctx.request.body;
-    // // 操作数据库
-    // const res = await exampleService.updateExample(ctx, AccountId, Name, Password, Email, Phone);
-    // // 返回数据
-    // const newRes = { ...res };
-    // if (typeof res.ExampleId === 'bigint') newRes.ExampleId = bigIntToString(res.ExampleId);
-    // ctx.body = {
-    //   code: 0,
-    //   msg: '删除数据成功',
-    //   data: JSON.stringify(newRes),
-    // };
+    // 数据校验
+    ctx.verifyParams({
+      id: {
+        type: 'string',
+        required: true,
+        message: '组织ID不能为空',
+      },
+      Name: {
+        type: 'string',
+        required: true,
+        message: '组织名称不能为空',
+      },
+      Level: {
+        type: 'string',
+        required: true,
+        message: '组织等级不能为空',
+      },
+      LevelName: {
+        type: 'string',
+        required: true,
+        message: '组织等级名称不能为空',
+      },
+      ParentId: {
+        type: 'string',
+        required: true,
+        message: '上级组织id不能为空',
+      },
+    });
+    // 获取数据
+    const id = ctx.params.id;
+    const { Name, Description, Level, LevelName, ParentId } = ctx.request.body;
+    // 操作数据库
+    const res = await OrganizationService.put(ctx, id, Name, Description, +Level, LevelName, ParentId);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '修改数据成功');
   }
 }
 

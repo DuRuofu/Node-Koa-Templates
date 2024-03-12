@@ -9,6 +9,6 @@ export const corsHandler = {
   exposeHeaders: ['Authorization'],
   maxAge: 5 * 24 * 60 * 60,
   // credentials: true,
-  allowMethods: ['GET', 'POST', 'OPTIONS', 'DELETE'],
+  allowMethods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
 };

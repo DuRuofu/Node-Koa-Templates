@@ -36,7 +36,7 @@ model Organization {
   // 父级组织ID
   ParentId       BigInt   @default(0) @map("parent_id")
   // 是否禁用
-  ISDisabled     Boolean  @default(false) @map("is_disabled")
+  IsDsisabled     Boolean  @default(false) @map("is_disabled")
   // 是否删除
   IsDeleted      Boolean  @default(false) @map("is_deleted")
   // 创建时间

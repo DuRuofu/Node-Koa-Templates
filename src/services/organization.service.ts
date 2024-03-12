@@ -51,6 +51,7 @@ class OrganizationService {
   async getOrganizationTrees(ctx: any) {
     try {
       const result = await prisma.organization.findMany({
+        where: { IsDeleted: false },
         select: {
           OrganizationId: true,
           Name: true,
@@ -58,7 +59,9 @@ class OrganizationService {
           Level: true,
           LevelName: true,
           ParentId: true,
+          IsDsisabled: true,
           CreatedTime: true,
+          UpdatedTime: true,
         },
       });
       return result;
@@ -68,42 +71,36 @@ class OrganizationService {
     }
   }
 
-  // 查询全部 (分页)
-  async getOrganizationList(ctx: any, Page: number, PageSize: number) {
+  // 改
+  async put(ctx: any, id: number, Name: string, Description: string, Level: number, LevelName: string, ParentId: number) {
     try {
-      const result = await prisma.organization.findMany({
-        skip: (Page - 1) * PageSize,
-        take: PageSize,
+      const result = await prisma.organization.update({
+        where: { OrganizationId: id },
+        data: {
+          Name,
+          Description,
+          Level,
+          LevelName,
+          ParentId,
+          UpdatedBy: ctx.state.user.AccountId,
+        },
         select: {
           OrganizationId: true,
           Name: true,
           Description: true,
+          Level: true,
+          LevelName: true,
+          ParentId: true,
+          UpdatedBy: true,
+          UpdatedTime: true,
         },
       });
       return result;
     } catch (error) {
-      //console.log(error);
-      await FAIL(ctx, '数据库错误:查询组织数据失败');
+      console.log(error);
+      await FAIL(ctx, '数据库错误:更新组织数据失败');
     }
   }
-
-  //   // 改
-  //   async updateExample(ctx, ExampleId: number, Name: string, Password: string, Email: string, Phone: string) {
-  //     try {
-  //       const result = await prisma.example.update({
-  //         where: { ExampleId },
-  //         data: {
-  //           Name,
-  //           Password,
-  //           Email,
-  //           Phone,
-  //         },
-  //       });
-  //       return result;
-  //     } catch (error) {
-  //       await DB_FAIL(ctx);
-  //     }
-  //   }
 }
 
 export default new OrganizationService();
