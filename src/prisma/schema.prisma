@@ -24,46 +24,65 @@ model Example {
 // 组织架构表 
 model Organization {
   // 组织ID
-  OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id") 
+  OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
   // 组织名称
   Name           String   @map("name")
   // 组织描述
-  Description    String   @map("description")@default("暂无描述")
+  Description    String   @default("暂无描述") @map("description")
   // 组织层级
-  Level          Int      @default(0) @map("level") 
+  Level          Int      @default(0) @map("level")
   // 层级名称
-  LevelName      String   @map("level_name")@default("暂无层级名称")
+  LevelName      String   @default("暂无层级名称") @map("level_name")
   // 父级组织ID
-  ParentId       BigInt   @default(0) @map("parent_id") 
+  ParentId       BigInt   @default(0) @map("parent_id")
   // 是否禁用
-  ISDisabled     Boolean  @default(false) @map("is_disabled") 
+  ISDisabled     Boolean  @default(false) @map("is_disabled")
   // 是否删除
-  IsDeleted      Boolean  @default(false) @map("is_deleted") 
+  IsDeleted      Boolean  @default(false) @map("is_deleted")
   // 创建时间
-  CreatedTime    DateTime @default(now()) @map("created_time") 
+  CreatedTime    DateTime @default(now()) @map("created_time")
   // 更新时间
-  UpdatedTime    DateTime @updatedAt @map("updated_time") 
+  UpdatedTime    DateTime @updatedAt @map("updated_time")
   // 创建人
-  CreatedBy      String   @map("created_by") 
+  CreatedBy      String   @map("created_by")
   // 更新人
-  UpdatedBy      String   @map("updated_by") 
+  UpdatedBy      String   @map("updated_by")
 
   @@map("organization")
 }
 
 // 用户表
 model Account {
-  AccountId   String   @id @default(uuid()) @map("account_id")
-  OrganizationId      BigInt   @default(0) @map("organization_id")
-  Account     String   @unique @map("account")
-  Password    String   @map("password")
-  Name        String   @map("name")
-  AvatarUrl   String   @default("https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png") @map("avatar_url")
-  Email       String   @unique @default("test@test.com") @map("email")
-  Phone       String   @unique @default("12312341234") @map("phone")
-  IsDeleted   Boolean  @default(false) @map("is_deleted")
-  CreatedTime DateTime @default(now()) @map("created_time")
-  UpdatedTime DateTime @updatedAt @map("updated_time")
+  // 用户ID
+  AccountId      String   @id @default(uuid()) @map("account_id")
+  // 组织ID
+  OrganizationId BigInt   @default(0) @map("organization_id")
+  // 角色ID
+  RoleId         BigInt   @default(0) @map("role_id")
+  // 账号
+  Account        String   @unique @map("account")
+  // 密码
+  Password       String   @map("password")
+  // 用户名
+  Name           String   @map("name")
+  // 头像地址
+  AvatarUrl      String   @default("https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png") @map("avatar_url")
+  // 性别
+  Email          String   @unique @default("test@test.com") @map("email")
+  // 手机号
+  Phone          String   @unique @default("12312341234") @map("phone")
+  // 是否删除
+  IsDeleted      Boolean  @default(false) @map("is_deleted")
+  // 是否禁用
+  IsDisabled     Boolean  @default(false) @map("is_disabled")
+  // 创建时间
+  CreatedTime    DateTime @default(now()) @map("created_time")
+  // 更新时间
+  UpdatedTime    DateTime @updatedAt @map("updated_time")
+  // 创建人
+  CreatedBy      String   @map("created_by")
+  // 更新人
+  UpdatedBy      String   @map("updated_by")
 
   @@map("account")
 }

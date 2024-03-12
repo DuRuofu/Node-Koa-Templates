@@ -32,3 +32,157 @@ export const PublicRouter = [
   /\/account\/register/,
   /\/favicon\.png/,
 ];
+
+// 默认头像列表，注册随机分配
+export const DEFAULT_AVATAR = [
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/1.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/2.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/3.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/4.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/5.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/6.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/7.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/8.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/9.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/10.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/11.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/12.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/13.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/14.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/15.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/16.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/17.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/18.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/19.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/20.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/21.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/22.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/23.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/24.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/25.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/26.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/27.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/28.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/29.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/30.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/31.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/32.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/33.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/34.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/35.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/36.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/37.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/38.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/39.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/40.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/41.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/42.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/43.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/44.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/45.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/46.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/47.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/48.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/49.png',
+  },
+  {
+    image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/50.png',
+  },
+];

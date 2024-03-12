@@ -2,7 +2,7 @@
 import AccountService from '../services/account.service';
 import { bigIntToString } from '../utils/util';
 import { sign } from 'jsonwebtoken';
-import { JWT } from '../config/constant';
+import { JWT, DEFAULT_AVATAR } from '../config/constant';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
 class AccountController {
   //用户注册
@@ -10,10 +10,15 @@ class AccountController {
     // 数据校验
     try {
       ctx.verifyParams({
-        TeamId: {
+        OrganizationId: {
           type: 'string',
           required: true,
           message: '团队Id不能为空',
+        },
+        RoleId: {
+          type: 'string',
+          required: true,
+          message: '角色Id不能为空',
         },
         Account: {
           type: 'string',
@@ -38,11 +43,26 @@ class AccountController {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 获取数据
-    const { TeamId, Account, Password, Email, Phone } = ctx.request.body;
+    const { OrganizationId, RoleId, Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
+    let CreatedBy = 'self';
+    if (ctx.state.user && ctx.state.user.AccountId !== undefined) {
+      CreatedBy = ctx.state.user.AccountId;
+    }
+    const AvatarUrl: string = DEFAULT_AVATAR[Math.floor(Math.random() * 50)].image;
     // 操作数据库
-    const res = await AccountService.createAccount(ctx, TeamId, Account, Password, Name, Email, Phone);
-
+    const res = await AccountService.createAccount(
+      ctx,
+      OrganizationId,
+      RoleId,
+      Account,
+      Password,
+      Name,
+      AvatarUrl,
+      Email,
+      Phone,
+      CreatedBy
+    );
     //返回数据
     await SUCCESS(ctx, bigIntToString(res), '用户注册成功');
   }

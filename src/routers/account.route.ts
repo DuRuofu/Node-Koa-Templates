@@ -23,8 +23,10 @@ import Controller from '../controllers/account.controller';
  *           schema:
  *             type: object
  *             properties:
- *               TeamId:
+ *               OrganizationId:
  *                 description: 团队id
+ *               RoleId:
+ *                 description: 角色id
  *               Account:
  *                 description: 用户账号
  *               Password:
@@ -34,11 +36,12 @@ import Controller from '../controllers/account.controller';
  *               Phone:
  *                 description: 用户手机号
  *             example:
- *               TeamId: "1"
- *               Account: "11"
- *               Password: "11"
- *               Email: "1"
- *               Phone: "1"
+ *               OrganizationId: "1"
+ *               RoleId: "1"
+ *               Account: "1234567"
+ *               Password: "3.1415926"
+ *               Email: "123344@11.c0m"
+ *               Phone: "12912781727818"
  *     responses:
  *       "200":
  *         description: OK
@@ -58,7 +61,7 @@ import Controller from '../controllers/account.controller';
  *                data:
  *                 type: object
  *                 description: 用户信息
- *                 example: {"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","TeamId": "126626262","Account": "2626211","Password": "1126262","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}
+ *                 example: {"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","OrganizationId": "126626262","Account": "2626211","Password": "1126262","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}
  */
 // #endregion
 router.post('/register', Controller.register);

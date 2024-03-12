@@ -1,19 +1,33 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { bigIntToString } from '../utils/util';
 import { FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
 class AccountService {
   // 用户注册
-  async createAccount(ctx: any, OrganizationId: number, Account: string, Password: string, Name: string, Email: string, Phone: string) {
+  async createAccount(
+    ctx: any,
+    OrganizationId: number,
+    RoleId: number,
+    Account: string,
+    Password: string,
+    Name: string,
+    AvatarUrl: string,
+    Email: string,
+    Phone: string,
+    CreatedBy: string
+  ) {
     try {
       const result = await prisma.account.create({
         data: {
           OrganizationId,
+          RoleId,
           Account,
           Password,
           Name,
+          AvatarUrl,
           Email,
           Phone,
+          CreatedBy: CreatedBy,
+          UpdatedBy: CreatedBy,
         },
       });
       return result;
