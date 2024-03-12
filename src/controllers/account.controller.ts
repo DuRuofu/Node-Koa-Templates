@@ -112,7 +112,7 @@ class AccountController {
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
 
-  // 查询单个用户
+  // 查询单个用户(id)
   async getAccount(ctx: any, next: any) {
     // 数据校验
     try {
@@ -132,6 +132,16 @@ class AccountController {
     const res = await AccountService.getAccount(ctx, id);
 
     // 返回数据
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '查询成功');
+  }
+
+  // 查询单个用户(token)
+  async getSelfAccount(ctx: any, next: any) {
+    // 数据提取
+    const id = ctx.state.user.AccountId;
+    // 操作数据库
+    const res = await AccountService.getAccount(ctx, id);
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }

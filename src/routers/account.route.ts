@@ -217,12 +217,12 @@ router.get('/accounts', Controller.getAllAccountList);
 // #endregion
 router.get('/accounts/:page/:limit', Controller.getAllAccount);
 
-//#region 获取某用户信息
+//#region 获取某用户信息(id验证)
 /**
  * @swagger
  * /account/accounts/{id}:
  *   get:
- *     summary: 查询单个用户信息
+ *     summary: 查询单个用户信息(id验证)
  *     description: 查询单个用户信息
  *     tags: [用户模块]
  *     security:
@@ -252,6 +252,37 @@ router.get('/accounts/:page/:limit', Controller.getAllAccount);
  */
 // #endregion
 router.get('/accounts/:id', Controller.getAccount);
+
+//#region 获取某用户信息(token验证)
+/**
+ * @swagger
+ * /account/account:
+ *   get:
+ *     summary: 查询单个用户信息(token验证)
+ *     description: 查询单个用户信息
+ *     tags: [用户模块]
+ *     security:
+ *      - token: {}
+ *     responses:
+ *       200:
+ *         description: 查询用户信息成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 查询用户信息成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.get('/account', Controller.getSelfAccount);
 
 //#region 更新用户信息
 /**
