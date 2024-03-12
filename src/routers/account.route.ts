@@ -11,7 +11,7 @@ import Controller from '../controllers/account.controller';
 //#region 用户注册
 /**
  * @swagger
- * /v1/account/register:
+ * /account/register:
  *   post:
  *     summary: 用户注册
  *     description: 用户注册(待完善)
@@ -66,7 +66,7 @@ router.post('/register', Controller.register);
 //#region 用户登陆
 /**
  * @swagger
- * /v1/account/login:
+ * /account/login:
  *   post:
  *     summary: 用户登陆
  *     description: 用户登陆
@@ -112,7 +112,7 @@ router.post('/login', Controller.login);
 //#region 删除用户
 /**
  * @swagger
- * /v1/account/accounts:
+ * /account/accounts:
  *   delete:
  *     summary: 删除某个用户 (待开发)
  *     description: 删除某个用户
@@ -143,7 +143,7 @@ router.delete('/accounts', Controller.deleteAccount);
 //#region 获取用户列表(不分页)
 /**
  * @swagger
- * /v1/account/accounts:
+ * /account/accounts:
  *   get:
  *     summary: 获取全部用户列表(不分页)
  *     description: 查询用户列表
@@ -176,7 +176,7 @@ router.get('/accounts', Controller.getAllAccountList);
 //#region 获取用户列表(分页)
 /**
  * @swagger
- * /v1/account/accounts/{page}/{limit}:
+ * /account/accounts/{page}/{limit}:
  *   get:
  *     summary: 获取用户列表(分页)
  *     description: 查询用户列表
@@ -220,7 +220,7 @@ router.get('/accounts/:page/:limit', Controller.getAllAccount);
 //#region 获取某用户信息
 /**
  * @swagger
- * /v1/account/accounts/{id}:
+ * /account/accounts/{id}:
  *   get:
  *     summary: 查询单个用户信息
  *     description: 查询单个用户信息
@@ -256,7 +256,7 @@ router.get('/accounts/:id', Controller.getAccount);
 //#region 更新用户信息
 /**
  * @swagger
- * /v1/account/accounts/{id}:
+ * /account/accounts/{id}:
  *   put:
  *     summary: 更新用户信息 (待开发)
  *     description: 更新用户信息
@@ -269,7 +269,7 @@ router.put('/accounts/:id');
 //#region 修改用户密码
 /**
  * @swagger
- * /v1/account/accounts/{id}:
+ * /account/accounts/{id}:
  *   patch:
  *     summary: 修改用户密码 (待开发)
  *     description: 修改用户密码

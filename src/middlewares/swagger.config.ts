@@ -17,8 +17,8 @@ const swaggerDefinition = {
       'token:   Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBY2NvdW50SWQiOiI0ZTFiYjNmNS04YzBiLTQ1NzMtOGU2Zi1hYmY5M2JkYzQyMjQiLCJpYXQiOjE3MTAxNTA3MDEsImV4cCI6MTcxMjc0MjcwMX0.3_o-5nKLLnISV_fJ6n_-eAXX2r_S4W_04JFk3rL5RwU', // Description (optional)
     // 开源协议
     license: {
-      name: 'Apache 2.0',
-      url: 'http://www.apache.org/licenses/LICENSE-2.0.html',
+      name: 'MIT',
+      url: 'https://github.com/saisilinus/node-express-mongoose-typescript-boilerplate.git',
     },
     contact: {
       name: 'API Support',
@@ -26,14 +26,17 @@ const swaggerDefinition = {
       email: 'duruofu@qq.com',
     },
   },
-
-  // host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
-  // basePath: '/v1', // Base path (optional)
-  // favicon: '/favicon.png', // default favicon
-  // customCSS: `h1 { color: red }`, // Add Custom CSS on the html
-
+  // 定义服务器
+  servers: [
+    {
+      url: `http://${AddressIp.address()}:${PORT.http}/v1`,
+      description: 'API V1',
+    },
+  ],
   // 安全
   components: {
+    schemas: {},
+    responses: {},
     parameters: {},
     securitySchemes: {
       token: {
