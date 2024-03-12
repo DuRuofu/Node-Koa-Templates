@@ -27,10 +27,10 @@ const swaggerDefinition = {
     },
   },
 
-  host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
-  basePath: '/', // Base path (optional)
-  favicon: '/favicon.png', // default favicon
-  customCSS: `h1 { color: red }`, // Add Custom CSS on the html
+  // host: `${AddressIp.address()}:${PORT.http}`, // Host (optional)
+  // basePath: '/v1', // Base path (optional)
+  // favicon: '/favicon.png', // default favicon
+  // customCSS: `h1 { color: red }`, // Add Custom CSS on the html
 
   // 安全
   components: {

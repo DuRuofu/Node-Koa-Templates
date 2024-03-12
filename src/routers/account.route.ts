@@ -2,7 +2,7 @@
  * @swagger
  * tags:
  *   name: 用户模块
- *   description: 用户管理模块
+ *   d8escription: 用户管理模块
  */
 import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/account' });
@@ -112,7 +112,7 @@ router.post('/login', Controller.login);
 //#region 删除用户
 /**
  * @swagger
- * /v1/account/deleteAccount:
+ * /v1/account/accounts:
  *   delete:
  *     summary: 删除某个用户 (待开发)
  *     description: 删除某个用户
@@ -138,12 +138,12 @@ router.post('/login', Controller.login);
  *      - token: {}
  */
 // #endregion
-router.delete('/deleteAccount', Controller.deleteAccount);
+router.delete('/accounts', Controller.deleteAccount);
 
 //#region 获取用户列表(不分页)
 /**
  * @swagger
- * /v1/account/getAllAccountList:
+ * /v1/account/accounts:
  *   get:
  *     summary: 获取全部用户列表(不分页)
  *     description: 查询用户列表
@@ -171,23 +171,23 @@ router.delete('/deleteAccount', Controller.deleteAccount);
  *        - authorization
  */
 // #endregion
-router.get('/getAllAccountList', Controller.getAllAccountList);
+router.get('/accounts', Controller.getAllAccountList);
 
 //#region 获取用户列表(分页)
 /**
  * @swagger
- * /v1/account/getAllAccount/{Page}/{Iimit}:
+ * /v1/account/accounts/{page}/{limit}:
  *   get:
  *     summary: 获取用户列表(分页)
  *     description: 查询用户列表
  *     tags: [用户模块]
  *     parameters: # 请求参数：
- *      - name: Page
+ *      - name: page
  *        description: 当前页数
  *        in: path
  *        type: number
  *        required: true
- *      - name: Iimit
+ *      - name: limit
  *        description: 每页记录数
  *        in: path
  *        type: number
@@ -215,12 +215,12 @@ router.get('/getAllAccountList', Controller.getAllAccountList);
  *        - authorization
  */
 // #endregion
-router.get('/getAllAccount/:Page/:Iimit', Controller.getAllAccount);
+router.get('/accounts/:page/:limit', Controller.getAllAccount);
 
 //#region 获取某用户信息
 /**
  * @swagger
- * /v1/account/getAccount/{Id}:
+ * /v1/account/accounts/{id}:
  *   get:
  *     summary: 查询单个用户信息
  *     description: 查询单个用户信息
@@ -251,33 +251,33 @@ router.get('/getAllAccount/:Page/:Iimit', Controller.getAllAccount);
  *             description: 用户信息
  */
 // #endregion
-router.get('/getAccount/:Id', Controller.getAccount);
+router.get('/accounts/:id', Controller.getAccount);
 
 //#region 更新用户信息
 /**
  * @swagger
- * /v1/account/uploadAvatar:
- *   post:
+ * /v1/account/accounts/{id}:
+ *   put:
  *     summary: 更新用户信息 (待开发)
  *     description: 更新用户信息
  *     tags: [用户模块]
  *
  */
 // #endregion
-router.post('/uploadAvatar');
+router.put('/accounts/:id');
 
 //#region 修改用户密码
 /**
  * @swagger
- * /v1/account/updataPassword:
- *   post:
+ * /v1/account/accounts/{id}:
+ *   patch:
  *     summary: 修改用户密码 (待开发)
  *     description: 修改用户密码
  *     tags: [用户模块]
  *
  */
 // #endregion
-router.post('/updataPassword');
+router.patch('/accounts/:id');
 export default router;
 
 //Reference:

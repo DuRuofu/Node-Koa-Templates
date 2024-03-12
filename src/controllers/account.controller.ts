@@ -90,12 +90,12 @@ class AccountController {
     // 数据校验
     try {
       ctx.verifyParams({
-        Page: {
+        page: {
           type: 'string',
           required: true,
           message: '当前页数不能为空',
         },
-        Iimit: {
+        limit: {
           type: 'string',
           required: true,
           message: '每页记录数不能为空',
@@ -105,9 +105,9 @@ class AccountController {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 数据提取
-    const { Page, Iimit } = ctx.params;
+    const { page, limit } = ctx.params;
     console.log(ctx.params);
-    const res = await AccountService.getAllAccount(ctx, parseInt(Page), parseInt(Iimit));
+    const res = await AccountService.getAllAccount(ctx, parseInt(page), parseInt(limit));
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
@@ -117,17 +117,17 @@ class AccountController {
     // 数据校验
     try {
       ctx.verifyParams({
-        Id: {
+        id: {
           type: 'string',
           required: true,
-          message: '用户Id不能为空',
+          message: '用户id不能为空',
         },
       });
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 数据提取
-    const id = ctx.params.Id;
+    const id = ctx.params.id;
     // 操作数据库
     const res = await AccountService.getAccount(ctx, id);
 
