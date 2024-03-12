@@ -20,20 +20,37 @@ class OrganizationController {
           required: true,
           message: '组织描述不能为空',
         },
+        Level: {
+          type: 'string',
+          required: true,
+          message: '组织等级不能为空',
+        },
+        LevelName: {
+          type: 'string',
+          required: true,
+          message: '组织等级名称不能为空',
+        },
+        ParentId: {
+          type: 'string',
+          required: true,
+          message: '上级组织id不能为空',
+        },
       });
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 获取数据
-    const { Name, Description } = ctx.request.body;
+    const { Name, Description, Level, LevelName, ParentId } = ctx.request.body;
     // 操作数据库
-    const res = await OrganizationService.createOrganization(ctx, Name, Description);
+    const res = await OrganizationService.createOrganization(ctx, Name, Description, +Level, LevelName, ParentId);
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '添加成功');
   }
 
   //删
   async delete(ctx: any, next: any) {
+    console.log('111');
+    console.log(ctx.request.body);
     // 数据校验
     try {
       ctx.verifyParams({
@@ -46,6 +63,8 @@ class OrganizationController {
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
+    console.log('111');
+    console.log(ctx.request.body);
     // 获取数据
     const { OrganizationId } = ctx.request.body;
     // 操作数据库

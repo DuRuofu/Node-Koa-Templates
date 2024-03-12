@@ -4,11 +4,11 @@ import { bigIntToString } from '../utils/util';
 import { FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
 class AccountService {
   // 用户注册
-  async createAccount(ctx: any, TeamId: number, Account: string, Password: string, Name: string, Email: string, Phone: string) {
+  async createAccount(ctx: any, OrganizationId: number, Account: string, Password: string, Name: string, Email: string, Phone: string) {
     try {
       const result = await prisma.account.create({
         data: {
-          TeamId,
+          OrganizationId,
           Account,
           Password,
           Name,

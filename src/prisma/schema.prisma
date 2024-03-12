@@ -21,35 +21,40 @@ model Example {
   @@map("example")
 }
 
-// 组织表 (to do :加上组织的标签 3.3)
+// 组织架构表 
 model Organization {
-  OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id")
+  // 组织ID
+  OrganizationId BigInt   @id @default(autoincrement()) @map("organization_id") 
+  // 组织名称
   Name           String   @map("name")
-  Description    String   @map("description")
-  IsDeleted      Boolean  @default(false) @map("is_deleted")
-  CreatedTime    DateTime @default(now()) @map("created_time")
-  UpdatedTime    DateTime @updatedAt @map("updated_time")
+  // 组织描述
+  Description    String   @map("description")@default("暂无描述")
+  // 组织层级
+  Level          Int      @default(0) @map("level") 
+  // 层级名称
+  LevelName      String   @map("level_name")@default("暂无层级名称")
+  // 父级组织ID
+  ParentId       BigInt   @default(0) @map("parent_id") 
+  // 是否禁用
+  ISDisabled     Boolean  @default(false) @map("is_disabled") 
+  // 是否删除
+  IsDeleted      Boolean  @default(false) @map("is_deleted") 
+  // 创建时间
+  CreatedTime    DateTime @default(now()) @map("created_time") 
+  // 更新时间
+  UpdatedTime    DateTime @updatedAt @map("updated_time") 
+  // 创建人
+  CreatedBy      String   @map("created_by") 
+  // 更新人
+  UpdatedBy      String   @map("updated_by") 
 
   @@map("organization")
-}
-
-// 团队(部门)表
-model Team {
-  TeamId         BigInt   @id @default(autoincrement()) @map("team_id")
-  OrganizationId BigInt   @map("organization_id")
-  Name           String   @map("name")
-  Description    String   @map("description")
-  IsDeleted      Boolean  @default(false) @map("is_deleted")
-  CreatedTime    DateTime @default(now()) @map("created_time")
-  UpdatedTime    DateTime @updatedAt @map("updated_time")
-
-  @@map("team")
 }
 
 // 用户表
 model Account {
   AccountId   String   @id @default(uuid()) @map("account_id")
-  TeamId      BigInt   @default(0) @map("team_id")
+  OrganizationId      BigInt   @default(0) @map("organization_id")
   Account     String   @unique @map("account")
   Password    String   @map("password")
   Name        String   @map("name")
@@ -99,8 +104,6 @@ model Permission {
 
   @@map("permission")
 }
-
-
 
 //·························废弃··············································//
 

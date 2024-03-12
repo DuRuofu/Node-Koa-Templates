@@ -4,17 +4,27 @@ const prisma = new PrismaClient();
 
 class OrganizationService {
   //增
-  async createOrganization(ctx: any, Name: string, Description: string) {
+  async createOrganization(ctx: any, Name: string, Description: string, Level: number, LevelName: string, ParentId: number) {
     try {
       const result = await prisma.organization.create({
         data: {
           Name,
           Description,
+          Level,
+          LevelName,
+          ParentId,
+          CreatedBy: ctx.state.user.AccountId,
+          UpdatedBy: ctx.state.user.AccountId,
         },
         select: {
           OrganizationId: true,
           Name: true,
           Description: true,
+          Level: true,
+          LevelName: true,
+          ParentId: true,
+          CreatedBy: true,
+          CreatedTime: true,
         },
       });
       return result;
