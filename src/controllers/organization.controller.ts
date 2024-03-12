@@ -73,12 +73,13 @@ class OrganizationController {
     await SUCCESS(ctx, bigIntToString(res), '删除成功');
   }
 
-  // 查询全部(不分页)
-  async getAllOrganizationList(ctx: any, next: any) {
+  // 查询全部(树型数据)
+  async getOrganizationTrees(ctx: any, next: any) {
     // 操作数据库
-    const res = await OrganizationService.getAllOrganizationList(ctx);
+    const res = await OrganizationService.getOrganizationTrees(ctx);
+    const data = buildOrganizationTree(bigIntToString(res));
     // 返回数据
-    await SUCCESS(ctx, bigIntToString(res), '查询数据成功');
+    await SUCCESS(ctx, data, '查询数据成功');
   }
 
   // 查询全部(分页)
@@ -119,6 +120,42 @@ class OrganizationController {
     //   data: JSON.stringify(newRes),
     // };
   }
+}
+
+// 工具函数:构建部门树型数据
+function buildOrganizationTree(data: any) {
+  // 将数据转换为以OrganizationId为key的对象
+  const idMap = {};
+  data.forEach((item: any) => {
+    idMap[item.OrganizationId] = { ...item, children: [] };
+  });
+
+  // 构建树形结构
+  const tree = [];
+  data.forEach((item: any) => {
+    if (item.ParentId && idMap[item.ParentId]) {
+      idMap[item.ParentId].children.push(idMap[item.OrganizationId]);
+    } else {
+      tree.push(idMap[item.OrganizationId]);
+    }
+  });
+
+  // 遍历树，删除子节点为空的情况
+  const removeEmptyChildren = (node: any) => {
+    if (node.children.length === 0) {
+      delete node.children;
+    } else {
+      node.children.forEach((child: any) => {
+        removeEmptyChildren(child);
+      });
+    }
+  };
+
+  tree.forEach((item: any) => {
+    removeEmptyChildren(item);
+  });
+
+  return tree;
 }
 
 export default new OrganizationController();

@@ -110,9 +110,9 @@ router.delete('/organizations', Controllers.delete);
 //#region 获取全部组织列表
 /**
  * @swagger
- * /v1/organization/organizations:
+ * /organization/organizations:
  *   get:
- *     summary: 获取组织列表(不分页)
+ *     summary: 获取组织列表(树形数据)
  *     description: 获取组织列表
  *     tags: [组织管理模块]
  *     responses:
@@ -138,7 +138,7 @@ router.delete('/organizations', Controllers.delete);
  *        - authorization
  */
 // #endregion
-router.get('/organizations', Controllers.getAllOrganizationList);
+router.get('/organizations', Controllers.getOrganizationTrees);
 
 //#region 获取用户列表(分页)
 /**

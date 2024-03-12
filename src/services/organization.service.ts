@@ -47,14 +47,18 @@ class OrganizationService {
     }
   }
 
-  // 查询全部(不分页)
-  async getAllOrganizationList(ctx: any) {
+  // 查询全部(树型数据)
+  async getOrganizationTrees(ctx: any) {
     try {
       const result = await prisma.organization.findMany({
         select: {
           OrganizationId: true,
           Name: true,
           Description: true,
+          Level: true,
+          LevelName: true,
+          ParentId: true,
+          CreatedTime: true,
         },
       });
       return result;
