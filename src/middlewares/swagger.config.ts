@@ -1,6 +1,7 @@
 // swaggerAPI配置文件  参考：https://swagger.io/specification/
 
 import path from 'path';
+import fs from 'fs';
 import swaggerJSDoc from 'swagger-jsdoc';
 import AddressIp from 'ip';
 import { PORT } from '../config/constant';
@@ -54,4 +55,7 @@ const options = {
 };
 
 const jsonSpc = swaggerJSDoc(options);
+
+fs.writeFileSync('src/config/swagger.json', JSON.stringify(jsonSpc, null, 2));
+
 export default jsonSpc;

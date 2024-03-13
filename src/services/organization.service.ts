@@ -60,7 +60,7 @@ class OrganizationService {
           Level: true,
           LevelName: true,
           ParentId: true,
-          IsDsisabled: true,
+          IsDisabled: true,
           CreatedTime: true,
           UpdatedTime: true,
         },
@@ -81,7 +81,7 @@ class OrganizationService {
     Level: number,
     LevelName: string,
     ParentId: number,
-    IsDsisabled: boolean
+    IsDisabled: boolean
   ) {
     try {
       const result = await prisma.organization.update({
@@ -92,7 +92,7 @@ class OrganizationService {
           Level,
           LevelName,
           ParentId,
-          IsDsisabled,
+          IsDisabled,
           UpdatedBy: ctx.state.user.AccountId,
         },
         select: {

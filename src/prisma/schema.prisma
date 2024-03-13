@@ -36,7 +36,7 @@ model Organization {
   // 父级组织ID
   ParentId       BigInt   @default(0) @map("parent_id")
   // 是否禁用
-  IsDsisabled     Boolean  @default(false) @map("is_disabled")
+  IsDisabled    Boolean  @default(false) @map("is_disabled")
   // 是否删除
   IsDeleted      Boolean  @default(false) @map("is_deleted")
   // 创建时间
@@ -87,6 +87,32 @@ model Account {
   @@map("account")
 }
 
+// 角色表(无角色继承)
+model Role {
+  // 角色ID
+  RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
+  // 角色名称
+  Name        String   @map("name")
+  // 角色值
+  Value       String   @unique @map("value")
+  // 角色描述
+  Description String   @default("暂无描述") @map("description")
+  // 是否禁用
+  IsDisabled  Boolean  @default(false) @map("is_disabled")
+  // 是否删除
+  IsDeleted   Boolean  @default(false) @map("is_deleted")
+  // 创建时间
+  CreatedTime DateTime @default(now()) @map("created_time")
+  // 更新时间
+  UpdatedTime DateTime @updatedAt @map("updated_time")
+  // 创建人
+  CreatedBy   String   @map("created_by")
+  // 更新人
+  UpdatedBy   String   @map("updated_by")
+
+  @@map("role")
+}
+
 // Casbin权限规则
 model CasbinRule {
   id    Int     @id @default(autoincrement())
@@ -99,18 +125,6 @@ model CasbinRule {
   v5    String?
 
   @@map("casbin_rule")
-}
-
-// 角色表
-model Role {
-  RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
-  Name        String   @map("name")
-  description String   @map("description")
-  IsDeleted   Boolean  @default(false) @map("is_deleted")
-  CreatedTime DateTime @default(now()) @map("created_time")
-  UpdatedTime DateTime @updatedAt @map("updated_time")
-
-  @@map("role")
 }
 
 // 权限表

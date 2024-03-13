@@ -2,6 +2,7 @@ build/
 node_modules/
 package-lock.json
 README.md
+*swagger.json
 */docs/
 **/policy.csv
 **/casbin.model.conf

@@ -105,10 +105,11 @@ class OrganizationController {
     });
     // 获取数据
     const id = ctx.params.id;
-    const { Name, Description, Level, LevelName, ParentId, IsDsisabled } = ctx.request.body;
-    console.log('IsDeleted:', IsDsisabled);
+    const { Name, Description, Level, LevelName, ParentId, IsDisabled } = ctx.request.body;
+    console.log('IsDeleted:', IsDisabled);
+    console.log('!IsDeleted:', !IsDisabled);
     // 操作数据库
-    const res = await OrganizationService.put(ctx, id, Name, Description, +Level, LevelName, ParentId, Boolean(IsDsisabled));
+    const res = await OrganizationService.put(ctx, id, Name, Description, +Level, LevelName, ParentId, parseInt(IsDisabled, 10) !== 0);
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '修改数据成功');
   }
