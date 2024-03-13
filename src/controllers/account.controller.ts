@@ -45,11 +45,14 @@ class AccountController {
     // 获取数据
     const { OrganizationId, RoleId, Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
+    // 生成操作人
     let CreatedBy = 'self';
     if (ctx.state.user && ctx.state.user.AccountId !== undefined) {
       CreatedBy = ctx.state.user.AccountId;
     }
-    const AvatarUrl: string = DEFAULT_AVATAR[Math.floor(Math.random() * 50)].image;
+    // 生成默认头像
+    const randomIndex = Math.floor(Math.random() * DEFAULT_AVATAR.length);
+    const AvatarUrl: string = DEFAULT_AVATAR[randomIndex].image;
     // 操作数据库
     const res = await AccountService.createAccount(
       ctx,

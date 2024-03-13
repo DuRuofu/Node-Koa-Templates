@@ -39,17 +39,15 @@ class OrganizationController {
     // 操作数据库
     const res = await OrganizationService.createOrganization(ctx, Name, Description, +Level, LevelName, ParentId);
     // 返回数据
-    await SUCCESS(ctx, bigIntToString(res), '添加成功');
+    await SUCCESS(ctx, bigIntToString(res), '添加组织成功');
   }
 
   //删
   async delete(ctx: any, next: any) {
-    console.log('111');
-    console.log(ctx.request.body);
     // 数据校验
     try {
       ctx.verifyParams({
-        OrganizationId: {
+        id: {
           type: 'string',
           required: true,
           message: '组织id不能为空',
@@ -58,14 +56,12 @@ class OrganizationController {
     } catch (error) {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
-    console.log('111');
-    console.log(ctx.request.body);
     // 获取数据
-    const { OrganizationId } = ctx.request.body;
+    const OrganizationId = ctx.params.id;
     // 操作数据库
     const res = await OrganizationService.deleteOrganization(ctx, OrganizationId);
     // 返回数据
-    await SUCCESS(ctx, bigIntToString(res), '删除成功');
+    await SUCCESS(ctx, bigIntToString(res), '删除组织成功');
   }
 
   // 查询全部(树型数据)
@@ -109,9 +105,10 @@ class OrganizationController {
     });
     // 获取数据
     const id = ctx.params.id;
-    const { Name, Description, Level, LevelName, ParentId } = ctx.request.body;
+    const { Name, Description, Level, LevelName, ParentId, IsDsisabled } = ctx.request.body;
+    console.log('IsDeleted:', IsDsisabled);
     // 操作数据库
-    const res = await OrganizationService.put(ctx, id, Name, Description, +Level, LevelName, ParentId);
+    const res = await OrganizationService.put(ctx, id, Name, Description, +Level, LevelName, ParentId, Boolean(IsDsisabled));
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '修改数据成功');
   }

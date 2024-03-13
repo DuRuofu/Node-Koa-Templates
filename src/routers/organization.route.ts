@@ -66,20 +66,17 @@ router.post('/organizations', Controllers.post);
 //#region 删除组织
 /**
  * @swagger
- * /organization/organizations:
+ * /organization/organizations/{id}:
  *   delete:
  *     summary: 删除组织
  *     description: 删除组织
  *     tags: [组织管理模块]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               OrganizationId:
- *                 description: 组织ID
+ *     parameters:
+ *      - name: id
+ *        description: 组织ID
+ *        in: path
+ *        type: number
+ *        required: true
  *     responses:
  *       "200":
  *         description: OK
@@ -104,7 +101,7 @@ router.post('/organizations', Controllers.post);
  *      - token: {}
  */
 // #endregion
-router.delete('/organizations', Controllers.delete);
+router.delete('/organizations/:id', Controllers.delete);
 
 //#region 获取全部组织列表
 /**
@@ -139,13 +136,13 @@ router.delete('/organizations', Controllers.delete);
 // #endregion
 router.get('/organizations', Controllers.getOrganizationTrees);
 
-//#region 获取全部组织列表
+//#region 修改组织
 /**
  * @swagger
  * /organization/organizations/{id}:
  *   put:
- *     summary: 获取组织列表(树形数据)
- *     description: 获取组织列表
+ *     summary: 修改组织
+ *     description: 修改组织
  *     tags: [组织管理模块]
  *     parameters:
  *      - name: id

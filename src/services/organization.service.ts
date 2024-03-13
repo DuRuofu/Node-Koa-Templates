@@ -43,6 +43,7 @@ class OrganizationService {
       });
       return result;
     } catch (error) {
+      console.log('error:', error);
       await FAIL(ctx, '数据库错误:删除组织数据失败');
     }
   }
@@ -72,7 +73,16 @@ class OrganizationService {
   }
 
   // 改
-  async put(ctx: any, id: number, Name: string, Description: string, Level: number, LevelName: string, ParentId: number) {
+  async put(
+    ctx: any,
+    id: number,
+    Name: string,
+    Description: string,
+    Level: number,
+    LevelName: string,
+    ParentId: number,
+    IsDsisabled: boolean
+  ) {
     try {
       const result = await prisma.organization.update({
         where: { OrganizationId: id },
@@ -82,6 +92,7 @@ class OrganizationService {
           Level,
           LevelName,
           ParentId,
+          IsDsisabled,
           UpdatedBy: ctx.state.user.AccountId,
         },
         select: {
