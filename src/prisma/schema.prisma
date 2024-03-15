@@ -36,7 +36,7 @@ model Organization {
   // 父级组织ID
   ParentId       BigInt   @default(0) @map("parent_id")
   // 是否禁用
-  IsDisabled    Boolean  @default(false) @map("is_disabled")
+  IsDisabled     Boolean  @default(false) @map("is_disabled")
   // 是否删除
   IsDeleted      Boolean  @default(false) @map("is_deleted")
   // 创建时间
@@ -87,13 +87,27 @@ model Account {
   @@map("account")
 }
 
+// Casbin权限规则(用户角色权限中间表)
+model CasbinRule {
+  id    Int     @id @default(autoincrement())
+  ptype String
+  v0    String?
+  v1    String?
+  v2    String?
+  v3    String?
+  v4    String?
+  v5    String?
+
+  @@map("casbin_rule")
+}
+
 // 角色表(无角色继承)
 model Role {
   // 角色ID
   RoleId      BigInt   @id @default(autoincrement()) @map("role_id")
   // 角色名称
   Name        String   @map("name")
-  // 角色值
+  // 角色值( // 角色值(唯一作为逻辑外键,关联casbin_rule表))
   Value       String   @unique @map("value")
   // 角色描述
   Description String   @default("暂无描述") @map("description")
@@ -113,27 +127,30 @@ model Role {
   @@map("role")
 }
 
-// Casbin权限规则
-model CasbinRule {
-  id    Int     @id @default(autoincrement())
-  ptype String
-  v0    String?
-  v1    String?
-  v2    String?
-  v3    String?
-  v4    String?
-  v5    String?
-
-  @@map("casbin_rule")
-}
-
-// 权限表
+// 权限表(无层级,平铺)
 model Permission {
+  // 权限ID
   PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
+  // 权限名称
   Name         String   @map("name")
+  // 权限类型(1:后端路由,2:前端路由)
+  Type         Int      @map("type")
+  // 权限值(唯一,前后端路由url)(作为逻辑外键,关联casbin_rule表)
+  RuleValue    String   @unique @map("rule_value")
+  // 权限描述
+  Description  String   @default("暂无描述") @map("description")
+  // 是否禁用
+  IsDisabled   Boolean  @default(false) @map("is_disabled")
+  // 是否删除
   IsDeleted    Boolean  @default(false) @map("is_deleted")
+  // 创建时间
   CreatedTime  DateTime @default(now()) @map("created_time")
+  // 更新时间
   UpdatedTime  DateTime @updatedAt @map("updated_time")
+  // 创建人
+  CreatedBy    String   @map("created_by")
+  // 更新人
+  UpdatedBy    String   @map("updated_by")
 
   @@map("permission")
 }
