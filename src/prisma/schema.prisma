@@ -57,8 +57,6 @@ model Account {
   AccountId      String   @id @default(uuid()) @map("account_id")
   // 组织ID
   OrganizationId BigInt   @default(0) @map("organization_id")
-  // 角色ID
-  RoleId         BigInt   @default(0) @map("role_id")
   // 账号
   Account        String   @unique @map("account")
   // 密码

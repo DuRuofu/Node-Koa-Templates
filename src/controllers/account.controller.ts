@@ -17,11 +17,6 @@ class AccountController {
           required: true,
           message: '团队Id不能为空',
         },
-        RoleId: {
-          type: 'string',
-          required: true,
-          message: '角色Id不能为空',
-        },
         Account: {
           type: 'string',
           required: true,
@@ -45,7 +40,7 @@ class AccountController {
       await PARAM_NOT_VALID(ctx, error.messagr, error);
     }
     // 获取数据
-    const { OrganizationId, RoleId, Account, Password, Email, Phone } = ctx.request.body;
+    const { OrganizationId, Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
     // 密码加密
     const hash = hashPassword(Password, SALT.saltRounds);
@@ -58,7 +53,7 @@ class AccountController {
     const randomIndex = Math.floor(Math.random() * DEFAULT_AVATAR.length);
     const AvatarUrl: string = DEFAULT_AVATAR[randomIndex].image;
     // 操作数据库
-    const res = await AccountService.createAccount(ctx, OrganizationId, RoleId, Account, hash, Name, AvatarUrl, Email, Phone, CreatedBy);
+    const res = await AccountService.createAccount(ctx, OrganizationId, Account, hash, Name, AvatarUrl, Email, Phone, CreatedBy);
     //返回数据
     await SUCCESS(ctx, bigIntToString(res), '用户注册成功');
   }
@@ -166,6 +161,61 @@ class AccountController {
   }
 
   // 删除用户
-  async deleteAccount(ctx: any, next: any) {}
+  async deleteAccount(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '用户id不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 数据提取
+    const id = ctx.params.id;
+    // 操作数据库
+    const res = await AccountService.deleteAccount(ctx, id);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '删除成功');
+  }
+
+  // 修改用户
+  async putAccount(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '用户id不能为空',
+        },
+        Name: {
+          type: 'string',
+          required: true,
+          message: '用户名不能为空',
+        },
+        Email: {
+          type: 'string',
+          required: true,
+          message: '邮箱不能为空',
+        },
+        Phone: {
+          type: 'string',
+          required: false,
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 数据提取
+    const { id, Name, Email, Phone } = ctx.request.body;
+    // 操作数据库
+    const res = await AccountService.putAccount(ctx, id, Name, Email, Phone);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '修改成功');
+  }
 }
 export default new AccountController();

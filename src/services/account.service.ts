@@ -6,7 +6,6 @@ class AccountService {
   async createAccount(
     ctx: any,
     OrganizationId: number,
-    RoleId: number,
     Account: string,
     Password: string,
     Name: string,
@@ -19,7 +18,6 @@ class AccountService {
       const result = await prisma.account.create({
         data: {
           OrganizationId,
-          RoleId,
           Account,
           Password,
           Name,
@@ -128,6 +126,55 @@ class AccountService {
     } catch (error) {
       //console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
+    }
+  }
+
+  // 删除用户
+  async deleteAccount(ctx: any, id: string) {
+    try {
+      const result = await prisma.account.update({
+        where: { AccountId: id },
+        data: { IsDeleted: true },
+        select: {
+          AccountId: true,
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      console.log(error);
+      await FAIL(ctx, '数据库错误:删除用户数据失败');
+    }
+  }
+
+  // 更新用户信息
+  async putAccount(ctx: any, id: string, Name: string, Email: string, Phone: string) {
+    try {
+      const result = await prisma.account.update({
+        where: { AccountId: id },
+        data: {
+          Name,
+          Email,
+          Phone,
+          UpdatedBy: ctx.state.user.AccountId,
+        },
+        select: {
+          AccountId: true,
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      console.log(error);
+      await FAIL(ctx, '数据库错误:更新用户数据失败');
     }
   }
 }
