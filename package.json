@@ -12,6 +12,7 @@
     "cz": "cz",
     "opendb": "npx prisma studio --schema ./src/prisma/schema.prisma",
     "updatedb": "npx prisma migrate dev --schema ./src/prisma/schema.prisma",
+    "updatePermission": "ts-node-dev ./src/utils/permission.ts",
     "addmodule": "ts-node ./src/script/createModule.ts"
   },
   "keywords": [],

@@ -1,6 +1,8 @@
 // 从swagger.json 自动生成权限列表
 import path from 'path';
 import { readFileSync } from 'fs';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
 // 定义权限接口
 interface Permission {
@@ -14,7 +16,7 @@ interface Permission {
 }
 
 // 从swagger.json 自动生成权限列表
-const addRoutePermission = () => {
+const addRoutePermission = async () => {
   // 读取swagger.json
   const swaggerJsonPath = path.join(__dirname, '../config/swagger.json');
   const swaggerJson = readFileSync(swaggerJsonPath, 'utf-8');
@@ -66,6 +68,27 @@ const addRoutePermission = () => {
     }
   }
   console.log(permissions);
+
+  try {
+    await prisma.$transaction([
+      // 删除
+      prisma.permission.deleteMany({
+        where: {
+          Type: 1 || 2,
+          CreatedBy: 'system_generated',
+        },
+      }),
+      // 将权限列表写入数据库
+      ...permissions.map((permission) =>
+        prisma.permission.create({
+          data: permission,
+        })
+      ),
+    ]);
+    console.log('Transaction completed successfully.');
+  } catch (error) {
+    console.error('Transaction failed:', error);
+  }
 };
 
 addRoutePermission();
