@@ -310,6 +310,8 @@ router.get('/account', Controller.getSelfAccount);
  *     summary: 更新用户信息
  *     description: 更新用户信息
  *     tags: [用户模块]
+ *     security:
+ *      - token: {}
  *     requestBody:
  *       required: true
  *       content:

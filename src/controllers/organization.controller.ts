@@ -117,7 +117,6 @@ class OrganizationController {
 
 // 工具函数:构建部门树型数据
 function buildOrganizationTree(data: any) {
-  // 将数据转换为以OrganizationId为key的对象
   const idMap = {};
   data.forEach((item: any) => {
     idMap[item.OrganizationId] = { ...item, children: [] };

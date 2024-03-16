@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 // 定义权限接口
 interface Permission {
+  Tag: string;
   Name: string;
   Type: number;
   RuleValue: string;
@@ -30,6 +31,7 @@ const addRoutePermission = async () => {
   // 遍历tags(顶层权限)
   swagger.tags.forEach((tag: { name: string; description: string; baseurl: string }) => {
     permissions.push({
+      Tag: tag.name,
       Name: tag.name + '(顶层权限)',
       Description: tag.description,
       Type: 1,
@@ -55,6 +57,7 @@ const addRoutePermission = async () => {
           // 将大括号替换为冒号
           url = convertToRouteParam(url);
           permissions.push({
+            Tag: tag,
             Name: methodObj.summary,
             Description: methodObj.description,
             Type: 2,
