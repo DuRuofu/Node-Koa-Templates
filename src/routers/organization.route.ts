@@ -1,5 +1,11 @@
 //organization路由模块
-
+/**
+ * @swagger
+ * tags:
+ *   name: 组织管理
+ *   description: 组织路由模块
+ *   baseurl: /v1/organization
+ */
 import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/organization' });
 import Controllers from '../controllers/organization.controller';
@@ -11,7 +17,7 @@ import Controllers from '../controllers/organization.controller';
  *   post:
  *     summary: 添加组织
  *     description: 添加组织
- *     tags: [组织管理模块]
+ *     tags: [组织管理]
  *     requestBody:
  *       required: true
  *       content:
@@ -70,7 +76,7 @@ router.post('/organizations', Controllers.post);
  *   delete:
  *     summary: 删除组织
  *     description: 删除组织
- *     tags: [组织管理模块]
+ *     tags: [组织管理]
  *     parameters:
  *      - name: id
  *        description: 组织ID
@@ -110,7 +116,7 @@ router.delete('/organizations/:id', Controllers.delete);
  *   get:
  *     summary: 获取组织列表(树形数据)
  *     description: 获取组织列表
- *     tags: [组织管理模块]
+ *     tags: [组织管理]
  *     responses:
  *       200:
  *         description: 查询组织列表成功
@@ -143,7 +149,7 @@ router.get('/organizations', Controllers.getOrganizationTrees);
  *   put:
  *     summary: 修改组织
  *     description: 修改组织
- *     tags: [组织管理模块]
+ *     tags: [组织管理]
  *     parameters:
  *      - name: id
  *        description: 组织ID

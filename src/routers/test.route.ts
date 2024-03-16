@@ -1,4 +1,13 @@
 //测试路由
+
+/**
+ * @swagger
+ * tags:
+ *   name: 测试路由
+ *   description: 用于测试最基本的路由功能
+ *   baseurl: /v1/test
+ */
+
 import Router from 'koa-router';
 import { SUCCESS } from '../config/code/responseCode';
 const router = new Router({ prefix: '/v1/test' });
@@ -11,7 +20,7 @@ const router = new Router({ prefix: '/v1/test' });
 
 /**
  * @swagger
- * /v1/test/post:
+ * /test/post:
  *   post:
  *     summary: 测试post请求
  *     description: 测试post请求
@@ -28,7 +37,7 @@ router.post('/post', async (ctx: any, next: any) => {
 
 /**
  * @swagger
- * /v1/test/delete:
+ * /test/delete:
  *   delete:
  *     summary: 测试delete请求
  *     description: 测试delete请求
@@ -45,7 +54,7 @@ router.delete('/delete', async (ctx: any, next: any) => {
 
 /**
  * @swagger
- * /v1/test/get:
+ * /test/get:
  *   get:
  *     summary: 测试get请求
  *     description: 测试get请求
@@ -62,7 +71,7 @@ router.get('/get', async (ctx: any, next: any) => {
 
 /**
  * @swagger
- * /v1/test/put:
+ * /test/put:
  *   put:
  *     summary: 测试put请求
  *     description: 测试put请求

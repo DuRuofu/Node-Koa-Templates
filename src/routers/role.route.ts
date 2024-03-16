@@ -4,6 +4,7 @@
  * tags:
  *   name: 角色管理
  *   description: 角色管理模块
+ *   baseurl: /v1/role
  */
 import Controller from '../controllers/role.controller';
 import Router from 'koa-router';
@@ -234,43 +235,6 @@ router.get('/roles', Controller.getAll);
 // #endregion
 router.put('/roles/:id', Controller.put);
 
-//#region 查询用户角色
-/**
- * @swagger
- * /v1/role/getAccountRole:
- *   get:
- *     summary: 查询用户角色 (待开发)
- *     description: 查询用户角色
- *     tags: [角色管理]
- *
- */
-// #endregion
-
-//#region 查询角色对应的用户列表
-/**
- * @swagger
- * /v1/role/getRoleAccountList:
- *   get:
- *     summary: 查询用户角色 (待开发)
- *     description: 查询用户角色
- *     tags: [角色管理]
- *
- */
-// #endregion
-
-//#region 给角色添加用户
-/**
- * @swagger
- * /v1/role/addRoleForAccount:
- *   post:
- *     summary: 给角色添加用户 (待开发)
- *     description: 给角色添加用户
- *     tags: [角色管理]
- *
- */
-// #endregion
-
-//#region 删除用户的角色
 /**
  * @swagger
  * /v1/role/deleteRoleForAccount:

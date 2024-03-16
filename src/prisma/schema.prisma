@@ -131,10 +131,12 @@ model Permission {
   PermissionId BigInt   @id @default(autoincrement()) @map("permission_id")
   // 权限名称
   Name         String   @map("name")
-  // 权限类型(1:后端路由,2:前端路由)
+  // 权限类型(1:后端路由顶层,2:后端路由子层,3:前端路由,4:接口权限,5:按钮权限,6:字段权限,7:其他权限)
   Type         Int      @map("type")
   // 权限值(唯一,前后端路由url)(作为逻辑外键,关联casbin_rule表)
   RuleValue    String   @unique @map("rule_value")
+  // 权限行为
+  Action       String   @default("get") @map("action")
   // 权限描述
   Description  String   @default("暂无描述") @map("description")
   // 是否禁用

@@ -508,12 +508,12 @@
         }
       }
     },
-    "/v1/example/post": {
+    "/example/post": {
       "post": {
         "summary": "测试数据库插入",
         "description": "测试数据库插入",
         "tags": [
-          "数据库示例"
+          "数据库测试路由"
         ],
         "produces": [
           "application/json"
@@ -549,12 +549,12 @@
         }
       }
     },
-    "/v1/example/delete": {
+    "/example/delete": {
       "delete": {
         "summary": "测试数据库删除",
         "description": "测试数据库删除",
         "tags": [
-          "数据库示例"
+          "数据库测试路由"
         ],
         "produces": [
           "application/json"
@@ -574,12 +574,12 @@
         }
       }
     },
-    "/v1/example/get": {
+    "/example/get": {
       "get": {
         "summary": "测试数据库查询",
         "description": "测试数据库查询",
         "tags": [
-          "数据库示例"
+          "数据库测试路由"
         ],
         "responses": {
           "200": {
@@ -588,12 +588,12 @@
         }
       }
     },
-    "/v1/example/put": {
+    "/example/put": {
       "put": {
         "summary": "测试数据库更新",
         "description": "测试数据库更新",
         "tags": [
-          "数据库示例"
+          "数据库测试路由"
         ],
         "produces": [
           "application/json"
@@ -640,7 +640,7 @@
         "summary": "添加组织",
         "description": "添加组织",
         "tags": [
-          "组织管理模块"
+          "组织管理"
         ],
         "requestBody": {
           "required": true,
@@ -729,7 +729,7 @@
         "summary": "获取组织列表(树形数据)",
         "description": "获取组织列表",
         "tags": [
-          "组织管理模块"
+          "组织管理"
         ],
         "responses": {
           "200": {
@@ -772,7 +772,7 @@
         "summary": "删除组织",
         "description": "删除组织",
         "tags": [
-          "组织管理模块"
+          "组织管理"
         ],
         "parameters": [
           {
@@ -835,7 +835,7 @@
         "summary": "修改组织",
         "description": "修改组织",
         "tags": [
-          "组织管理模块"
+          "组织管理"
         ],
         "parameters": [
           {
@@ -930,73 +930,19 @@
         ]
       }
     },
-    "/v1/permission/addPermission": {
+    "/permission/permissions": {
       "post": {
-        "summary": "添加一条权限 (待开发)",
+        "summary": "添加一条权限",
         "description": "添加一条权限",
         "tags": [
           "权限管理"
         ]
       }
     },
-    "/v1/permission/deletePermission": {
+    "/permission/deletePermission": {
       "delete": {
         "summary": "删除一条权限 (待开发)",
         "description": "删除一条权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/getPermission": {
-      "get": {
-        "summary": "查询单个权限 (待开发)",
-        "description": "查询单个权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/getAllPermission": {
-      "get": {
-        "summary": "查询所有权限 (待开发)",
-        "description": "查询所有权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/pudataPermission": {
-      "post": {
-        "summary": "更新一条权限 (待开发)",
-        "description": "更新一条权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/addPermissionForRole": {
-      "post": {
-        "summary": "为角色添加权限 (待开发)",
-        "description": "为角色添加权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/deletePermissionForRole": {
-      "delete": {
-        "summary": "删除角色的权限 (待开发)",
-        "description": "删除角色的权限",
-        "tags": [
-          "权限管理"
-        ]
-      }
-    },
-    "/v1/permission/getPermissionForRole": {
-      "get": {
-        "summary": "查询角色的权限 (待开发)",
-        "description": "查询角色的权限",
         "tags": [
           "权限管理"
         ]
@@ -1349,33 +1295,6 @@
         }
       }
     },
-    "/v1/role/getAccountRole": {
-      "get": {
-        "summary": "查询用户角色 (待开发)",
-        "description": "查询用户角色",
-        "tags": [
-          "角色管理"
-        ]
-      }
-    },
-    "/v1/role/getRoleAccountList": {
-      "get": {
-        "summary": "查询用户角色 (待开发)",
-        "description": "查询用户角色",
-        "tags": [
-          "角色管理"
-        ]
-      }
-    },
-    "/v1/role/addRoleForAccount": {
-      "post": {
-        "summary": "给角色添加用户 (待开发)",
-        "description": "给角色添加用户",
-        "tags": [
-          "角色管理"
-        ]
-      }
-    },
     "/v1/role/deleteRoleForAccount": {
       "delete": {
         "summary": "删除用户的角色 (待开发)",
@@ -1385,7 +1304,7 @@
         ]
       }
     },
-    "/v1/test/post": {
+    "/test/post": {
       "post": {
         "summary": "测试post请求",
         "description": "测试post请求",
@@ -1399,7 +1318,7 @@
         }
       }
     },
-    "/v1/test/delete": {
+    "/test/delete": {
       "delete": {
         "summary": "测试delete请求",
         "description": "测试delete请求",
@@ -1413,7 +1332,7 @@
         }
       }
     },
-    "/v1/test/get": {
+    "/test/get": {
       "get": {
         "summary": "测试get请求",
         "description": "测试get请求",
@@ -1427,7 +1346,7 @@
         }
       }
     },
-    "/v1/test/put": {
+    "/test/put": {
       "put": {
         "summary": "测试put请求",
         "description": "测试put请求",
@@ -1445,19 +1364,33 @@
   "tags": [
     {
       "name": "用户模块",
-      "d8escription": "用户管理模块"
+      "description": "用户管理模块",
+      "baseurl": "/v1/account"
+    },
+    {
+      "name": "数据库测试路由",
+      "description": "用于测试数据库最基本的功能",
+      "baseurl": "/v1/example"
+    },
+    {
+      "name": "组织管理",
+      "description": "组织路由模块",
+      "baseurl": "/v1/organization"
     },
     {
       "name": "权限管理",
-      "description": "权限管理模块"
+      "description": "权限管理模块",
+      "baseurl": "/v1/permission"
     },
     {
       "name": "角色管理",
-      "description": "角色管理模块"
+      "description": "角色管理模块",
+      "baseurl": "/v1/role"
     },
     {
       "name": "测试路由",
-      "description": "用于测试最基本的路由功能"
+      "description": "用于测试最基本的路由功能",
+      "baseurl": "/v1/test"
     }
   ]
 }

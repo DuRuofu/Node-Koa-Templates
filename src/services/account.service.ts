@@ -58,7 +58,7 @@ class AccountService {
         await USER_ACCOUNT_ALREADY_EXIST(ctx);
       }
     } catch (error) {
-      //console.log(error);
+      console.log(error);
       await FAIL(ctx, '数据库错误:查询用户数据失败');
     }
   }

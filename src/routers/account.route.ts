@@ -2,7 +2,8 @@
  * @swagger
  * tags:
  *   name: 用户模块
- *   d8escription: 用户管理模块
+ *   description: 用户管理模块
+ *   baseurl: /v1/account
  */
 import Router from 'koa-router';
 const router = new Router({ prefix: '/v1/account' });
