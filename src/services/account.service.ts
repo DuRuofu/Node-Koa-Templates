@@ -29,6 +29,14 @@ class AccountService {
           CreatedBy: CreatedBy,
           UpdatedBy: CreatedBy,
         },
+        select: {
+          AccountId: true,
+          Account: true,
+          Name: true,
+          AvatarUrl: true,
+          Email: true,
+          Phone: true,
+        },
       });
       return result;
     } catch (error) {

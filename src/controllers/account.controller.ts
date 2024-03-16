@@ -1,9 +1,11 @@
 //这个文件用户管理接口的业务逻辑
 import AccountService from '../services/account.service';
 import { bigIntToString } from '../utils/util';
+import { hashPassword } from '../utils/crypto';
 import { sign } from 'jsonwebtoken';
-import { JWT, DEFAULT_AVATAR } from '../config/constant';
+import { JWT, DEFAULT_AVATAR, SALT } from '../config/constant';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
+
 class AccountController {
   //用户注册
   async register(ctx: any, next: any) {
@@ -45,6 +47,8 @@ class AccountController {
     // 获取数据
     const { OrganizationId, RoleId, Account, Password, Email, Phone } = ctx.request.body;
     const Name = Account;
+    // 密码加密
+    const hash = hashPassword(Password, SALT.saltRounds);
     // 生成操作人
     let CreatedBy = 'self';
     if (ctx.state.user && ctx.state.user.AccountId !== undefined) {
@@ -54,18 +58,7 @@ class AccountController {
     const randomIndex = Math.floor(Math.random() * DEFAULT_AVATAR.length);
     const AvatarUrl: string = DEFAULT_AVATAR[randomIndex].image;
     // 操作数据库
-    const res = await AccountService.createAccount(
-      ctx,
-      OrganizationId,
-      RoleId,
-      Account,
-      Password,
-      Name,
-      AvatarUrl,
-      Email,
-      Phone,
-      CreatedBy
-    );
+    const res = await AccountService.createAccount(ctx, OrganizationId, RoleId, Account, hash, Name, AvatarUrl, Email, Phone, CreatedBy);
     //返回数据
     await SUCCESS(ctx, bigIntToString(res), '用户注册成功');
   }
@@ -89,8 +82,10 @@ class AccountController {
     }
     // 获取数据
     const { Account, Password } = ctx.request.body;
+    // 密码加密
+    const hash = hashPassword(Password, SALT.saltRounds);
     // 操作数据库
-    const res = await AccountService.login(ctx, Account, Password);
+    const res = await AccountService.login(ctx, Account, hash);
 
     // 颁发token
     const token = 'Bearer ' + sign({ AccountId: res.AccountId }, JWT.secret, { expiresIn: JWT.expires });

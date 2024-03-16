@@ -61,7 +61,7 @@ import Controller from '../controllers/account.controller';
  *                data:
  *                 type: object
  *                 description: 用户信息
- *                 example: {"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","OrganizationId": "126626262","Account": "2626211","Password": "1126262","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}
+ *                 example: {"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","OrganizationId": "126626262","Account": "2626211","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}
  */
 // #endregion
 router.post('/register', Controller.register);

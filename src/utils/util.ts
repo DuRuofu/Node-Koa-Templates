@@ -1,6 +1,5 @@
 import { Context } from 'vm';
-// import { JWT } from '../config/constant';
-// import jwt from 'jsonwebtoken';
+
 import OS from 'os';
 /*获取当前ip地址*/
 export const getIpAddress = () => {
@@ -42,19 +41,3 @@ export function bigIntToString(value: any) {
   }
   return value;
 }
-
-// 通过token解析userId
-// export const decodeToken = (token: string) => {
-//   const jwtInfo = jwt.verify(token, JWT.secret) as any;
-
-//   try {
-//     return jwtInfo.userId;
-//   } catch (err) {
-//     return 'token不合法';
-//   }
-// };
-
-// // 根据userId生成token
-// export const generatorToken = (userId: number) => {
-//   return jwt.sign({ userId }, JWT.secret, { expiresIn: JWT.expires });
-// };

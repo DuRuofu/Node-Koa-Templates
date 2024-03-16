@@ -11,14 +11,14 @@ export const ENV = {
 
 // JWT配置参数
 export const JWT = {
-  secret: 'SZw*QCX684K$d10JYWBpQFQ__pI)VAN@HZnmnjS', //token密钥
+  secret: process.env.TOKEN_SECRET_KEY || 'SZw*QCX684K$d10JYWBpQFQ__pI)VAN@HZnmnjS', //token密钥
   expires: 60 * 60 * 24 * 30, // 30天
 };
 
 // 服务端口号
 export const PORT = {
-  http: 3000,
-  https: 3001,
+  http: process.env.SERVER_PORT_HTTP || 3000,
+  https: process.env.SERVER_PORT_HTTPS || 3001,
 };
 
 // 公共路由(不用jwt验证)
@@ -186,3 +186,8 @@ export const DEFAULT_AVATAR = [
     image: 'https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/50.png',
   },
 ];
+
+// 用户密码加密盐
+export const SALT = {
+  saltRounds: process.env.SALT_SECRET_KEY || `1233`,
+};
