@@ -32,7 +32,7 @@ const addRoutePermission = async () => {
   swagger.tags.forEach((tag: { name: string; description: string; baseurl: string }) => {
     permissions.push({
       Tag: tag.name,
-      Name: tag.name + '(顶层权限)',
+      Name: tag.name + '(顶层)',
       Description: tag.description,
       Type: 1,
       RuleValue: `${tag.baseurl}/*`,
@@ -112,7 +112,7 @@ function convertToRouteParam(path: string): string {
 function addVersionPrefix(tags: string, subRoute: string, topPermissions: Permission[]): string {
   // 遍历顶级权限列表
   for (const permission of topPermissions) {
-    const topTags = permission.Name.replace('(顶层权限)', '');
+    const topTags = permission.Name.replace('(顶层)', '');
     if (topTags == tags) {
       // console.log('找到匹配的顶级权限');
       // console.log(permission.RuleValue);

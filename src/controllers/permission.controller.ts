@@ -63,38 +63,66 @@ class PermissionController {
     }
     // 获取数据
     const type = ctx.params.type;
-
     const res = await PermissionService.getPermission(ctx, +type);
 
+    //console.log('res', res);
     let data = {};
     //后端权限
     if (+type == 1) {
-      data = buildTree(res, 1);
+      data = organizePermissionsByType(res, 1);
     }
     // 后端权限
     if (+type == 2) {
-      data = buildTree(res, 11);
+      data = organizePermissionsByType(res, 11);
     }
-    // 返回数据
+    //返回数据
     await SUCCESS(ctx, bigIntToString(data), '查询权限成功');
   }
 }
 
-// 工具函数:递归构建树形结构
-// 递归构建树形结构
-// 递归构建树形结构
-function buildTree(data, parentType) {
-  const result = [];
-  data.forEach((item) => {
-    if (item.Type === parentType) {
-      const children = buildTree(data, item.Type + 1);
-      if (children.length) {
-        item.children = children;
-      }
-      result.push(item);
+// 工具函数:
+/**
+ * Organizes permissions by type and groups them by tag.
+ * Moves child permissions under parent permissions based on their type.
+ *
+ * @param {Array} permissions - The array of permissions to organize.
+ * @param {number} topLevelType - The type of the top-level permissions.
+ * @returns {Array} An array of organized permissions.
+ */
+function organizePermissionsByType(permissions: any, topLevelType: any) {
+  const organizedPermissions = [];
+  const permissionMap = {};
+
+  // Group permissions by tag and type
+  permissions.forEach((permission: any) => {
+    const tag = permission.Tag;
+    const type = permission.Type;
+    if (!(tag in permissionMap)) {
+      permissionMap[tag] = {};
     }
+    if (!(type in permissionMap[tag])) {
+      permissionMap[tag][type] = [];
+    }
+    permissionMap[tag][type].push(permission);
   });
-  return result;
+
+  // Organize permissions within each tag
+  for (const tag in permissionMap) {
+    const tagPermissions = permissionMap[tag];
+    const topLevelPermissions = tagPermissions[topLevelType.toString()] || [];
+    for (const type in tagPermissions) {
+      if (type !== topLevelType.toString()) {
+        const childPermissions = tagPermissions[type.toString()] || [];
+        topLevelPermissions.forEach((parentPermission) => {
+          parentPermission.children = parentPermission.children || [];
+          parentPermission.children.push(...childPermissions);
+        });
+      }
+    }
+    organizedPermissions.push(...topLevelPermissions);
+  }
+
+  return organizedPermissions;
 }
 
 export default new PermissionController();

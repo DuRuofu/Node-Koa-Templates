@@ -63,6 +63,7 @@ class PermissionService {
           Description: true,
           Type: true,
           RuleValue: true,
+          IsDisabled: true,
           Action: true,
           CreatedTime: true,
           UpdatedTime: true,

@@ -105,4 +105,5 @@ router.post('/permissions', Controllers.Post);
  */
 // #endregion
 router.get('/permissions/:type', Controllers.Get);
+
 export default router;
