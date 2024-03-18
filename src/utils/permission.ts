@@ -136,7 +136,7 @@ function processData(data: any, type = 10, parentTag = null) {
       Type: type + 1, // Default type for top-level items
       RuleValue: item.path,
       Tag: parentTag || item.name, // Tag is either parentTag for nested items or item.name for top-level items
-      Description: item.meta.title,
+      Description: `${item.meta.title}(${item.name})`,
       Action: '*',
       CreatedBy: 'system_generated',
       UpdatedBy: 'system_generated',

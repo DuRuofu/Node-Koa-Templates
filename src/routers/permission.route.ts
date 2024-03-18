@@ -70,13 +70,13 @@ import Controllers from '../controllers/permission.controller';
 // #endregion
 router.post('/permissions', Controllers.Post);
 
-//#region 按类型获取系统权限列表
+//#region 按类型获取系统权限列表【Type-->1:后端,2:前端】
 /**
  * @swagger
  * /permission/permissions/{type}:
  *   get:
  *     summary: 获取系统权限列表
- *     description: 按类型获取权限列表【Type-->1:后端,2:前端】
+ *     description: 按类型获取权限列表
  *     tags: [权限管理]
  *     security:
  *      - token: {}
@@ -109,13 +109,13 @@ router.post('/permissions', Controllers.Post);
 // #endregion
 router.get('/permissions/:type', Controllers.Get);
 
-//#region 按类型重置系统权限列表
+//#region 按类型重置系统权限列表【1:后端,2:前端】
 /**
  * @swagger
  * /permission/permissions/{type}:
  *   put:
  *     summary: 重置系统权限列表
- *     description: 按类型获取权限列表【1:后端,2:前端】
+ *     description: 按类型获取权限列表
  *     tags: [权限管理]
  *     security:
  *      - token: {}

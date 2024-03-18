@@ -1019,7 +1019,7 @@
     "/permission/permissions/{type}": {
       "get": {
         "summary": "获取系统权限列表",
-        "description": "按类型获取权限列表【Type-->1:后端,2:前端】",
+        "description": "按类型获取权限列表",
         "tags": [
           "权限管理"
         ],
@@ -1068,7 +1068,7 @@
       },
       "put": {
         "summary": "重置系统权限列表",
-        "description": "按类型获取权限列表【1:后端,2:前端】",
+        "description": "按类型获取权限列表",
         "tags": [
           "权限管理"
         ],
