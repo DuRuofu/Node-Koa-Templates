@@ -518,7 +518,7 @@
         "summary": "测试数据库插入",
         "description": "测试数据库插入",
         "tags": [
-          "数据库测试路由"
+          "数据库测试"
         ],
         "produces": [
           "application/json"
@@ -559,7 +559,7 @@
         "summary": "测试数据库删除",
         "description": "测试数据库删除",
         "tags": [
-          "数据库测试路由"
+          "数据库测试"
         ],
         "produces": [
           "application/json"
@@ -584,7 +584,7 @@
         "summary": "测试数据库查询",
         "description": "测试数据库查询",
         "tags": [
-          "数据库测试路由"
+          "数据库测试"
         ],
         "responses": {
           "200": {
@@ -598,7 +598,7 @@
         "summary": "测试数据库更新",
         "description": "测试数据库更新",
         "tags": [
-          "数据库测试路由"
+          "数据库测试"
         ],
         "produces": [
           "application/json"
@@ -1483,8 +1483,8 @@
       "baseurl": "/v1/account"
     },
     {
-      "name": "数据库测试路由",
-      "description": "用于测试数据库最基本的功能",
+      "name": "数据库测试",
+      "description": "测试数据库功能",
       "baseurl": "/v1/example"
     },
     {
@@ -1504,7 +1504,7 @@
     },
     {
       "name": "测试路由",
-      "description": "用于测试最基本的路由功能",
+      "description": "测试路由",
       "baseurl": "/v1/test"
     }
   ]

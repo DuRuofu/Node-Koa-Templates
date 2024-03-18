@@ -4,7 +4,7 @@
  * @swagger
  * tags:
  *   name: 测试路由
- *   description: 用于测试最基本的路由功能
+ *   description: 测试路由
  *   baseurl: /v1/test
  */
 

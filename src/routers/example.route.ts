@@ -2,8 +2,8 @@
 /**
  * @swagger
  * tags:
- *   name: 数据库测试路由
- *   description: 用于测试数据库最基本的功能
+ *   name: 数据库测试
+ *   description: 测试数据库功能
  *   baseurl: /v1/example
  */
 import Router from 'koa-router';
@@ -16,7 +16,7 @@ import Controllers from '../controllers/example.controller';
  *   post:
  *     summary: 测试数据库插入
  *     description: 测试数据库插入
- *     tags: [数据库测试路由]
+ *     tags: [数据库测试]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
@@ -47,7 +47,7 @@ router.post('/post', Controllers.post);
  *   delete:
  *     summary: 测试数据库删除
  *     description: 测试数据库删除
- *     tags: [数据库测试路由]
+ *     tags: [数据库测试]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：
@@ -68,7 +68,7 @@ router.delete('/delete', Controllers.delete);
  *   get:
  *     summary: 测试数据库查询
  *     description: 测试数据库查询
- *     tags: [数据库测试路由]
+ *     tags: [数据库测试]
  *     responses:
  *       200:
  *         description:
@@ -82,7 +82,7 @@ router.get('/get', Controllers.get);
  *   put:
  *     summary: 测试数据库更新
  *     description: 测试数据库更新
- *     tags: [数据库测试路由]
+ *     tags: [数据库测试]
  *     produces:
  *     - application/json
  *     parameters: # 请求参数：

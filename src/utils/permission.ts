@@ -2,6 +2,7 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 import { PrismaClient } from '@prisma/client';
+import { asnycRoute } from '../config/menu.config';
 const prisma = new PrismaClient();
 
 // 定义权限接口
@@ -16,7 +17,7 @@ interface Permission {
   UpdatedBy: string;
 }
 
-// 从swagger.json 自动生成权限列表
+// 从swagger.json 自动生成后端权限列表
 const addRoutePermission = async () => {
   // 读取swagger.json
   const swaggerJsonPath = path.join(__dirname, '../config/swagger.json');
@@ -94,7 +95,88 @@ const addRoutePermission = async () => {
   }
 };
 
+// 从menu.config.ts自动生成后端权限列表
+const addMenuPermission = async () => {
+  // 定义权限列表
+  const data = processData(asnycRoute);
+  const permissions = flattenData(data);
+  console.log(permissions);
+  try {
+    await prisma.$transaction([
+      // 删除
+      prisma.permission.deleteMany({
+        where: {
+          Type: 11 || 12 || 13 || 14 || 15 || 16 || 17 || 18 || 19,
+          CreatedBy: 'system_generated',
+        },
+      }),
+      // 将权限列表写入数据库
+      ...permissions.map((permission) =>
+        prisma.permission.create({
+          data: permission,
+        })
+      ),
+    ]);
+    console.log('Transaction completed successfully.');
+  } catch (error) {
+    console.error('Transaction failed:', error);
+  }
+};
+
 addRoutePermission();
+addMenuPermission();
+
+// 工具函数
+// 从menu.config.ts自动生成后端权限列表(处理数据字段)
+function processData(data: any, type = 9, parentTag = null) {
+  return data.map((item: any) => {
+    const newItem = {
+      Name: item.name,
+      Type: type + 1, // Default type for top-level items
+      RuleValue: item.path,
+      Tag: parentTag || item.name, // Tag is either parentTag for nested items or item.name for top-level items
+      Description: item.meta.title,
+      Action: '*',
+      CreatedBy: 'system_generated',
+      UpdatedBy: 'system_generated',
+    } as {
+      Name: string;
+      Type: number;
+      RuleValue: string;
+      Tag: string;
+      Description: string;
+      Action: string;
+      CreatedBy: string;
+      UpdatedBy: string;
+      children?: any[];
+    };
+
+    if (item.children && item.children.length > 0) {
+      newItem.children = processData(item.children, newItem.Type, item.name); // Recursively process children
+    }
+
+    return newItem;
+  });
+}
+
+// 从menu.config.ts自动生成后端权限列表(扁平化数据)
+function flattenData(data: any[]) {
+  const result = [];
+
+  function flatten(item: any) {
+    const newItem = { ...item };
+    delete newItem.children;
+    result.push(newItem);
+
+    if (item.children && item.children.length > 0) {
+      item.children.forEach((child) => flatten(child));
+    }
+  }
+
+  data.forEach((item) => flatten(item));
+
+  return result;
+}
 
 // 使用正则表达式替换大括号为冒号 `/account/accounts/{id}` --> '/account/accounts/:id'
 function convertToRouteParam(path: string): string {
