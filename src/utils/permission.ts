@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { PrismaClient } from '@prisma/client';
 import { asnycRoute } from '../config/menu.config';
 const prisma = new PrismaClient();
-
+import util from 'util';
 // 定义权限接口
 interface Permission {
   Tag: string;
@@ -78,7 +78,7 @@ const addRoutePermission = async () => {
       // 删除
       prisma.permission.deleteMany({
         where: {
-          Type: 1 || 2,
+          Type: { in: [1, 2] },
           CreatedBy: 'system_generated',
         },
       }),
@@ -99,6 +99,7 @@ const addRoutePermission = async () => {
 const addMenuPermission = async () => {
   // 定义权限列表
   const data = processData(asnycRoute);
+  console.log(util.inspect(data, { showHidden: false, depth: null }));
   const permissions = flattenData(data);
   console.log(permissions);
   try {
@@ -106,7 +107,7 @@ const addMenuPermission = async () => {
       // 删除
       prisma.permission.deleteMany({
         where: {
-          Type: 11 || 12 || 13 || 14 || 15 || 16 || 17 || 18 || 19,
+          Type: { in: [11, 12, 13, 14, 15, 16, 17, 18, 19] },
           CreatedBy: 'system_generated',
         },
       }),
@@ -128,7 +129,7 @@ addMenuPermission();
 
 // 工具函数
 // 从menu.config.ts自动生成后端权限列表(处理数据字段)
-function processData(data: any, type = 9, parentTag = null) {
+function processData(data: any, type = 10, parentTag = null) {
   return data.map((item: any) => {
     const newItem = {
       Name: item.name,

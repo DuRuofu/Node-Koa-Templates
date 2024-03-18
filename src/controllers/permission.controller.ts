@@ -65,15 +65,15 @@ class PermissionController {
     const type = ctx.params.type;
     const res = await PermissionService.getPermission(ctx, +type);
 
-    //console.log('res', res);
+    console.log('res', res);
     let data = {};
     //后端权限
     if (+type == 1) {
-      data = organizePermissionsByType(res, 1);
+      data = RoutingPermission(res, 1);
     }
     // 后端权限
     if (+type == 2) {
-      data = organizePermissionsByType(res, 11);
+      data = MenuPermission(res, 11);
     }
     //返回数据
     await SUCCESS(ctx, bigIntToString(data), '查询权限成功');
@@ -89,7 +89,7 @@ class PermissionController {
  * @param {number} topLevelType - The type of the top-level permissions.
  * @returns {Array} An array of organized permissions.
  */
-function organizePermissionsByType(permissions: any, topLevelType: any) {
+function RoutingPermission(permissions: any, topLevelType: any) {
   const organizedPermissions = [];
   const permissionMap = {};
 
@@ -105,6 +105,7 @@ function organizePermissionsByType(permissions: any, topLevelType: any) {
     }
     permissionMap[tag][type].push(permission);
   });
+  //console.log('permissionMap:', permissionMap);
 
   // Organize permissions within each tag
   for (const tag in permissionMap) {
@@ -124,5 +125,43 @@ function organizePermissionsByType(permissions: any, topLevelType: any) {
 
   return organizedPermissions;
 }
+
+// 处理菜单权限数据结构
+const MenuPermission = (permissions: any, topLevelType: any) => {
+  // 遍历数组取出顶层权限
+  const topLevelPermissions = permissions.filter((permission: any) => permission.Type === topLevelType);
+  // 遍历顶层权限，取出二层权限
+  const oneLevelPermissions = permissions.filter((permission: any) => permission.Type === topLevelType + 1);
+  // 遍历顶层权限，取出三层权限
+  const twoLevelPermissions = permissions.filter((permission: any) => permission.Type === topLevelType + 2);
+
+  // 打印
+  //console.log('topLevelPermissions:', topLevelPermissions);
+  //console.log('oneLevelPermissions:', oneLevelPermissions);
+  //console.log('twoLevelPermissions:', twoLevelPermissions);
+
+  // 遍历二层权限，将三层权限挂载到二层权限下
+  oneLevelPermissions.forEach((onePermission: any) => {
+    onePermission.children = [];
+    twoLevelPermissions.forEach((twoPermission: any) => {
+      if (twoPermission.Tag === onePermission.Name) {
+        onePermission.children.push(twoPermission);
+      }
+    });
+  });
+
+  // 遍历顶层权限，将二层权限挂载到顶层权限下
+  topLevelPermissions.forEach((topPermission: any) => {
+    topPermission.children = [];
+    oneLevelPermissions.forEach((onePermission: any) => {
+      if (onePermission.Tag === topPermission.Name) {
+        topPermission.children.push(onePermission);
+      }
+    });
+  });
+  //console.log('topLevelPermissions:', topLevelPermissions);
+
+  return topLevelPermissions;
+};
 
 export default new PermissionController();
