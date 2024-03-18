@@ -18,7 +18,7 @@ interface Permission {
 }
 
 // 从swagger.json 自动生成后端权限列表
-const addRoutePermission = async () => {
+export const addRoutePermission = async () => {
   // 读取swagger.json
   const swaggerJsonPath = path.join(__dirname, '../config/swagger.json');
   const swaggerJson = readFileSync(swaggerJsonPath, 'utf-8');
@@ -89,14 +89,14 @@ const addRoutePermission = async () => {
         })
       ),
     ]);
-    console.log('Transaction completed successfully.');
+    return 1;
   } catch (error) {
-    console.error('Transaction failed:', error);
+    return 0;
   }
 };
 
 // 从menu.config.ts自动生成后端权限列表
-const addMenuPermission = async () => {
+export const addMenuPermission = async () => {
   // 定义权限列表
   const data = processData(asnycRoute);
   console.log(util.inspect(data, { showHidden: false, depth: null }));
@@ -118,14 +118,14 @@ const addMenuPermission = async () => {
         })
       ),
     ]);
-    console.log('Transaction completed successfully.');
+    return 1;
   } catch (error) {
-    console.error('Transaction failed:', error);
+    return 0;
   }
 };
 
-addRoutePermission();
-addMenuPermission();
+//addRoutePermission();
+//addMenuPermission();
 
 // 工具函数
 // 从menu.config.ts自动生成后端权限列表(处理数据字段)

@@ -954,28 +954,32 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "OrganizationId": {
-                    "description": "团队id"
+                  "Name": {
+                    "description": "权限名称"
                   },
-                  "Account": {
-                    "description": "用户账号"
+                  "Tag": {
+                    "description": "权限标签"
                   },
-                  "Password": {
-                    "description": "用户密码"
+                  "Type": {
+                    "description": "权限类型"
                   },
-                  "Email": {
-                    "description": "用户邮箱"
+                  "RuleValue": {
+                    "description": "权限值"
                   },
-                  "Phone": {
-                    "description": "用户手机号"
+                  "Description": {
+                    "description": "描述"
+                  },
+                  "Action": {
+                    "description": "行为"
                   }
                 },
                 "example": {
-                  "OrganizationId": "1",
-                  "Account": "1234567",
-                  "Password": "3.1415926",
-                  "Email": "123344@11.c0m",
-                  "Phone": "12912781727818"
+                  "Name": "添加用户",
+                  "Tag": "用户管理",
+                  "Type": "1",
+                  "RuleValue": "/v1/user/users",
+                  "Description": "添加用户",
+                  "Action": "post"
                 }
               }
             }
@@ -1056,6 +1060,101 @@
                       "example": null
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "重置系统权限列表",
+        "description": "按类型获取权限列表【1:后端,2:前端】",
+        "tags": [
+          "权限管理"
+        ],
+        "security": [
+          {
+            "token": {}
+          }
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "description": "类型【Type-->1:后端,2:前端】",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number",
+                      "description": "状态码",
+                      "example": 200
+                    },
+                    "massage": {
+                      "type": "string",
+                      "description": "信息",
+                      "example": "获取权限成功"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "权限信息",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permission/permissions/{id}": {
+      "delete": {
+        "summary": "删除某个权限",
+        "description": "删除某个权限",
+        "tags": [
+          "权限管理"
+        ],
+        "security": [
+          {
+            "token": {}
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "description": "权限id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "description": "状态码",
+                  "example": 200
+                },
+                "massage": {
+                  "type": "string",
+                  "description": "查询信息",
+                  "example": "删除成功"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "用户信息"
                 }
               }
             }

@@ -3,7 +3,7 @@
 import PermissionService from '../services/permission.service';
 import { bigIntToString } from '../utils/util';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
-
+import { addRoutePermission, addMenuPermission } from '../utils/permission';
 //增
 class PermissionController {
   async Post(ctx: any, next: any) {
@@ -65,7 +65,7 @@ class PermissionController {
     const type = ctx.params.type;
     const res = await PermissionService.getPermission(ctx, +type);
 
-    console.log('res', res);
+    //console.log('res', res);
     let data = {};
     //后端权限
     if (+type == 1) {
@@ -77,6 +77,59 @@ class PermissionController {
     }
     //返回数据
     await SUCCESS(ctx, bigIntToString(data), '查询权限成功');
+  }
+
+  // 重启权限
+  async Put(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        type: {
+          type: 'string',
+          required: true,
+          message: '权限类型不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const type = ctx.params.type;
+    let res = 0;
+    if (+type == 1) {
+      res = await addRoutePermission();
+    }
+    // 后端权限
+    if (+type == 2) {
+      res = await addMenuPermission();
+    }
+    if (res == 1) {
+      await SUCCESS(ctx, {}, '更新权限成功');
+    } else {
+      await PARAM_NOT_VALID(ctx, '更新权限失败');
+    }
+  }
+
+  // 删除
+  async Delete(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '权限ID不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const PermissionId = ctx.params.id;
+    // 操作数据库
+    const res = await PermissionService.deletePermission(ctx, +PermissionId);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(res), '删除权限成功');
   }
 }
 

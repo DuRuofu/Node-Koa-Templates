@@ -74,6 +74,20 @@ class PermissionService {
       await DB_FAIL(ctx);
     }
   }
+
+  // 删除
+  async deletePermission(ctx, id: number) {
+    try {
+      const result = await prisma.permission.delete({
+        where: {
+          PermissionId: id,
+        },
+      });
+      return result;
+    } catch (error) {
+      await DB_FAIL(ctx);
+    }
+  }
 }
 
 export default new PermissionService();
