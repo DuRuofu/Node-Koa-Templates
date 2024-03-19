@@ -5,7 +5,7 @@ import { hashPassword } from '../utils/crypto';
 import { sign } from 'jsonwebtoken';
 import { JWT, DEFAULT_AVATAR, SALT } from '../config/constant';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
-
+import Casbin from '../middlewares/casbin';
 class AccountController {
   //用户注册
   async register(ctx: any, next: any) {
@@ -93,7 +93,10 @@ class AccountController {
   async getAllAccountList(ctx: any, next: any) {
     // 操作数据库
     const res = await AccountService.getAllAccountList(ctx);
-
+    for (let i = 0; i < res.length; i++) {
+      const roles = await Casbin.getAccountRoles(res[i].AccountId.toString());
+      (res[i] as any).Roles = roles;
+    }
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
@@ -122,7 +125,12 @@ class AccountController {
     // 操作数据库
     const res = await AccountService.getAllAccount(ctx, parseInt(page), parseInt(limit));
     const [accounts, totalCount] = res;
-    // 返回数据
+    // 补充查询角色
+    for (let i = 0; i < accounts.length; i++) {
+      const roles = await Casbin.getAccountRoles(accounts[i].AccountId.toString());
+      (accounts[i] as any).Roles = roles;
+    }
+    // 返回数据)
     await SUCCESS(ctx, bigIntToString({ total: totalCount, records: accounts }), '查询成功');
   }
 

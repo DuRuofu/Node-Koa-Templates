@@ -135,7 +135,7 @@ model Permission {
   Name         String   @map("name")
   // 权限类型(1:后端路由顶层,2:后端路由子层;11:前端路由顶层,12:前端路由子层)
   Type         Int      @map("type")
-  // 权限值(前后端路由url)(作为逻辑外键,关联casbin_rule表)
+  // 权限值(前后端路由url)(作为逻辑外键,关联casbin_rule表)(由于前后端公用这个字段，所以要保证前后端路由值不重复)
   RuleValue    String   @map("rule_value")
   // 权限行为(作为逻辑外键,关联casbin_rule表)
   Action       String   @default("get") @map("action")

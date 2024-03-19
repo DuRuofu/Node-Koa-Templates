@@ -1,6 +1,7 @@
 // 角色管理模块
 //这个文件负责接口的业务逻辑
 import PermissionService from '../services/permission.service';
+import Casbin from '../middlewares/casbin';
 import { bigIntToString } from '../utils/util';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
 import { addRoutePermission, addMenuPermission } from '../utils/permission';
@@ -130,6 +131,61 @@ class PermissionController {
     const res = await PermissionService.deletePermission(ctx, +PermissionId);
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '删除权限成功');
+  }
+
+  //----------------RBAC+Casbin-----------------
+  // 为用户添加多个角色
+  async AssignRoles(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '用户ID不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const { Roles } = ctx.request.body;
+    const id = ctx.params.id;
+    // 操作数据
+    // 删除
+    await Casbin.deleteAccountRole(id);
+    // 添加
+    const res = await Casbin.addAccountRole(id, Roles);
+    if (res) {
+      await SUCCESS(ctx, {}, '添加角色成功');
+    } else {
+      await PARAM_NOT_VALID(ctx, '添加角色失败');
+    }
+  }
+
+  // 删除用户所有角色
+  async DeleteRoles(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '用户ID不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const id = ctx.params.id;
+    // 操作数据
+    const res = await Casbin.deleteAccountRole(id);
+    if (res) {
+      await SUCCESS(ctx, {}, '删除角色成功');
+    } else {
+      await PARAM_NOT_VALID(ctx, '删除角色失败');
+    }
   }
 }
 

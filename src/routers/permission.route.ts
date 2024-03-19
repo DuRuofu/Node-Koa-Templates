@@ -184,4 +184,87 @@ router.put('/permissions/:type', Controllers.Put);
 // #endregion
 router.delete('/permissions/:id', Controllers.Delete);
 
+//#region
+/**
+ * @swagger
+ * /permission/permissions/roles/{id}:
+ *   post:
+ *     summary: 为用户添加角色
+ *     description: 为用户添加角色
+ *     tags: [权限管理]
+ *     security:
+ *      - token: {}
+ *     parameters: # 请求参数：
+ *      - name: id
+ *        description: 权限id
+ *        in: path
+ *        required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Roles:
+ *                 description: 角色值数组
+ *             example:
+ *               Roles: ["admin","admin1","admin2"]
+ *     responses:
+ *       200:
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.post('/permissions/roles/:id', Controllers.AssignRoles);
+
+//#region
+/**
+ * @swagger
+ * /permission/permissions/roles/{id}:
+ *   delete:
+ *     summary: 删除用户所有角色
+ *     description: 删除用户所有角色
+ *     tags: [权限管理]
+ *     security:
+ *      - token: {}
+ *     parameters: # 请求参数：
+ *      - name: id
+ *        description: 权限id
+ *        in: path
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.delete('/permissions/roles/:id', Controllers.DeleteRoles);
+
 export default router;

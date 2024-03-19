@@ -68,6 +68,7 @@ class AccountService {
     try {
       const result = await prisma.account.findMany({
         select: {
+          AccountId: true,
           Account: true,
           Name: true,
           AvatarUrl: true,
@@ -91,6 +92,7 @@ class AccountService {
           skip: (page - 1) * pageSize,
           take: pageSize,
           select: {
+            AccountId: true,
             Account: true,
             Name: true,
             AvatarUrl: true,
@@ -115,6 +117,7 @@ class AccountService {
       const result = await prisma.account.findUnique({
         where: { AccountId: id, IsDeleted: false },
         select: {
+          AccountId: true,
           Account: true,
           Name: true,
           AvatarUrl: true,
