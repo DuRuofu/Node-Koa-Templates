@@ -98,10 +98,41 @@ class AccountService {
             AvatarUrl: true,
             Email: true,
             Phone: true,
+            IsDisabled: true,
           },
         }),
         // 查询总数
         prisma.account.count(),
+      ]);
+      return result;
+    } catch (error) {
+      console.log(error);
+      //console.log(error);
+      await FAIL(ctx, '数据库错误:查询用户数据失败');
+    }
+  }
+
+  // 查询用户（根据组织）
+  async getAllAccountInOrg(ctx: any, OrganizationId: number, page: number, pageSize: number) {
+    try {
+      const result = await prisma.$transaction([
+        // 查询数据
+        prisma.account.findMany({
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+          where: { OrganizationId },
+          select: {
+            AccountId: true,
+            Account: true,
+            Name: true,
+            AvatarUrl: true,
+            Email: true,
+            Phone: true,
+            IsDisabled: true,
+          },
+        }),
+        // 查询总数
+        prisma.account.count({ where: { OrganizationId } }),
       ]);
       return result;
     } catch (error) {

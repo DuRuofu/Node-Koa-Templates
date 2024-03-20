@@ -3,7 +3,7 @@ import AccountService from '../services/account.service';
 import { bigIntToString } from '../utils/util';
 import { hashPassword } from '../utils/crypto';
 import { sign } from 'jsonwebtoken';
-import { JWT, DEFAULT_AVATAR, SALT } from '../config/constant';
+import { JWT, DEFAULT_AVATAR, SALT, DEFAULT_ROLE } from '../config/constant';
 import { SUCCESS, PARAM_NOT_VALID } from '../config/code/responseCode';
 import Casbin from '../middlewares/casbin';
 class AccountController {
@@ -54,6 +54,8 @@ class AccountController {
     const AvatarUrl: string = DEFAULT_AVATAR[randomIndex].image;
     // 操作数据库
     const res = await AccountService.createAccount(ctx, OrganizationId, Account, hash, Name, AvatarUrl, Email, Phone, CreatedBy);
+    // 生成默认用户
+    await Casbin.addAccountRole(res.AccountId.toString(), DEFAULT_ROLE.ROLE_VALUE);
     //返回数据
     await SUCCESS(ctx, bigIntToString(res), '用户注册成功');
   }
@@ -134,6 +136,50 @@ class AccountController {
     await SUCCESS(ctx, bigIntToString({ total: totalCount, records: accounts }), '查询成功');
   }
 
+  // 根据组织查询用户列表(分页)
+  async getAllAccountInOrg(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        organizationid: {
+          type: 'string',
+          required: true,
+          message: '当前页数不能为空',
+        },
+        page: {
+          type: 'string',
+          required: true,
+          message: '当前页数不能为空',
+        },
+        limit: {
+          type: 'string',
+          required: true,
+          message: '每页记录数不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 数据提取
+    const { organizationid, page, limit } = ctx.params;
+    let accounts: any, totalCount: any;
+    if (organizationid == '0') {
+      // 操作数据库
+      const res = await AccountService.getAllAccount(ctx, parseInt(page), parseInt(limit));
+      [accounts, totalCount] = res;
+    } else {
+      // 操作数据库
+      const res = await AccountService.getAllAccountInOrg(ctx, organizationid, parseInt(page), parseInt(limit));
+      [accounts, totalCount] = res;
+    }
+    // 补充查询角色
+    for (let i = 0; i < accounts.length; i++) {
+      const roles = await Casbin.getAccountRoles(accounts[i].AccountId.toString());
+      (accounts[i] as any).Roles = roles;
+    }
+    // 返回数据)
+    await SUCCESS(ctx, bigIntToString({ total: totalCount, records: accounts }), '查询成功');
+  }
   // 查询单个用户(id)
   async getAccount(ctx: any, next: any) {
     // 数据校验

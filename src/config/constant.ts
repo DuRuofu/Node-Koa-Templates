@@ -191,3 +191,7 @@ export const DEFAULT_AVATAR = [
 export const SALT = {
   saltRounds: process.env.SALT_SECRET_KEY || `1233`,
 };
+
+export const DEFAULT_ROLE = {
+  ROLE_VALUE: 'default',
+};

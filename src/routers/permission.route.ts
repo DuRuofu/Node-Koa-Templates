@@ -184,7 +184,7 @@ router.put('/permissions/:type', Controllers.Put);
 // #endregion
 router.delete('/permissions/:id', Controllers.Delete);
 
-//#region
+//#region 为用户添加角色
 /**
  * @swagger
  * /permission/permissions/roles/{id}:
@@ -231,7 +231,7 @@ router.delete('/permissions/:id', Controllers.Delete);
 // #endregion
 router.post('/permissions/roles/:id', Controllers.AssignRoles);
 
-//#region
+//#region 删除用户所有角色
 /**
  * @swagger
  * /permission/permissions/roles/{id}:

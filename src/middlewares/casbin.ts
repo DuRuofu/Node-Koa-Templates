@@ -27,9 +27,12 @@ class Casbin {
   async getRolesAccount(Role: string) {
     return await this.enforcer.GetUsersForRole(Role);
   }
-
+  // 为用户添加单个角色
+  async addAccountRole(accountId: string, role: string) {
+    return this.enforcer.addRoleForUser(accountId, role);
+  }
   // 为用户添加多个角色。 如果用户已经拥有该角色，则返回false。
-  async addAccountRole(accountId: string, roles: string[]) {
+  async addAccountRoles(accountId: string, roles: string[]) {
     return roles.map((role) => this.enforcer.addRoleForUser(accountId, role));
   }
 

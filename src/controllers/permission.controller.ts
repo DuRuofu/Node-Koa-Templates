@@ -155,7 +155,7 @@ class PermissionController {
     // 删除
     await Casbin.deleteAccountRole(id);
     // 添加
-    const res = await Casbin.addAccountRole(id, Roles);
+    const res = await Casbin.addAccountRoles(id, Roles);
     if (res) {
       await SUCCESS(ctx, {}, '添加角色成功');
     } else {

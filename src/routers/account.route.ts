@@ -235,6 +235,66 @@ router.get('/accounts', Controller.getAllAccountList);
 // #endregion
 router.get('/accounts/:page/:limit', Controller.getAllAccount);
 
+//#region 获取用户列表(分页)
+/**
+ * @swagger
+ * /account/accounts/{organizationid}/{page}/{limit}:
+ *   get:
+ *     summary: 根据组织获取用户列表
+ *     description: 根据组织获取用户列表
+ *     tags: [用户模块]
+ *     parameters: # 请求参数：
+ *      - name: organizationid
+ *        description: 组织id(全部组织为0)
+ *        in: path
+ *        type: number
+ *        required: true
+ *      - name: page
+ *        description: 当前页数
+ *        in: path
+ *        type: number
+ *        required: true
+ *      - name: limit
+ *        description: 每页记录数
+ *        in: path
+ *        type: number
+ *        required: true
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                code:
+ *                 type: number
+ *                 description: 状态码
+ *                 example: 200
+ *                massage:
+ *                 type: string
+ *                 description: 登陆信息
+ *                 example: 查询用户列表成功
+ *                data:
+ *                 type: object
+ *                 description: 用户信息
+ *                 properties:
+ *                   total:
+ *                     type: number
+ *                     description: 总记录数
+ *                     example: 1
+ *                   records:
+ *                     type: array
+ *                     description: 用户列表
+ *                     example: [{"AccountId": "61a7125d-9439-4739-90f1-c4271a84d9d6","TeamId": "126626262","Account": "2626211","Password": "1126262","Name": "2626211","AvatarUrl": "https://image-1308319148.cos.ap-chengdu.myqcloud.com/main/%E4%B8%AA%E4%BA%BA%E5%A4%B4%E5%83%8F.png","Email": "146746747647","Phone": "1363636363","IsDeleted": false,"CreatedTime": "2024-03-11T10:21:53.823Z","UpdatedTime": "2024-03-11T10:21:53.823Z"}]
+ *     security:
+ *      - token: {}
+ *      - server_auth:
+ *        - authorization
+ */
+// #endregion
+router.get('/accounts/:organizationid/:page/:limit', Controller.getAllAccountInOrg);
+
 //#region 获取某用户信息
 /**
  * @swagger
