@@ -34,12 +34,18 @@ import Controller from '../controllers/account.controller';
  *                 description: 用户邮箱
  *               Phone:
  *                 description: 用户手机号
+ *               IsDisabled:
+ *                 description: 是否禁用
+ *               Roles:
+ *                 description: 用户角色列表,字符串数组
  *             example:
  *               OrganizationId: "1"
  *               Account: "1234567"
  *               Password: "3.1415926"
  *               Email: "123344@11.c0m"
  *               Phone: "12912781727818"
+ *               IsDisabled: false
+ *               Roles: ["admin","default"]
  *     responses:
  *       "200":
  *         description: OK

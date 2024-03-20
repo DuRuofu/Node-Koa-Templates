@@ -12,6 +12,7 @@ class AccountService {
     AvatarUrl: string,
     Email: string,
     Phone: string,
+    IsDisabled: boolean,
     CreatedBy: string
   ) {
     try {
@@ -24,10 +25,12 @@ class AccountService {
           AvatarUrl,
           Email,
           Phone,
+          IsDisabled,
           CreatedBy: CreatedBy,
           UpdatedBy: CreatedBy,
         },
         select: {
+          OrganizationId: true,
           AccountId: true,
           Account: true,
           Name: true,
@@ -68,6 +71,7 @@ class AccountService {
     try {
       const result = await prisma.account.findMany({
         select: {
+          OrganizationId: true,
           AccountId: true,
           Account: true,
           Name: true,
@@ -92,6 +96,7 @@ class AccountService {
           skip: (page - 1) * pageSize,
           take: pageSize,
           select: {
+            OrganizationId: true,
             AccountId: true,
             Account: true,
             Name: true,
@@ -122,6 +127,7 @@ class AccountService {
           take: pageSize,
           where: { OrganizationId },
           select: {
+            OrganizationId: true,
             AccountId: true,
             Account: true,
             Name: true,
@@ -184,16 +190,27 @@ class AccountService {
       await FAIL(ctx, '数据库错误:删除用户数据失败');
     }
   }
-
   // 更新用户信息
-  async putAccount(ctx: any, id: string, Name: string, Email: string, Phone: string) {
+  async putAccount(
+    ctx: any,
+    id: string,
+    OrganizationId: number,
+    Name: string,
+    Email: string,
+    Phone: string,
+    Password: string,
+    IsDisabled: boolean
+  ) {
     try {
       const result = await prisma.account.update({
         where: { AccountId: id },
         data: {
+          OrganizationId,
           Name,
           Email,
           Phone,
+          Password,
+          IsDisabled,
           UpdatedBy: ctx.state.user.AccountId,
         },
         select: {
