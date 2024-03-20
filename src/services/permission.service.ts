@@ -75,6 +75,31 @@ class PermissionService {
     }
   }
 
+  // 查(多个)
+  async getPermissions(ctx, Permissions: any) {
+    try {
+      const result = await prisma.permission.findMany({
+        where: {
+          PermissionId: {
+            in: Permissions,
+          },
+          IsDisabled: false,
+          IsDeleted: false,
+        },
+        select: {
+          RuleValue: true,
+          Action: true,
+        },
+        orderBy: {
+          CreatedTime: 'desc',
+        },
+      });
+      return result;
+    } catch (error) {
+      await DB_FAIL(ctx);
+    }
+  }
+
   // 删除
   async deletePermission(ctx, id: number) {
     try {
@@ -84,6 +109,47 @@ class PermissionService {
         },
       });
       return result;
+    } catch (error) {
+      await DB_FAIL(ctx);
+    }
+  }
+  // 工具：查询角色id对应的值
+  async getNameByRoleId(ctx, roleId: number) {
+    try {
+      const result = await prisma.role.findUnique({
+        where: {
+          RoleId: roleId,
+        },
+        select: {
+          Value: true,
+        },
+      });
+      return result;
+    } catch (error) {
+      await DB_FAIL(ctx);
+    }
+  }
+
+  // 根据权限值查询权限
+  async getPermissionsIdByValue(ctx, data: any) {
+    try {
+      const permissionIds = [];
+      for (const [_, ruleValue, action] of data) {
+        const permissions = await prisma.permission.findMany({
+          where: {
+            RuleValue: ruleValue,
+            Action: action,
+            IsDeleted: false,
+            IsDisabled: false,
+          },
+          select: {
+            PermissionId: true,
+          },
+        });
+        const ids = permissions.map((permission) => permission.PermissionId);
+        permissionIds.push(...ids);
+      }
+      return permissionIds;
     } catch (error) {
       await DB_FAIL(ctx);
     }

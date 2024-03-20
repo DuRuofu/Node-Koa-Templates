@@ -187,6 +187,69 @@ class PermissionController {
       await PARAM_NOT_VALID(ctx, '删除角色失败');
     }
   }
+
+  // 为角色分配权限
+  async AssignPermission(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '角色ID不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const { Permissions } = ctx.request.body;
+    const id = ctx.params.id;
+    // 查询角色id对应的角色值
+    const role = await PermissionService.getNameByRoleId(ctx, +id);
+    // 查询权限id对应的权限值
+    console.log(Permissions);
+    const data = await PermissionService.getPermissions(ctx, Permissions);
+    // 将每个对象转换为一个包含 RuleValue 和 Action 的数组
+    const transformedArray = data.map((rule) => [rule.RuleValue, rule.Action]);
+    // 操作权限数据库
+    // 清除角色权限
+    await Casbin.deletePermissionsForUser(role.Value);
+    // 重新分配权限
+    const res = await Casbin.addRolePermission(role.Value, transformedArray);
+    if (res) {
+      await SUCCESS(ctx, {}, '添加权限成功');
+    }
+  }
+
+  // 获取某角色所有权限
+  async getRolePermissions(ctx: any, next: any) {
+    // 数据校验
+    try {
+      ctx.verifyParams({
+        id: {
+          type: 'string',
+          required: true,
+          message: '角色ID不能为空',
+        },
+      });
+    } catch (error) {
+      await PARAM_NOT_VALID(ctx, error.messagr, error);
+    }
+    // 获取数据
+    const id = ctx.params.id;
+    // 查询角色id对应的角色值
+    const role = await PermissionService.getNameByRoleId(ctx, +id);
+    // 查询角色值对应的权限值
+    const res = await Casbin.getPermissionsForUser(role.Value);
+    // 查询权限值对应的ID
+    const data = await PermissionService.getPermissionsIdByValue(ctx, res);
+    // 返回数据
+    await SUCCESS(ctx, bigIntToString(data), '获取角色权限成功');
+  }
+
+  // 删除角色所有权限
+  async DeletePermission(ctx: any, next: any) {}
 }
 
 // 工具函数:

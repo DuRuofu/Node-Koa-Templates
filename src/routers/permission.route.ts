@@ -151,7 +151,7 @@ router.put('/permissions/:type', Controllers.Put);
 //#region 删除权限
 /**
  * @swagger
- * /permission/permissions/{id}:
+ * /permission/permission/{id}:
  *   delete:
  *     summary: 删除某个权限
  *     description: 删除某个权限
@@ -182,7 +182,7 @@ router.put('/permissions/:type', Controllers.Put);
  *             description: 用户信息
  */
 // #endregion
-router.delete('/permissions/:id', Controllers.Delete);
+router.delete('/permission/:id', Controllers.Delete);
 
 //#region 为用户添加角色
 /**
@@ -196,7 +196,7 @@ router.delete('/permissions/:id', Controllers.Delete);
  *      - token: {}
  *     parameters: # 请求参数：
  *      - name: id
- *        description: 权限id
+ *        description: 用户id
  *        in: path
  *        required: true
  *     requestBody:
@@ -266,5 +266,124 @@ router.post('/permissions/roles/:id', Controllers.AssignRoles);
  */
 // #endregion
 router.delete('/permissions/roles/:id', Controllers.DeleteRoles);
+
+//#region 为角色添加权限
+/**
+ * @swagger
+ * /permission/permissions/{id}:
+ *   post:
+ *     summary: 为角色添加权限
+ *     description: 为角色添加权限
+ *     tags: [权限管理]
+ *     security:
+ *      - token: {}
+ *     parameters: # 请求参数：
+ *      - name: id
+ *        description: 角色id
+ *        in: path
+ *        required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Permissions:
+ *                 description: 权限ID数组
+ *             example:
+ *               Permissions: ["1","2","3","4","5","6","7","8","9"]
+ *     responses:
+ *       200:
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.post('/permissions/:id', Controllers.AssignPermission);
+
+//#region 删除角色所有权限
+/**
+ * @swagger
+ * /permission/permissions/{id}:
+ *   delete:
+ *     summary: 删除角色所有权限
+ *     description: 删除角色所有权限
+ *     tags: [权限管理]
+ *     security:
+ *      - token: {}
+ *     parameters: # 请求参数：
+ *      - name: id
+ *        description: 角色id
+ *        in: path
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.delete('/permissions/:id', Controllers.DeletePermission);
+
+//#region 获取角色权限列表
+/**
+ * @swagger
+ * /permission/permissions/roles/{id}:
+ *   get:
+ *     summary: 获取角色权限列表
+ *     description: 获取角色权限列表
+ *     tags: [权限管理]
+ *     security:
+ *      - token: {}
+ *     parameters: # 请求参数：
+ *      - name: id
+ *        description: 角色id
+ *        in: path
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: 删除成功
+ *         schema:
+ *          type: object
+ *          properties:
+ *           code:
+ *             type: number
+ *             description: 状态码
+ *             example: 200
+ *           massage:
+ *             type: string
+ *             description: 查询信息
+ *             example: 删除成功
+ *           data:
+ *             type: object
+ *             description: 用户信息
+ */
+// #endregion
+router.get('/permissions/roles/:id', Controllers.getRolePermissions);
 
 export default router;

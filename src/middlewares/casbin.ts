@@ -40,6 +40,22 @@ class Casbin {
   async deleteAccountRole(accountId: string) {
     return await this.enforcer.deleteRolesForUser(accountId);
   }
+
+  // 为角色添加多个权限permissions = [["data1", "read"],["data2", "write"]];
+  async addRolePermission(role: string, permissions: any) {
+    return permissions.map((permission) => this.enforcer.addPermissionForUser(role, ...permission));
+  }
+
+  // 删除角色所有权限
+  async deletePermissionsForUser(role: string) {
+    // 删除角色所有权限
+    return await this.enforcer.deletePermissionsForUser(role);
+  }
+
+  // 获取角色所有的权限
+  async getPermissionsForUser(role: string) {
+    return await this.enforcer.getPermissionsForUser(role);
+  }
 }
 
 // async function test() {
