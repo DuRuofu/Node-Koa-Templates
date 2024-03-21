@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
+import { FAIL, DB_FAIL, USER_ACCOUNT_ALREADY_EXIST, USER_PWD_ERROR } from '../config/code/responseCode';
 class AccountService {
   // 用户注册
   async createAccount(
@@ -226,6 +226,33 @@ class AccountService {
     } catch (error) {
       console.log(error);
       await FAIL(ctx, '数据库错误:更新用户数据失败');
+    }
+  }
+
+  // 查询用户前端权限
+  async getPermissionsIdByValue(ctx, data: any) {
+    try {
+      const permissionIds = [];
+      for (const [_, ruleValue, action] of data) {
+        const permissions = await prisma.permission.findMany({
+          where: {
+            Type: { in: [11, 12, 13, 14, 15, 16, 17, 18, 19] },
+            RuleValue: ruleValue,
+            Action: action,
+            IsDeleted: false,
+            IsDisabled: false,
+          },
+          select: {
+            //RuleValue: true,
+            Name: true,
+          },
+        });
+        const ids = permissions.map((permission) => permission.Name);
+        permissionIds.push(...ids);
+      }
+      return permissionIds;
+    } catch (error) {
+      await DB_FAIL(ctx);
     }
   }
 }

@@ -226,7 +226,19 @@ class AccountController {
     // 数据提取
     const id = ctx.state.user.AccountId;
     // 操作数据库
-    const res = await AccountService.getAccount(ctx, id);
+    const res: any = await AccountService.getAccount(ctx, id);
+    // 查询角色
+    const role = await Casbin.getAccountRoles(id);
+    // 查询前端权限
+    // 查询角色值对应的权限值
+    const Permissions = await Casbin.getPermissionsForUser(role.toString());
+    console.log(Permissions);
+    // 查询权限值对应的ID
+    const data = await AccountService.getPermissionsIdByValue(ctx, Permissions);
+    console.log(data);
+    // 为resz添加roles
+    res.Roles = role;
+    res.Routes = data;
     // 返回数据
     await SUCCESS(ctx, bigIntToString(res), '查询成功');
   }
