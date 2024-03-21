@@ -2,6 +2,8 @@
 
 import { newEnforcer } from 'casbin';
 import { PrismaAdapter } from 'casbin-prisma-adapter';
+import { PublicRouter } from '../config/constant';
+import { AUTH_PERMISSION_FAIL } from '../config/code/responseCode';
 
 class Casbin {
   enforcer: any;
@@ -16,6 +18,28 @@ class Casbin {
     this.enforcer = enforcer;
     //console.log(this.enforcer);
   }
+  // 全局路由守卫
+  authz = async (ctx: any, next: any) => {
+    const { path, method } = ctx;
+    // 检查当前请求的路径，如果匹配指定的路由，则跳过认证
+    if (checkIgnore(ctx.path)) {
+      await next();
+      return;
+    }
+    // 提取参数
+    const accountId = ctx.state.user.AccountId;
+    //console.log('全局路由守卫');
+    console.log(accountId, path, method);
+    // 检查当前用户是否有权限访问该路径
+    const res = await this.enforcer.enforce(accountId, path, method.toLowerCase());
+    //const res = 1;
+    //console.log(res);
+    if (res) {
+      await next();
+    } else {
+      await AUTH_PERMISSION_FAIL(ctx);
+    }
+  };
 
   // 查询用户的角色(根据accountId)
   async getAccountRoles(accountId: string) {
@@ -58,10 +82,11 @@ class Casbin {
   }
 }
 
-// async function test() {
-//   const a = new Casbin();
-//   await new Promise((resolve) => setTimeout(resolve, 100));
-//   await a.getAccountRoles(1);
-// }
+// 判断是否应该跳过认证的辅助函数
+function checkIgnore(path: string): boolean {
+  // 在这里添加需要跳过认证的路由规则
+  const ignoreRoutes = PublicRouter;
+  return ignoreRoutes.some((route) => route.test(path));
+}
 
 export default new Casbin();

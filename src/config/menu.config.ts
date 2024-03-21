@@ -1,4 +1,3 @@
-// 异步路由
 export const asnycRoute = [
   // 管理页面
   {
@@ -48,7 +47,7 @@ export const asnycRoute = [
         },
       },
       {
-        path: '/function',
+        path: '/admin/function',
         name: 'function',
         meta: {
           title: '功能管理',
@@ -127,6 +126,7 @@ export const asnycRoute = [
           },
         ],
       },
+
       // MQTT客户端
       {
         path: '/functions/mqttclient',

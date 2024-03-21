@@ -38,7 +38,7 @@ export class AuthError extends ErrorModel {
 // 403:无权操作，检查操作对象是否正在使用或有依赖约束
 export class PermissionError extends ErrorModel {
   constructor(code: number, msg = '未通过服务端认证', data?: any) {
-    super(code, msg, 401, data);
+    super(code, msg, 403, data);
   }
 }
 // 404:找不到请求路径或请求的对象不存在

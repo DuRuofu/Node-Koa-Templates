@@ -17,6 +17,7 @@ import router from './routers/index';
 import { koaSwagger } from 'koa2-swagger-ui';
 import { PublicRouter } from './config/constant';
 import { Jwtauth } from './middlewares/jwt';
+import Casbin from './middlewares/casbin';
 
 // 创建APP实例
 const app = new Koa();
@@ -37,6 +38,9 @@ app.use(Jwtauth);
 app.use(
   koaBody({ parsedMethods: [HttpMethodEnum.POST, HttpMethodEnum.PUT, HttpMethodEnum.PATCH, HttpMethodEnum.GET, HttpMethodEnum.DELETE] })
 );
+
+// 挂载权限中间件
+app.use(Casbin.authz);
 
 // 挂载参数校验中间件
 app.use(parameter(app));

@@ -25,7 +25,7 @@ export const TOKEN_INVALID = async (ctx: Koa.Context) => new AuthError(40103, 't
 export const AUTHENTICATION_FAIL = async (ctx: Koa.Context, msg = '认证失败') => new AuthError(40104, msg).throwErr(ctx);
 
 // 403 权限限制
-export const A = async (ctx: Koa.Context) => new PermissionError(40301, '权限错误').throwErr(ctx);
+export const AUTH_PERMISSION_FAIL = async (ctx: Koa.Context) => new PermissionError(40301, '权限认证失败').throwErr(ctx);
 
 // 404 未找到请求路径或请求的对象不存在
 export const NotFound = async (ctx: Koa.Context) => new NotFoundError(40401, '未找到api,请检查请求路径以及请求方法是否出错').throwErr(ctx);

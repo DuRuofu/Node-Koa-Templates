@@ -209,7 +209,7 @@ class AccountService {
           Name,
           Email,
           Phone,
-          Password,
+          Password: Password !== undefined ? Password : undefined,
           IsDisabled,
           UpdatedBy: ctx.state.user.AccountId,
         },
