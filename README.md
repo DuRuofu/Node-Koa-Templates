@@ -1,4 +1,4 @@
-# Node-Koa-Templates
+# Node-Koa-Templates(早期项目-不推荐使用)
 
 开源Node-Koa后端服务框架模板
 此项目是一个基于Koa和TypeScript的后端服务框架模板，旨在帮助快速搭建Node.js后端项目。
@@ -51,7 +51,7 @@
 您可以按照以下步骤来使用该项目：
 
 克隆此项目到本地。
-安装项目依赖：在项目根目录下运行 npm install 或 yarn install。
+安装项目依赖：在项目根目录下运行 npm install
 根据需要配置环境变量：复制.env.example文件并重命名为.env，然后根据实际情况进行配置。
 运行开发服务器：在项目根目录下运行 npm run dev 或 yarn dev。
 访问 http://localhost:3000/api-docs 查看服务是否正常启动。
